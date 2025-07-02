@@ -18,4 +18,4 @@ A clean, minimal coming soon page for Nomad Neuroscience.
 - Inter font family
 
 ## 📧 Contact
-info@nomadneuroscience.com 
+hello@nomadneuro.com 

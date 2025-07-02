@@ -10,11 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #000000;
-            --secondary: #666666;
+            --primary: #1a1a1a;
+            --secondary: #4a5568;
             --accent: #f7861e;
+            --accent-secondary: #fc5f2b;
             --background: #ffffff;
-            --text-light: #999999;
+            --text-light: #a0aec0;
+            --border-light: #e2e8f0;
+            --surface: #f7fafc;
         }
 
         * {
@@ -29,12 +32,14 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--background);
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+            background-attachment: fixed;
             color: var(--primary);
             line-height: 1.6;
             font-weight: 400;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
         }
 
         .container {
@@ -52,54 +57,187 @@
             justify-content: center;
             align-items: center;
             padding: 2rem;
-            max-width: 100%;
+            max-width: 900px;
             width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(247, 134, 30, 0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
         }
 
         .logo {
             font-size: 1.125rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--secondary);
             margin-top: 2rem;
-            margin-bottom: 3rem;
-            letter-spacing: 0.05em;
+            margin-bottom: 4rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             opacity: 0;
             animation: fadeInUp 1s ease 0.2s both;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            border-radius: 2px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.4s both;
         }
 
         .coming-soon {
             font-size: clamp(4rem, 12vw, 10rem);
             font-weight: 200;
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: -0.03em;
             margin-bottom: 2rem;
             opacity: 0;
-            animation: fadeInUp 1s ease 0.4s both;
+            animation: fadeInUp 1s ease 0.6s both, shimmer 3s ease-in-out infinite;
             line-height: 0.9;
+            position: relative;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 200% center; }
+            50% { background-position: -200% center; }
         }
 
         .subtitle {
+            font-size: 1.25rem;
+            color: var(--accent);
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.8s both;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .description {
+            max-width: 650px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1s both;
+        }
+
+        .description p {
             font-size: 1.125rem;
             color: var(--secondary);
             font-weight: 400;
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.6s both;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .description p:nth-last-child(2) {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .description p:nth-last-child(2)::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        .contact-email {
+            text-align: center;
+            margin-bottom: 0 !important;
+        }
+
+        .contact-email a {
+            font-size: 1.25rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: 2px solid var(--accent);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-email a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(247, 134, 30, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .contact-email a:hover {
+            color: white;
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(247, 134, 30, 0.3);
+        }
+
+        .contact-email a:hover::before {
+            left: 100%;
         }
 
         .company-info {
             width: 100%;
-            padding: 1rem 2rem;
-            border-top: 1px solid #e5e5e5;
-            background: #fafafa;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-light);
             opacity: 0;
-            animation: fadeInUp 1s ease 0.8s both;
+            animation: fadeInUp 1s ease 1.2s both;
+            position: relative;
+        }
+
+        .company-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            border-radius: 3px;
         }
 
         .company-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 2rem;
+            gap: 2.5rem;
             max-width: 1200px;
             margin: 0 auto;
             align-items: center;
@@ -107,7 +245,12 @@
 
         .company-item {
             text-align: center;
-            min-width: 150px;
+            min-width: 160px;
+            transition: transform 0.2s ease;
+        }
+
+        .company-item:hover {
+            transform: translateY(-2px);
         }
 
         .company-label {
@@ -115,38 +258,49 @@
             color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 0.25rem;
-            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
         .company-value {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--secondary);
-            font-weight: 400;
-            line-height: 1.3;
+            font-weight: 500;
+            line-height: 1.4;
         }
 
         .company-value a {
             color: var(--accent);
             text-decoration: none;
-            transition: opacity 0.2s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 4px 8px;
+            border-radius: 6px;
         }
 
         .company-value a:hover {
-            opacity: 0.7;
+            color: var(--accent-secondary);
+            background: rgba(247, 134, 30, 0.1);
+            transform: translateY(-1px);
         }
 
-        .pulse-dot {
+        .company-value a::after {
+            content: '';
             position: absolute;
-            top: 50%;
-            right: 2rem;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0;
-            animation: pulse 2s ease-in-out infinite, fadeIn 1s ease 1s both;
+            bottom: 0;
+            left: 8px;
+            right: 8px;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
+
+        .company-value a:hover::after {
+            transform: scaleX(1);
+        }
+
+
 
         @keyframes fadeInUp {
             from {
@@ -180,25 +334,50 @@
         @media (max-width: 768px) {
             .main-content {
                 padding: 1rem;
+                max-width: 100%;
+            }
+
+            .main-content::before {
+                width: 100%;
+                height: 100%;
             }
 
             .logo {
                 margin-bottom: 2rem;
+                font-size: 1rem;
+            }
+
+            .subtitle {
+                margin-bottom: 2rem;
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+            }
+
+            .description {
+                padding: 2rem 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .description p {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .coming-soon {
+                margin-bottom: 1.5rem;
             }
 
             .company-grid {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 1.5rem;
                 text-align: center;
             }
 
             .company-info {
-                padding: 1rem;
+                padding: 1.5rem 1rem;
             }
 
-            .pulse-dot {
-                display: none;
-            }
+
         }
 
         @media (max-width: 480px) {
@@ -217,10 +396,6 @@
 
         /* Print styles */
         @media print {
-            .pulse-dot {
-                display: none;
-            }
-            
             .company-info {
                 border-top: 2px solid #000;
                 background: white;
@@ -231,12 +406,18 @@
 </head>
 <body>
     <div class="container">
-        <div class="pulse-dot"></div>
+
         
         <main class="main-content">
             <div class="logo">Nomad Neuroscience</div>
             <h1 class="coming-soon">COMING SOON...</h1>
-            <p class="subtitle">Pioneering the future of neuroscience</p>
+            <p class="subtitle">Precision neuromodulation</p>
+            
+            <div class="description">
+                <p>We are neuroscientists who code. Engineers who understand biology. Designers who think in frequencies.</p>
+                <p>If you're building the future of human optimization, we want to meet you.</p>
+                <p class="contact-email"><a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a></p>
+            </div>
         </main>
 
         <footer class="company-info">
@@ -265,7 +446,7 @@
                 <div class="company-item">
                     <div class="company-label">Contact</div>
                     <div class="company-value">
-                        <a href="mailto:info@nomadneuroscience.com">info@nomadneuroscience.com</a>
+                        <a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a>
                     </div>
                 </div>
             </div>
