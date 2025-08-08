@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../../../Downloads/Aktiv.Grotesk/Aktiv Grotesk"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Website "
+	}
+}
