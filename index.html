@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nomad Neuroscience - Coming Soon</title>
     <meta name="description" content="Precision neuromodulation">
+    <meta name="theme-color" content="#4fffff">
+    <meta property="og:title" content="Nomad Neuroscience — Coming Soon">
+    <meta property="og:description" content="Precision neuromodulation.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nomadneuro.com/">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,11 +20,12 @@
             --primary: #111111;
             --secondary: #4b5563;
             --accent: #4fffff;
-            --accent-secondary: #4fffff;
+            --accent-secondary: #00d5d5;
             --background: #ffffff;
             --text-light: #9aa3af;
             --border-light: #e5e7eb;
             --surface: #fafafa;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         * {
@@ -77,11 +84,10 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            overflow: hidden; /* prevent bg layers from creating scroll */
         }
 
-        /* Ambient orb + subtle noise texture */
-        .container::before {
+        /* Ambient orb + subtle noise texture (attach to body so footer sticky works) */
+        body::before {
             content: "";
             position: absolute;
             inset: -20vmax -10vmax auto auto;
@@ -97,7 +103,7 @@
             animation: orbDrift 36s ease-in-out infinite alternate;
         }
 
-        .container::after {
+        body::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -191,13 +197,20 @@
             padding: 10px 20px;
             border: 1.5px solid var(--accent);
             border-radius: 9999px;
-            transition: background-color 0.2s ease, color 0.2s ease;
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
             display: inline-block;
         }
 
         .contact-email a:hover {
             color: #ffffff;
             background: var(--accent);
+            box-shadow: 0 8px 24px rgba(79,255,255,0.25);
+        }
+
+        .contact-email a:focus-visible {
+            outline: 2px solid var(--accent-secondary);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(79,255,255,0.25);
         }
 
         .company-info {
@@ -211,6 +224,7 @@
             z-index: 2;
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
+            padding-bottom: calc(0.75rem + var(--safe-bottom));
         }
 
         .company-grid {
@@ -316,6 +330,7 @@
         @media (max-width: 480px) {
             .company-grid {
                 gap: 0.75rem;
+                grid-template-columns: 1fr; /* single column on very small screens */
             }
             
             .company-info {
