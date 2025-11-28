@@ -113,8 +113,9 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
+            padding: 120px 20px 60px;
             position: relative;
+            min-height: calc(100vh - 200px);
         }
 
         .hero-label {
@@ -148,7 +149,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-fill-color: transparent;
             
             animation: shine 8s linear infinite;
             opacity: 0; /* JS Fade in */
@@ -196,19 +196,51 @@
 
         /* --- Footer --- */
         footer {
-            padding: 30px 40px;
-            display: grid;
-            grid-template-columns: auto 1fr auto;
+            padding: 40px;
             border-top: 1px solid var(--border);
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            align-items: center;
             background: rgba(255,255,255,0.5);
             backdrop-filter: blur(10px);
+            margin-top: auto;
         }
 
-        .footer-center { text-align: center; }
-        .footer-right { text-align: right; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(160px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .footer-value {
+            font-size: 0.875rem;
+            color: var(--text-main);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .footer-value a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-value a:hover {
+            color: var(--g2);
+        }
 
         /* --- LOGIN MODAL (The fake investor part) --- */
         .modal-overlay {
@@ -330,12 +362,28 @@
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
 
         /* Responsive */
+        @media(max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+        }
+
         @media(max-width: 768px) {
+            main { padding: 100px 20px 40px; min-height: auto; }
             h1 { font-size: 3rem; margin-top: 20px; }
             .copy-block { font-size: 1.1rem; padding: 0 10px; }
-            footer { grid-template-columns: 1fr; gap: 16px; text-align: center; }
-            .footer-right { text-align: center; }
+            footer { padding: 32px 24px; }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
             nav { padding: 20px; }
+        }
+
+        @media(max-width: 480px) {
+            footer { padding: 24px 20px; }
+            .footer-grid { gap: 20px; }
         }
     </style>
 </head>
@@ -369,9 +417,34 @@
     </main>
 
     <footer>
-        <div class="footer-left">Nomad Neuroscience Ltd</div>
-        <div class="footer-center">London, UK</div>
-        <div class="footer-right">© 2024</div>
+        <div class="footer-grid">
+            <div class="footer-item">
+                <div class="footer-label">United Kingdom Company Number</div>
+                <div class="footer-value">16558472</div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Address</div>
+                <div class="footer-value">
+                    71-75 Shelton Street<br>
+                    Covent Garden<br>
+                    London, WC2H 9JQ<br>
+                    United Kingdom
+                </div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">SIC Codes</div>
+                <div class="footer-value">
+                    71129 - Other engineering activities<br>
+                    72110 - Research and experimental development on biotechnology
+                </div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Contact</div>
+                <div class="footer-value">
+                    <a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <div class="modal-overlay" id="loginModal">
