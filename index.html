@@ -11,14 +11,14 @@
     
     <style>
         :root {
-            /* Palette: Premium Oura-esque tones */
-            --bg-base: #F7F7F9; /* Clean Ceramic White */
+            /* Palette: Premium Ceramic & Signal Tones */
+            --bg-base: #F5F5F7;
             --text-main: #1A1A1C;
             --text-muted: #6E6E78;
             
-            /* The Premium Signal Colors */
-            --signal-purple: #8A2BE2;
-            --signal-pink: #E66090;
+            /* The Signal Colors */
+            --signal-purple: #9D50BB;
+            --signal-pink: #F48FB1;
             
             /* Easing */
             --ease-out-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -37,7 +37,7 @@
             flex-direction: column;
         }
 
-        /* --- NEW: Premium Diffused Background --- */
+        /* --- Premium Diffused Background --- */
         .premium-bg {
             position: fixed;
             inset: 0;
@@ -49,25 +49,23 @@
         .light-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(130px); /* Heavy blur for soft diffusion */
-            opacity: 0.35; /* Subtle transparency */
+            filter: blur(140px); /* Maximum Diffusion */
+            opacity: 0.4;
             will-change: transform;
         }
 
-        /* Orb 1: Soft Violet/Purple */
         .orb-purple {
-            width: 70vw; height: 70vw;
+            width: 80vw; height: 80vw;
             background: var(--signal-purple);
-            top: -25%; left: -15%;
+            top: -30%; left: -20%;
             animation: breathePos 25s infinite alternate ease-in-out;
         }
 
-        /* Orb 2: Soft Rose/Pink */
         .orb-pink {
-            width: 60vw; height: 60vw;
+            width: 70vw; height: 70vw;
             background: var(--signal-pink);
-            bottom: -20%; right: -10%;
-            animation: breathePos 30s infinite alternate-reverse ease-in-out;
+            bottom: -20%; right: -15%;
+            animation: breathePos 35s infinite alternate-reverse ease-in-out;
         }
 
         /* --- Navigation --- */
@@ -93,8 +91,8 @@
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-main);
-            background: rgba(255,255,255,0.3);
-            border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.6);
             padding: 10px 22px;
             border-radius: 99px;
             cursor: pointer;
@@ -103,8 +101,8 @@
             transition: all 0.3s var(--ease-out-soft);
         }
         .investor-pill:hover {
-            background: rgba(255,255,255,0.7);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
         /* --- Main Hero --- */
@@ -118,7 +116,6 @@
             padding: 160px 24px 80px;
         }
 
-        /* UPDATED: Purple Stealth Dot */
         .stealth-label {
             font-size: 0.7rem;
             letter-spacing: 0.25em;
@@ -141,19 +138,17 @@
 
         .status-dot {
             width: 6px; height: 6px;
-            /* Changed to premium purple */
-            background: var(--signal-purple);
+            background: #8A2BE2; /* Purple */
             border-radius: 50%;
-            /* Soft purple glow */
-            box-shadow: 0 0 14px rgba(138, 43, 226, 0.7);
+            box-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
             animation: pulseDot 3s infinite ease-in-out;
         }
 
-        /* --- THE HEADLINE (With 'g' fix preserved) --- */
+        /* --- THE HEADLINE FIX --- */
         h1 {
             font-size: clamp(3.5rem, 10vw, 7.5rem);
-            line-height: 1;
-            font-weight: 400; /* Lighter weight for elegance */
+            line-height: 1.1; 
+            font-weight: 400;
             letter-spacing: -0.04em;
             margin-bottom: 40px;
             color: var(--text-main);
@@ -162,27 +157,23 @@
             align-items: center;
         }
 
-        /* The 'g' cut-off fix */
+        /* CRITICAL FIX: The deep buffer for descenders */
         .text-mask {
             display: block;
             overflow: hidden;
-            padding-bottom: 0.25em; /* Crucial padding */
-            margin-bottom: -0.25em; /* Layout balance */
+            padding-bottom: 0.6em; 
+            margin-bottom: -0.6em; 
         }
 
         .text-line {
             display: block;
-            transform: translateY(120%); /* Start lower */
+            transform: translateY(120%);
             opacity: 0;
-            /* Subtle gradient text */
-            background: linear-gradient(180deg, #1A1A1C 30%, #505055 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text-main);
         }
 
         .animate-text .text-line {
-            animation: textReveal 1.4s var(--ease-out-expo) forwards;
+            animation: textReveal 1.5s var(--ease-out-expo) forwards;
         }
         .animate-text .mask-2 .text-line { animation-delay: 0.15s; }
 
@@ -213,32 +204,29 @@
             transition: all 0.4s var(--ease-out-soft);
             opacity: 0;
             animation: fadeUp 1s var(--ease-out-expo) forwards 1s;
-            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Subtle internal shine on hover */
-        .cta-btn::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%); transition: transform 0.6s ease;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.15);
+            border: none;
+            cursor: pointer;
         }
 
         .cta-btn:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25);
         }
-        .cta-btn:hover::after { transform: translateX(100%); }
+        
+        .cta-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         /* --- Footer --- */
         footer {
             padding: 40px 48px;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.4);
             backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
             margin-top: auto;
-            border-top: 1px solid rgba(255,255,255,0.2);
+            border-top: 1px solid rgba(255,255,255,0.3);
         }
 
         .footer-content {
@@ -260,44 +248,76 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* New, slower breathing animation for background */
         @keyframes breathePos {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(10%, 5%) scale(1.1); }
-            100% { transform: translate(-5%, 10%) scale(1.05); }
+            50% { transform: translate(8%, 4%) scale(1.1); }
+            100% { transform: translate(-4%, 8%) scale(1.05); }
         }
         @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 14px rgba(138, 43, 226, 0.7); }
-            50% { opacity: 0.6; transform: scale(0.9); box-shadow: 0 0 8px rgba(138, 43, 226, 0.4); }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.9); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
         }
 
-        /* --- Modal --- */
+        /* --- Login Modal Styles --- */
         .modal-overlay {
             position: fixed; inset: 0;
-            background: rgba(247, 247, 249, 0.6); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(245, 245, 247, 0.75); 
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             z-index: 100; display: flex; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
         
         .login-box {
-            background: rgba(255,255,255,0.8); padding: 48px;
+            background: rgba(255,255,255,0.9); padding: 48px;
             border-radius: 32px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.06);
             border: 1px solid rgba(255,255,255,0.8);
             width: 90%; max-width: 400px; text-align: center;
-            transform: scale(0.9); transition: transform 0.4s var(--ease-out-expo);
+            transform: scale(0.95); transition: transform 0.4s var(--ease-out-expo);
+            position: relative;
         }
         .modal-overlay.active .login-box { transform: scale(1); }
+        .shake-it { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+        .login-input {
+            width: 100%; padding: 18px; margin-bottom: 12px;
+            border: 1px solid rgba(0,0,0,0.08); border-radius: 16px;
+            background: rgba(245,245,247, 0.6); 
+            font-family: inherit; font-size: 1rem; color: var(--text-main);
+            outline: none; transition: all 0.2s;
+        }
+        .login-input:focus {
+            background: #fff;
+            border-color: #8A2BE2;
+            box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.1);
+        }
+        
+        .close-btn {
+            position: absolute; top: 24px; right: 24px;
+            background: transparent; border: none; font-size: 1.5rem; color: var(--text-muted);
+            cursor: pointer; line-height: 1;
+        }
+        
+        .error-msg {
+            color: #FF3B30; font-size: 0.85rem; font-weight: 500;
+            margin-top: 16px; opacity: 0; transform: translateY(-5px); transition: all 0.3s;
+        }
+        .error-msg.show { opacity: 1; transform: translateY(0); }
 
         /* Mobile */
         @media(max-width: 768px) {
-            h1 { font-size: 3.5rem; line-height: 1.1; }
+            h1 { font-size: 3.5rem; line-height: 1.15; }
             nav { padding: 24px; }
             .copy-block { font-size: 1.15rem; padding: 0 16px; }
             footer { padding: 32px 24px; }
             .footer-content { flex-direction: column; gap: 16px; }
+            .login-box { padding: 32px; }
         }
     </style>
 </head>
@@ -344,21 +364,91 @@
     </footer>
 
     <div class="modal-overlay" id="loginModal">
-        <div class="login-box">
-            <h3 style="margin-bottom: 24px; font-weight: 600;">Portal Access</h3>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Restricted entry.</p>
-            <button class="cta-btn" style="width:100%; padding: 16px;" onclick="toggleLogin()">Close</button>
+        <div class="login-box" id="loginBox">
+            <button class="close-btn" onclick="toggleLogin()">×</button>
+            <h3 style="margin-bottom: 8px; font-weight: 600; font-size: 1.5rem;">Portal Access</h3>
+            <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 0.9rem;">Secure partners only.</p>
+            
+            <form onsubmit="handleDummyLogin(event)" id="loginForm">
+                <input type="email" placeholder="Partner ID" class="login-input" required>
+                <input type="password" placeholder="Passkey" class="login-input" required>
+                <button type="submit" class="cta-btn" style="width:100%; margin-top: 8px;" id="loginBtn">Authenticate</button>
+            </form>
+            
+            <div class="error-msg" id="errorMsg">Invalid credentials. Access denied.</div>
         </div>
     </div>
 
     <script>
-        // Trigger Headline Animation
+        // Init Animation
         window.onload = () => {
             document.getElementById('mainHeadline').classList.add('animate-text');
         };
 
+        const modal = document.getElementById('loginModal');
+        const loginBox = document.getElementById('loginBox');
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        // Toggle Modal
         function toggleLogin() {
-            document.getElementById('loginModal').classList.toggle('active');
+            const isActive = modal.classList.contains('active');
+            
+            if (isActive) {
+                modal.classList.remove('active');
+                // Reset form state after closing
+                setTimeout(() => {
+                    loginForm.reset();
+                    errorMsg.classList.remove('show');
+                    loginBtn.innerText = "Authenticate";
+                    loginBtn.disabled = false;
+                    loginBox.classList.remove('shake-it');
+                }, 300);
+            } else {
+                modal.classList.add('active');
+                // Focus first input
+                setTimeout(() => {
+                    document.querySelector('.login-input').focus();
+                }, 100);
+            }
+        }
+
+        // Close on clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) toggleLogin();
+        });
+
+        // Dummy Login Logic
+        function handleDummyLogin(e) {
+            e.preventDefault();
+            
+            // 1. Loading State
+            loginBtn.innerText = "Verifying...";
+            loginBtn.disabled = true;
+            errorMsg.classList.remove('show');
+            loginBox.classList.remove('shake-it');
+
+            // 2. Fake Delay
+            setTimeout(() => {
+                // 3. Error State
+                loginBtn.innerText = "Authenticate";
+                loginBtn.disabled = false;
+                
+                // Shake Animation
+                loginBox.classList.add('shake-it');
+                
+                // Show Error Message
+                errorMsg.classList.add('show');
+                
+                // Remove shake class after animation so it can run again
+                setTimeout(() => {
+                    loginBox.classList.remove('shake-it');
+                    // Clear password field for effect
+                    document.querySelectorAll('.login-input')[1].value = "";
+                }, 500);
+
+            }, 1200); // 1.2 second fake wait
         }
     </script>
 </body>
