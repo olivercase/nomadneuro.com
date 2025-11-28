@@ -7,27 +7,28 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Palette: "Titanium" & "Biorhythm" */
-            --bg-base: #F2F2F4; /* Warm, premium grey/white */
-            --text-main: #1C1C1E; /* Soft Black */
-            --text-muted: #6C6C75;
+            /* Palette: Premium Oura-esque tones */
+            --bg-base: #F7F7F9; /* Clean Ceramic White */
+            --text-main: #1A1A1C;
+            --text-muted: #6E6E78;
             
-            /* The Signal Gradients - Much subtler, more "blended" */
-            --orb-1: rgba(210, 180, 240, 0.5); /* Soft Violet */
-            --orb-2: rgba(250, 200, 200, 0.5); /* Soft Rose */
-            --orb-3: rgba(200, 230, 255, 0.4); /* Soft Sky */
-
-            --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* The Premium Signal Colors */
+            --signal-purple: #8A2BE2;
+            --signal-pink: #E66090;
+            
+            /* Easing */
+            --ease-out-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Manrope', sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
             overflow-x: hidden;
@@ -36,101 +37,77 @@
             flex-direction: column;
         }
 
-        /* --- 1. The Aura (Background) --- */
-        .aura-canvas {
+        /* --- NEW: Premium Diffused Background --- */
+        .premium-bg {
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: linear-gradient(180deg, #FFFFFF 0%, #F2F2F4 100%);
+            background: var(--bg-base);
+            overflow: hidden;
         }
 
-        .orb {
+        .light-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.6;
+            filter: blur(130px); /* Heavy blur for soft diffusion */
+            opacity: 0.35; /* Subtle transparency */
             will-change: transform;
         }
 
-        .orb-1 {
-            width: 60vw; height: 60vw;
-            background: var(--orb-1);
-            top: -20%; left: -10%;
-            animation: float 20s infinite alternate ease-in-out;
-        }
-        .orb-2 {
-            width: 50vw; height: 50vw;
-            background: var(--orb-2);
-            bottom: -10%; right: -10%;
-            animation: float 25s infinite alternate-reverse ease-in-out;
+        /* Orb 1: Soft Violet/Purple */
+        .orb-purple {
+            width: 70vw; height: 70vw;
+            background: var(--signal-purple);
+            top: -25%; left: -15%;
+            animation: breathePos 25s infinite alternate ease-in-out;
         }
 
-        /* --- 2. Navigation --- */
+        /* Orb 2: Soft Rose/Pink */
+        .orb-pink {
+            width: 60vw; height: 60vw;
+            background: var(--signal-pink);
+            bottom: -20%; right: -10%;
+            animation: breathePos 30s infinite alternate-reverse ease-in-out;
+        }
+
+        /* --- Navigation --- */
         nav {
             position: fixed;
             top: 0; left: 0; width: 100%;
-            padding: 24px 40px;
+            padding: 32px 48px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 50;
-            mix-blend-mode: multiply; /* Makes text sit "in" the background */
         }
 
         .logo {
-            font-family: 'Manrope', sans-serif;
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.15rem;
             letter-spacing: -0.02em;
             text-transform: uppercase;
+            color: var(--text-main);
         }
 
         .investor-pill {
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-main);
-            border: 1px solid rgba(0,0,0,0.08);
-            padding: 8px 18px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 10px 22px;
+            border-radius: 99px;
             cursor: pointer;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.3s var(--ease-out-soft);
         }
         .investor-pill:hover {
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transform: scale(1.02);
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
         }
 
-        /* --- 3. The "Neural Halo" (Central Visual) --- */
-        .halo-container {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px; height: 600px;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0;
-            animation: fadeIn 2s ease forwards;
-        }
-
-        .halo-ring {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.03);
-            box-shadow: 0 0 60px rgba(255,255,255, 0.5);
-        }
-        
-        .halo-ring::after {
-            content: ''; position: absolute; inset: -1px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, transparent 0%, rgba(0,0,0,0.08) 20%, transparent 40%);
-            animation: spin 8s linear infinite;
-        }
-
-        /* --- 4. Main Hero --- */
+        /* --- Main Hero --- */
         main {
             flex: 1;
             display: flex;
@@ -138,188 +115,197 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 120px 24px;
-            position: relative;
-            z-index: 1;
+            padding: 160px 24px 80px;
         }
 
-        .stealth-tag {
+        /* UPDATED: Purple Stealth Dot */
+        .stealth-label {
             font-size: 0.7rem;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 32px;
+            color: var(--text-main);
+            margin-bottom: 48px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             opacity: 0;
-            animation: slideUp 0.8s var(--ease-smooth) forwards 0.2s;
+            animation: fadeUp 1s var(--ease-out-expo) forwards 0.2s;
+            font-weight: 600;
+            
+            padding: 6px 14px 6px 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.4);
         }
-        
-        .stealth-dot {
+
+        .status-dot {
             width: 6px; height: 6px;
-            background: #FF3B30; /* "Recording" red dot style */
+            /* Changed to premium purple */
+            background: var(--signal-purple);
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
-            animation: pulseDot 2s infinite;
+            /* Soft purple glow */
+            box-shadow: 0 0 14px rgba(138, 43, 226, 0.7);
+            animation: pulseDot 3s infinite ease-in-out;
         }
 
-        /* --- Headline Fix for "g" --- */
+        /* --- THE HEADLINE (With 'g' fix preserved) --- */
         h1 {
-            font-family: 'Manrope', sans-serif;
-            font-size: clamp(3rem, 9vw, 6.5rem);
-            line-height: 1.1; /* Looser line height */
-            font-weight: 450; /* Lighter, more premium weight */
+            font-size: clamp(3.5rem, 10vw, 7.5rem);
+            line-height: 1;
+            font-weight: 400; /* Lighter weight for elegance */
             letter-spacing: -0.04em;
-            color: var(--text-main);
             margin-bottom: 40px;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .line-mask {
+        /* The 'g' cut-off fix */
+        .text-mask {
             display: block;
             overflow: hidden;
-            /* CRITICAL FIX: Padding allows the descender (g, y, j) to show */
-            padding-bottom: 0.2em;
-            margin-bottom: -0.2em; 
+            padding-bottom: 0.25em; /* Crucial padding */
+            margin-bottom: -0.25em; /* Layout balance */
         }
 
-        .line-text {
+        .text-line {
             display: block;
-            transform: translateY(110%);
+            transform: translateY(120%); /* Start lower */
             opacity: 0;
-            /* Oura uses solid colors, less gradients on text now */
-            color: var(--text-main);
+            /* Subtle gradient text */
+            background: linear-gradient(180deg, #1A1A1C 30%, #505055 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .animate-in .line-text {
-            animation: revealText 1.4s var(--ease-smooth) forwards;
+        .animate-text .text-line {
+            animation: textReveal 1.4s var(--ease-out-expo) forwards;
         }
-        .animate-in .line-2 .line-text { animation-delay: 0.15s; }
+        .animate-text .mask-2 .text-line { animation-delay: 0.15s; }
 
+        /* --- Copy & CTA --- */
         .copy-block {
-            max-width: 500px;
+            max-width: 540px;
             font-size: 1.25rem;
             line-height: 1.6;
             color: var(--text-muted);
             font-weight: 400;
-            margin-bottom: 48px;
+            letter-spacing: -0.01em;
+            margin-bottom: 56px;
             opacity: 0;
-            animation: slideUp 1s var(--ease-smooth) forwards 0.8s;
+            animation: fadeUp 1s var(--ease-out-expo) forwards 0.8s;
         }
 
-        /* --- Button: The "Oura" Pill --- */
-        .cta-container {
-            opacity: 0;
-            animation: slideUp 1s var(--ease-smooth) forwards 1s;
-        }
-
-        .primary-btn {
-            background: var(--text-main);
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px 56px;
+            background: #1A1A1C;
             color: #fff;
-            padding: 18px 42px;
             border-radius: 99px;
-            font-size: 1rem;
-            font-weight: 500;
             text-decoration: none;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: inline-block;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-        
-        .primary-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.4s var(--ease-out-soft);
+            opacity: 0;
+            animation: fadeUp 1s var(--ease-out-expo) forwards 1s;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* --- Footer (Minimal) --- */
+        /* Subtle internal shine on hover */
+        .cta-btn::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%); transition: transform 0.6s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+        }
+        .cta-btn:hover::after { transform: translateX(100%); }
+
+        /* --- Footer --- */
         footer {
             padding: 40px 48px;
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .footer-content {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: center;
             font-size: 0.8rem;
+            font-weight: 500;
             color: var(--text-muted);
-            opacity: 0.6;
+            max-width: 1200px; margin: 0 auto; width: 100%;
         }
-        
-        .footer-col { display: flex; flex-direction: column; gap: 8px; }
-        .footer-col a { color: var(--text-main); text-decoration: none; }
 
         /* --- Animations --- */
-        @keyframes revealText {
-            from { transform: translateY(110%); opacity: 0; }
+        @keyframes textReveal {
+            from { transform: translateY(120%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes float {
-            0% { transform: translate(0,0); }
-            100% { transform: translate(40px, 40px); }
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        /* New, slower breathing animation for background */
+        @keyframes breathePos {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10%, 5%) scale(1.1); }
+            100% { transform: translate(-5%, 10%) scale(1.05); }
         }
         @keyframes pulseDot {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
+            0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 14px rgba(138, 43, 226, 0.7); }
+            50% { opacity: 0.6; transform: scale(0.9); box-shadow: 0 0 8px rgba(138, 43, 226, 0.4); }
         }
 
-        /* --- Login Modal (Kept Simple) --- */
+        /* --- Modal --- */
         .modal-overlay {
             position: fixed; inset: 0;
-            background: rgba(242, 242, 244, 0.85); /* Matches BG */
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.4s;
+            background: rgba(247, 247, 249, 0.6); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 100; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
         
-        .login-card {
-            background: #fff;
-            padding: 40px;
-            width: 100%; max-width: 360px;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            text-align: center;
-            transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .login-box {
+            background: rgba(255,255,255,0.8); padding: 48px;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.8);
+            width: 90%; max-width: 400px; text-align: center;
+            transform: scale(0.9); transition: transform 0.4s var(--ease-out-expo);
         }
-        .modal-overlay.active .login-card { transform: scale(1); }
-        
-        .input-std {
-            width: 100%; padding: 14px; margin-bottom: 12px;
-            border: 1px solid #E5E5E5; border-radius: 12px;
-            background: #FAFAFA; font-size: 0.95rem; outline: none;
-            transition: border-color 0.2s;
-        }
-        .input-std:focus { border-color: var(--text-main); background: #fff; }
-        
-        .btn-full {
-            width: 100%; padding: 14px;
-            background: var(--text-main); color: #fff;
-            border: none; border-radius: 12px;
-            font-size: 0.95rem; font-weight: 500; cursor: pointer;
-        }
-        .close-btn {
-            position: absolute; top: 16px; right: 16px;
-            background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);
+        .modal-overlay.active .login-box { transform: scale(1); }
+
+        /* Mobile */
+        @media(max-width: 768px) {
+            h1 { font-size: 3.5rem; line-height: 1.1; }
+            nav { padding: 24px; }
+            .copy-block { font-size: 1.15rem; padding: 0 16px; }
+            footer { padding: 32px 24px; }
+            .footer-content { flex-direction: column; gap: 16px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="aura-canvas">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
-
-    <div class="halo-container">
-        <div class="halo-ring"></div>
+    <div class="premium-bg">
+        <div class="light-orb orb-purple"></div>
+        <div class="light-orb orb-pink"></div>
     </div>
 
     <nav>
@@ -328,55 +314,49 @@
     </nav>
 
     <main>
-        <div class="stealth-tag">
-            <div class="stealth-dot"></div>
+        <div class="stealth-label">
+            <div class="status-dot"></div>
             Stealth Mode
         </div>
 
-        <h1 id="headline">
-            <span class="line-mask"><span class="line-text">Translating the</span></span>
-            <span class="line-mask line-2"><span class="line-text">biological signal.</span></span>
+        <h1 id="mainHeadline">
+            <span class="text-mask mask-1">
+                <span class="text-line">Translating the</span>
+            </span>
+            <span class="text-mask mask-2">
+                <span class="text-line">biological signal.</span>
+            </span>
         </h1>
 
         <div class="copy-block">
-            Your body speaks a language you cannot hear. 
-            Nomad is the precision interface to map, interpret, 
-            and modulate your neural signature.
+            Your body speaks a language you cannot hear. <br>
+            Nomad maps, interprets, and modulates your neural signature.
         </div>
 
-        <div class="cta-container">
-            <a href="#" class="primary-btn">Request Access</a>
-        </div>
+        <a href="#" class="cta-btn">Request Access</a>
     </main>
 
     <footer>
-        <div class="footer-col">
+        <div class="footer-content">
             <span>Nomad Neuroscience Ltd.</span>
-            <span>London, UK</span>
-        </div>
-        <div class="footer-col" style="text-align: right;">
-            <a href="mailto:hello@nomad.com">Contact</a>
-            <span>© 2025</span>
+            <span>© 2025 London, UK</span>
         </div>
     </footer>
 
     <div class="modal-overlay" id="loginModal">
-        <div class="login-card">
-            <button class="close-btn" onclick="toggleLogin()">×</button>
-            <h3 style="margin-bottom: 24px; font-weight: 500;">Portal Access</h3>
-            <input type="email" placeholder="Partner ID" class="input-std">
-            <input type="password" placeholder="Passkey" class="input-std">
-            <button class="btn-full" onclick="alert('Access Restricted')">Authenticate</button>
+        <div class="login-box">
+            <h3 style="margin-bottom: 24px; font-weight: 600;">Portal Access</h3>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Restricted entry.</p>
+            <button class="cta-btn" style="width:100%; padding: 16px;" onclick="toggleLogin()">Close</button>
         </div>
     </div>
 
     <script>
-        // Trigger Animations
+        // Trigger Headline Animation
         window.onload = () => {
-            document.getElementById('headline').classList.add('animate-in');
+            document.getElementById('mainHeadline').classList.add('animate-text');
         };
 
-        // Modal Logic
         function toggleLogin() {
             document.getElementById('loginModal').classList.toggle('active');
         }
