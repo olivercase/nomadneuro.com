@@ -3,359 +3,643 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nomad — The Closed Loop</title>
+    <title>Nomad Neuroscience — The Signal Within</title>
+    <meta name="description" content="Precision neuromodulation. Decoupling the signal from the noise.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #FAFAFA; /* Clinical, expensive white */
-            --text: #050505;
-            --sub-text: #888888;
-            --accent-pink: #FF00CC;
-            --accent-blue: #4400FF;
-            --border: rgba(0,0,0,0.06);
-            --glass: rgba(250, 250, 250, 0.85);
+            /* Palette: Porcelain, Deep Carbon, and Biological Accents */
+            --bg-base: #FDFDFD;
+            --text-main: #121212;
+            --text-muted: #6B6B76;
+            --text-light: #9898A0;
             
-            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --border-light: rgba(0,0,0,0.06);
+            --glass-surface: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            
+            /* The "Signal" Colors */
+            --signal-pink: #E6007E;
+            --signal-violet: #5E17EB;
+            --signal-cyan: #00D4FF;
+
+            /* Physics */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter Tight', sans-serif;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
             overflow-x: hidden;
-            line-height: 1.5;
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
 
-        /* --- Grain Texture (Subtle Noise) --- */
-        .noise {
-            position: fixed; inset: 0; pointer-events: none; z-index: 99;
-            opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        /* --- 1. The Living Aura (Background) --- */
+        .aura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, #fff 40%, rgba(255,255,255,0) 70%);
         }
 
-        /* --- Nav --- */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.45;
+            animation: breathe 10s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+
+        .orb-1 {
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, var(--signal-pink), transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation-duration: 14s;
+        }
+
+        .orb-2 {
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--signal-violet), transparent 70%);
+            bottom: -10%;
+            right: -10%;
+            animation-duration: 18s;
+            animation-delay: -2s;
+        }
+
+        .orb-3 {
+            width: 30vw;
+            height: 30vw;
+            background: radial-gradient(circle, var(--signal-cyan), transparent 70%);
+            top: 40%;
+            left: 30%;
+            opacity: 0.3;
+            animation: float 20s infinite linear;
+        }
+
+        /* --- Navigation --- */
         nav {
-            position: fixed; top: 0; width: 100%;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 24px 32px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 32px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             z-index: 50;
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            /* Subtle fade on scroll logic usually goes here, minimal for now */
         }
 
-        .logo { font-weight: 600; letter-spacing: -0.04em; text-transform: uppercase; font-size: 0.9rem; }
-        
-        .status-badge {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--sub-text);
-            border: 1px solid var(--border);
-            padding: 4px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
+        .logo {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            position: relative;
+            z-index: 2;
         }
 
-        .login-trigger {
-            font-size: 0.8rem; font-weight: 500; cursor: pointer;
-            color: var(--sub-text); transition: color 0.3s;
-            background: none; border: none; font-family: inherit;
+        .investor-trigger {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+            background: rgba(255,255,255,0.5);
+            border: 1px solid var(--border-light);
+            padding: 8px 16px;
+            border-radius: 99px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s var(--ease-out-expo);
         }
-        .login-trigger:hover { color: var(--text); }
 
-        /* --- Layout & Type --- */
-        section {
-            min-height: 90vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            padding: 80px 24px;
+        .investor-trigger:hover {
+            background: #fff;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* --- Main Hero --- */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            padding: 140px 24px 80px;
+            position: relative;
         }
 
-        .container { max-width: 680px; margin: 0 auto; }
+        .hero-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--signal-violet);
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: driftUp 1s var(--ease-out-expo) forwards 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-label::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background: currentColor;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+        }
 
         h1 {
-            font-size: clamp(3rem, 10vw, 5.5rem);
-            line-height: 1;
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(3rem, 10vw, 7.5rem);
+            line-height: 0.95;
+            font-weight: 500; 
             letter-spacing: -0.05em;
-            margin-bottom: 2rem;
+            margin-bottom: 40px;
+            color: var(--text-main);
+            position: relative;
+            opacity: 0; /* JS Trigger */
+        }
+
+        /* Subtle gradient mask to make text look like it's fading into the ether at the bottom */
+        .text-mask {
+            background: linear-gradient(180deg, var(--text-main) 20%, rgba(28,28,30,0.8) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .copy-block {
+            max-width: 540px;
+            margin: 0 auto 56px;
+            font-size: 1.35rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: driftUp 1s var(--ease-out-expo) forwards 0.8s;
+        }
+
+        .copy-block strong {
+            color: var(--text-main);
             font-weight: 500;
         }
 
-        /* The "Heartbeat" Gradient */
-        .bio-gradient {
-            background: linear-gradient(90deg, #000 0%, var(--accent-pink) 50%, #000 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: heartbeat 6s ease-in-out infinite;
+        /* The Premium Oura-style Button */
+        .cta-wrap {
+            opacity: 0;
+            animation: driftUp 1s var(--ease-out-expo) forwards 1s;
         }
 
-        @keyframes heartbeat {
-            0% { background-position: 0% 50%; }
-            15% { background-position: 100% 50%; } /* Fast beat */
-            30% { background-position: 0% 50%; } /* Return */
-            100% { background-position: 0% 50%; } /* Rest */
+        .primary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 48px;
+            background: var(--text-main);
+            color: #fff;
+            border-radius: 99px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.6s var(--ease-elastic), box-shadow 0.4s ease;
         }
 
-        p.lead {
-            font-size: 1.25rem;
-            color: var(--sub-text);
-            font-weight: 300;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+        .primary-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
 
-        p.lead strong { color: var(--text); font-weight: 500; }
-
-        /* --- Comparison Grid --- */
-        .comparison {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 2rem; margin: 4rem 0;
-            text-align: left; border-top: 1px solid var(--border);
-            padding-top: 2rem;
-        }
-        .comp-col h3 { font-size: 0.8rem; color: var(--sub-text); text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.1em; }
-        .comp-col p { font-size: 1.1rem; }
-
-        /* --- Credibility Badges --- */
-        .partners {
-            display: flex; gap: 32px; justify-content: center;
-            margin-top: 4rem; opacity: 0.6;
-            filter: grayscale(100%);
-        }
-        .partner-text {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem; color: var(--sub-text);
-            text-transform: uppercase;
+        .primary-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
         }
 
-        /* --- Animations --- */
-        .reveal {
-            opacity: 0; transform: translateY(30px);
-            transition: all 1s var(--ease-out);
+        .primary-btn:hover::after {
+            transform: translateX(100%);
         }
-        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* --- Footer --- */
+        /* --- Glass Footer --- */
         footer {
-            background: #F5F5F7;
-            padding: 80px 24px 40px;
-            border-top: 1px solid var(--border);
+            padding: 40px 48px;
+            border-top: 1px solid var(--border-light);
+            background: rgba(253, 253, 253, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            margin-top: auto;
         }
-        .legal-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; max-width: 1000px; margin: 0 auto;
-        }
-        .legal-item label {
-            display: block; font-family: 'Space Mono', monospace;
-            font-size: 0.65rem; color: var(--sub-text);
-            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;
-        }
-        .legal-item div { font-size: 0.85rem; color: var(--text); }
-        .sic-code { font-family: 'Space Mono', monospace; color: var(--text); }
 
-        /* --- Modal --- */
-        .modal {
-            position: fixed; inset: 0; background: rgba(255,255,255,0.95);
-            z-index: 100; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.4s;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(160px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .modal.open { opacity: 1; pointer-events: all; }
-        .modal-content {
-            width: 100%; max-width: 320px; text-align: center;
+
+        .footer-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            font-weight: 600;
         }
-        .input-group { margin-bottom: 16px; text-align: left; }
-        .input-group input {
-            width: 100%; padding: 12px 0; border: none; border-bottom: 1px solid #ccc;
-            background: transparent; outline: none; font-family: inherit; font-size: 1rem;
-            transition: border-color 0.3s;
+
+        .footer-value {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            font-weight: 400;
         }
-        .input-group input:focus { border-bottom-color: var(--accent-pink); }
-        .btn-black {
-            background: var(--text); color: white; border: none;
-            padding: 14px 30px; border-radius: 50px; cursor: pointer;
-            font-size: 0.9rem; margin-top: 10px; width: 100%;
+
+        .footer-value a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 2px;
+            transition: border-color 0.2s;
         }
-        .err-msg {
-            color: var(--accent-pink); font-size: 0.75rem;
-            margin-top: 15px; opacity: 0; transition: opacity 0.3s;
-            font-family: 'Space Mono', monospace;
+
+        .footer-value a:hover {
+            border-color: var(--text-main);
+        }
+
+        /* --- LOGIN MODAL (Refined) --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(240, 240, 243, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s var(--ease-out-expo);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .login-card {
+            background: #fff;
+            padding: 48px;
+            border-radius: 32px;
+            box-shadow: 
+                0 20px 50px -12px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(0,0,0,0.03);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.5s var(--ease-elastic);
+            position: relative;
+        }
+
+        .modal-overlay.active .login-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: rgba(0,0,0,0.03);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .close-modal:hover { background: rgba(0,0,0,0.08); }
+
+        .login-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            letter-spacing: -0.03em;
+        }
+        
+        .login-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 1px solid #E5E5EA;
+            border-radius: 16px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: #FAFAFA;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            background: #fff;
+            border-color: var(--signal-violet);
+            box-shadow: 0 0 0 4px rgba(94, 23, 235, 0.05);
+        }
+
+        .login-input::placeholder {
+            color: #C7C7CC;
+        }
+
+        .login-submit {
+            width: 100%;
+            padding: 18px;
+            background: var(--text-main);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .login-submit:active { transform: scale(0.98); }
+        .login-submit:disabled { opacity: 0.7; cursor: wait; }
+
+        .error-msg {
+            color: #FF3B30;
+            font-size: 0.8rem;
+            margin-top: 16px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s;
+        }
+
+        .error-msg.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes breathe {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(20px, -20px); }
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
+
+        @keyframes driftUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+        /* Responsive */
+        @media(max-width: 1024px) {
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media(max-width: 768px) {
-            h1 { font-size: 3rem; }
-            .comparison { grid-template-columns: 1fr; gap: 2rem; }
-            .legal-grid { grid-template-columns: 1fr; }
+            main { padding: 120px 24px 60px; }
+            h1 { font-size: 3.5rem; letter-spacing: -0.03em; margin-bottom: 24px; }
+            .copy-block { font-size: 1.15rem; }
+            nav { padding: 24px; }
+            footer { padding: 40px 24px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .orb { opacity: 0.3; }
         }
     </style>
 </head>
 <body>
 
-    <div class="noise"></div>
+    <div class="aura-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
     <nav>
-        <div style="display:flex; align-items:center; gap:12px;">
-            <div class="logo">Nomad Neuroscience</div>
-            <div class="status-badge">Stealth</div>
-        </div>
-        <button class="login-trigger" onclick="toggleLogin()">Investor Portal</button>
+        <div class="logo">NOMAD</div>
+        <button class="investor-trigger" onclick="toggleLogin()">Investor Access</button>
     </nav>
 
-    <section>
-        <div class="container reveal">
-            <h1>The body’s <br><span class="bio-gradient">operating system</span><br> is broken.</h1>
-            <p class="lead">
-                53 million people are living with a dysregulated Autonomic Nervous System.
-                <br>Nomad doesn't just track the system. <strong>We fix it.</strong>
-            </p>
-        </div>
-    </section>
+    <main>
+        <div class="hero-label">Stealth Mode</div>
+        
+        <h1 id="headline" class="text-mask">
+            Translating the<br>biological signal.
+        </h1>
 
-    <section>
-        <div class="container reveal">
-            <h1 style="font-size: 3rem;">Read. Write. <span class="bio-gradient">Regulate.</span></h1>
-            
-            <p class="lead">
-                The Apple Watch is <strong>Read-Only</strong>.<br>
-                Old VNS devices are <strong>Write-Only</strong>.<br>
-                Nomad is the world's first <strong>Closed-Loop Interface</strong>.
-            </p>
-
-            <div class="comparison">
-                <div class="comp-col">
-                    <h3>The Industry</h3>
-                    <p style="color:var(--sub-text)">Dumb stimulation. Reactive care. Waiting for the storm to hit.</p>
-                </div>
-                <div class="comp-col">
-                    <h3>The Nomad Protocol</h3>
-                    <p>We read HRV in real-time. We predict the 'Autonomic Storm'. We intervene automatically.</p>
-                </div>
-            </div>
+        <div class="copy-block">
+            Your body speaks a language you cannot hear.
+            <br><br>
+            Dysregulation isn't chaos—it’s data. Nomad is the first precision interface to map, interpret, and modulate your neural signature.
+            <br><br>
+            <strong>Stop guessing. Start engineering.</strong>
         </div>
-    </section>
 
-    <section style="background: #fff;">
-        <div class="container reveal">
-            <span class="status-badge" style="margin-bottom:20px; display:inline-block;">Engineering</span>
-            <h2>Hardware is hard.<br>So we aren't doing it alone.</h2>
-            <br>
-            <p class="lead" style="font-size: 1rem;">
-                Partnered with <strong style="color:var(--text)">TTP (The Technology Partnership)</strong>.<br>
-                The same engineering firm behind the world's most successful deep-tech medical devices.
-            </p>
-            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-                <p class="partner-text">
-                    // CLEAN IP CHAIN<br>
-                    // CONFIRMED WAIVER FROM UCL<br>
-                    // FOUNDED BY PATIENT ZERO
-                </p>
-            </div>
+        <div class="cta-wrap">
+            <a href="mailto:access@nomadneuro.com" class="primary-btn">Request Early Access</a>
         </div>
-    </section>
-
-    <section>
-        <div class="container reveal">
-            <h1 class="bio-gradient">A Digital Benzo.</h1>
-            <p class="lead">
-                No addiction. No pills. Just regulation.<br>
-                We are deleting Panic Disorder and POTS from the human experience.
-            </p>
-            <a href="mailto:hello@nomadneuro.com" class="btn-black" style="display:inline-block; width:auto; text-decoration:none;">Request Access</a>
-        </div>
-    </section>
+    </main>
 
     <footer>
-        <div class="legal-grid">
-            <div class="legal-item">
-                <label>Entity</label>
-                <div style="font-weight: 600;">NOMAD NEUROSCIENCE LTD</div>
-                <div style="margin-top:4px;">London, United Kingdom</div>
+        <div class="footer-grid">
+            <div class="footer-item">
+                <div class="footer-label">United Kingdom Company Number</div>
+                <div class="footer-value">16558472</div>
             </div>
-            
-            <div class="legal-item">
-                <label>Company Number</label>
-                <div class="sic-code">16558472</div>
+            <div class="footer-item">
+                <div class="footer-label">HQ</div>
+                <div class="footer-value">
+                    71-75 Shelton Street<br>
+                    Covent Garden, London<br>
+                    WC2H 9JQ
+                </div>
             </div>
-
-            <div class="legal-item">
-                <label>Classification (SIC)</label>
-                <div class="sic-code">71129 — Other engineering activities</div>
-                <div class="sic-code" style="margin-top:4px;">72110 — Biotech R&D</div>
+            <div class="footer-item">
+                <div class="footer-label">Focus</div>
+                <div class="footer-value">
+                    Biotech Engineering<br>
+                    Neural Modulation R&D
+                </div>
             </div>
-
-            <div class="legal-item">
-                <label>Contact</label>
-                <div><a href="mailto:hello@nomadneuro.com" style="color:inherit; text-decoration:none; border-bottom:1px solid #ccc;">hello@nomadneuro.com</a></div>
+            <div class="footer-item">
+                <div class="footer-label">Contact</div>
+                <div class="footer-value">
+                    <a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <div style="margin-bottom: 30px;">
-                <h3 style="font-weight:500;">Nomad Investor Portal</h3>
-                <p style="font-size:0.8rem; color:var(--sub-text); margin-top:5px;">Secure Series A Data Room</p>
-            </div>
+    <div class="modal-overlay" id="loginModal">
+        <div class="login-card" id="loginCard">
+            <button class="close-modal" onclick="toggleLogin()">×</button>
+            <h3 class="login-title">Investor Portal</h3>
+            <p class="login-subtitle">Secure authentication required.</p>
             
-            <form onsubmit="handleLogin(event)">
+            <form id="loginForm" onsubmit="handleFakeLogin(event)">
                 <div class="input-group">
-                    <input type="email" placeholder="Partner Email" required>
+                    <input type="email" placeholder="Partner ID / Email" class="login-input" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Key" required>
+                    <input type="password" placeholder="Passkey" class="login-input" required>
                 </div>
-                <button type="submit" class="btn-black" id="loginBtn">Authenticate</button>
+                <button type="submit" class="login-submit" id="submitBtn">Authenticate</button>
             </form>
             
-            <div class="err-msg" id="errMsg">CREDENTIALS INVALID. IP LOGGED.</div>
-            <button onclick="toggleLogin()" style="background:none; border:none; color:var(--sub-text); font-size:0.75rem; margin-top:20px; cursor:pointer;">Close</button>
+            <div class="error-msg" id="errorMsg">Invalid credentials. Access attempt logged.</div>
         </div>
     </div>
 
     <script>
-        // Scroll Reveal
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.15 });
+        // 1. Text Entry Animation
+        window.onload = () => {
+            const h1 = document.getElementById('headline');
+            // We use JS to trigger the fade in to ensure font is loaded
+            h1.style.animation = "driftUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s";
+        };
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        // 2. Login Logic (Maintains the dummy functionality)
+        const modal = document.getElementById('loginModal');
+        const card = document.getElementById('loginCard');
+        const errorMsg = document.getElementById('errorMsg');
+        const submitBtn = document.getElementById('submitBtn');
+        const loginForm = document.getElementById('loginForm');
 
-        // Login Logic
         function toggleLogin() {
-            const modal = document.getElementById('authModal');
-            const err = document.getElementById('errMsg');
-            modal.classList.toggle('open');
-            err.style.opacity = '0';
-            document.querySelector('form').reset();
+            const isActive = modal.classList.contains('active');
+            if (isActive) {
+                modal.classList.remove('active');
+                // Clean up after animation finishes
+                setTimeout(() => {
+                    errorMsg.classList.remove('visible');
+                    loginForm.reset();
+                    submitBtn.innerText = "Authenticate";
+                    submitBtn.disabled = false;
+                }, 400);
+            } else {
+                modal.classList.add('active');
+                // Auto focus first input
+                setTimeout(() => {
+                    loginForm.querySelector('input').focus();
+                }, 100);
+            }
         }
 
-        function handleLogin(e) {
+        // Close on clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) toggleLogin();
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && modal.classList.contains('active')) {
+                toggleLogin();
+            }
+        });
+
+        function handleFakeLogin(e) {
             e.preventDefault();
-            const btn = document.getElementById('loginBtn');
-            const err = document.getElementById('errMsg');
             
-            btn.textContent = "Verifying...";
-            btn.style.opacity = "0.7";
-            
+            // UI State: Loading
+            submitBtn.innerText = "Verifying Signal...";
+            submitBtn.disabled = true;
+            errorMsg.classList.remove('visible');
+
+            // Fake Network Delay with random variation
+            const delay = 1000 + Math.random() * 800;
+
             setTimeout(() => {
-                btn.textContent = "Authenticate";
-                btn.style.opacity = "1";
-                err.style.opacity = "1";
-            }, 1500);
+                // UI State: Failure
+                submitBtn.innerText = "Authenticate";
+                submitBtn.disabled = false;
+                
+                // Shake Animation
+                card.classList.add('shake');
+                
+                // Show Error
+                errorMsg.classList.add('visible');
+                
+                // Reset Shake
+                setTimeout(() => {
+                    card.classList.remove('shake');
+                    // Clear password for realism
+                    loginForm.querySelectorAll('input')[1].value = '';
+                }, 500);
+
+            }, delay); 
         }
     </script>
 </body>
