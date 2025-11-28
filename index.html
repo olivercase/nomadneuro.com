@@ -8,7 +8,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -19,13 +19,11 @@
             --text-light: #9898A0;
             
             --border-light: rgba(0,0,0,0.06);
-            --glass-surface: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.8);
             
-            /* The "Signal" Colors */
-            --signal-pink: #E6007E;
-            --signal-violet: #5E17EB;
-            --signal-cyan: #00D4FF;
+            /* The "Signal" Colors - Adjusted for softer blend */
+            --signal-pink: rgba(230, 0, 126, 0.25);
+            --signal-violet: rgba(94, 23, 235, 0.25);
+            --signal-cyan: rgba(0, 212, 255, 0.2);
 
             /* Physics */
             --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -67,38 +65,36 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.45;
-            animation: breathe 10s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            filter: blur(100px); /* Increased blur for softer merge */
+            will-change: transform; /* Performance optimization */
         }
 
         .orb-1 {
-            width: 60vw;
-            height: 60vw;
-            background: radial-gradient(circle, var(--signal-pink), transparent 70%);
-            top: -10%;
-            left: -10%;
-            animation-duration: 14s;
+            width: 70vw;
+            height: 70vw;
+            background: var(--signal-pink);
+            top: -15%;
+            left: -15%;
+            animation: breathe 14s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
         }
 
         .orb-2 {
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, var(--signal-violet), transparent 70%);
+            width: 60vw;
+            height: 60vw;
+            background: var(--signal-violet);
             bottom: -10%;
             right: -10%;
-            animation-duration: 18s;
-            animation-delay: -2s;
+            animation: breathe 18s infinite alternate-reverse cubic-bezier(0.45, 0.05, 0.55, 0.95);
         }
 
         .orb-3 {
-            width: 30vw;
-            height: 30vw;
-            background: radial-gradient(circle, var(--signal-cyan), transparent 70%);
-            top: 40%;
+            width: 40vw;
+            height: 40vw;
+            background: var(--signal-cyan);
+            top: 30%;
             left: 30%;
-            opacity: 0.3;
-            animation: float 20s infinite linear;
+            opacity: 0.4;
+            animation: float 25s infinite linear;
         }
 
         /* --- Navigation --- */
@@ -111,7 +107,6 @@
             justify-content: space-between;
             align-items: center;
             z-index: 50;
-            /* Subtle fade on scroll logic usually goes here, minimal for now */
         }
 
         .logo {
@@ -124,23 +119,26 @@
             z-index: 2;
         }
 
+        /* UPGRADE: More translucent, glassier button */
         .investor-trigger {
             font-size: 0.85rem;
             font-weight: 500;
             color: var(--text-main);
-            background: rgba(255,255,255,0.5);
-            border: 1px solid var(--border-light);
-            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2); /* More see-through */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Subtler border */
+            padding: 10px 20px;
             border-radius: 99px;
             cursor: pointer;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             transition: all 0.3s var(--ease-out-expo);
         }
 
         .investor-trigger:hover {
-            background: #fff;
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
         /* --- Main Hero --- */
@@ -160,10 +158,11 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.25em;
-            color: var(--signal-violet);
+            color: #5E17EB; /* Solid color for the label itself */
             margin-bottom: 32px;
             opacity: 0;
-            animation: driftUp 1s var(--ease-out-expo) forwards 0.2s;
+            /* Delayed entry */
+            animation: driftUp 1s var(--ease-out-expo) forwards 0.5s;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -179,140 +178,178 @@
             box-shadow: 0 0 10px currentColor;
         }
 
+        /* UPGRADE: Staggered Headline Reveal */
         h1 {
             font-family: 'Manrope', sans-serif;
-            font-size: clamp(3rem, 10vw, 7.5rem);
-            line-height: 0.95;
-            font-weight: 500; 
+            font-size: clamp(3.5rem, 11vw, 8rem); /* Slightly larger max size */
+            line-height: 0.92;
+            font-weight: 600; 
             letter-spacing: -0.05em;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
             color: var(--text-main);
             position: relative;
-            opacity: 0; /* JS Trigger */
         }
 
-        /* Subtle gradient mask to make text look like it's fading into the ether at the bottom */
-        .text-mask {
-            background: linear-gradient(180deg, var(--text-main) 20%, rgba(28,28,30,0.8) 100%);
+        /* The container for lines */
+        .headline-line {
+            display: block;
+            overflow: hidden; /* Ensures the text slides up from nowhere */
+        }
+
+        /* The actual text span that moves */
+        .headline-line span {
+            display: block;
+            transform: translateY(100%); /* Start pushed down */
+            opacity: 0;
+            background: linear-gradient(180deg, var(--text-main) 30%, rgba(28,28,30,0.7) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
+        /* JS will trigger this class */
+        .animate-headline .headline-line span {
+            animation: textReveal 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+        }
+        
+        /* Stagger delays */
+        .animate-headline .line-2 span {
+            animation-delay: 0.15s;
+        }
+
+
         .copy-block {
-            max-width: 540px;
-            margin: 0 auto 56px;
+            max-width: 560px;
+            margin: 0 auto 64px;
             font-size: 1.35rem;
             line-height: 1.5;
             color: var(--text-muted);
-            font-weight: 300;
-            letter-spacing: -0.02em;
+            font-weight: 400;
+            letter-spacing: -0.03em;
             opacity: 0;
-            animation: driftUp 1s var(--ease-out-expo) forwards 0.8s;
+            /* Delayed entry after headline */
+            animation: driftUp 1s var(--ease-out-expo) forwards 1.4s;
+        }
+
+        .sub-hero {
+             font-size: 1.5rem;
+             color: var(--text-light);
+             margin-bottom: 24px;
+             font-weight: 300;
         }
 
         .copy-block strong {
             color: var(--text-main);
-            font-weight: 500;
+            font-weight: 600;
         }
 
         /* The Premium Oura-style Button */
         .cta-wrap {
             opacity: 0;
-            animation: driftUp 1s var(--ease-out-expo) forwards 1s;
+            /* Final entry element */
+            animation: driftUp 1s var(--ease-out-expo) forwards 1.6s;
         }
 
+        /* UPGRADE: "Living" Pulse Button */
         .primary-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 20px 48px;
+            padding: 22px 52px;
             background: var(--text-main);
             color: #fff;
             border-radius: 99px;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 500;
             letter-spacing: -0.01em;
             position: relative;
             overflow: hidden;
             transition: transform 0.6s var(--ease-elastic), box-shadow 0.4s ease;
+            /* The subtle pulse */
+            animation: buttonPulse 4s ease-in-out infinite;
         }
 
+        /* Subtler shine effect */
         .primary-btn::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 200%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(
+                90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.1) 50%, 
+                transparent 100%
+            );
             transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            transition: transform 0.8s ease;
         }
 
         .primary-btn:hover {
-            transform: scale(1.04);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
+            transform: scale(1.03);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+            animation: none; /* Stop pulse on hover for stability */
         }
 
         .primary-btn:hover::after {
-            transform: translateX(100%);
+            transform: translateX(50%);
         }
 
         /* --- Glass Footer --- */
         footer {
-            padding: 40px 48px;
-            border-top: 1px solid var(--border-light);
-            background: rgba(253, 253, 253, 0.4);
+            padding: 48px;
+            background: rgba(253, 253, 253, 0.3);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             margin-top: auto;
+            border-top: 1px solid rgba(0,0,0,0.03);
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(160px, 1fr));
             gap: 40px;
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         .footer-label {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             color: var(--text-light);
             margin-bottom: 16px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .footer-value {
             font-size: 0.9rem;
             color: var(--text-main);
-            line-height: 1.5;
+            line-height: 1.6;
             font-weight: 400;
+            letter-spacing: -0.01em;
         }
 
         .footer-value a {
             color: inherit;
             text-decoration: none;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding-bottom: 2px;
-            transition: border-color 0.2s;
+            transition: color 0.2s;
         }
 
         .footer-value a:hover {
-            border-color: var(--text-main);
+            color: #5E17EB;
         }
 
-        /* --- LOGIN MODAL (Refined) --- */
+        /* --- LOGIN MODAL (Same as before, just ensured it matches style) --- */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(240, 240, 243, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(220, 220, 230, 0.4); /* Slightly cooler tint */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 100;
             display: flex;
             justify-content: center;
@@ -328,29 +365,32 @@
         }
 
         .login-card {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.9); /* Slightly translucent */
             padding: 48px;
             border-radius: 32px;
             box-shadow: 
-                0 20px 50px -12px rgba(0,0,0,0.1),
-                0 0 0 1px rgba(0,0,0,0.03);
+                0 30px 60px -12px rgba(0,0,0,0.12),
+                0 0 0 1px rgba(255,255,255,0.5) inset; /* Inner light border */
             width: 100%;
             max-width: 400px;
             text-align: center;
-            transform: scale(0.9) translateY(20px);
-            transition: transform 0.5s var(--ease-elastic);
+            transform: scale(0.92) translateY(30px);
+            transition: transform 0.5s var(--ease-elastic), opacity 0.5s ease;
             position: relative;
+            opacity: 0;
+            backdrop-filter: blur(10px);
         }
 
         .modal-overlay.active .login-card {
             transform: scale(1) translateY(0);
+            opacity: 1;
         }
 
         .close-modal {
             position: absolute;
             top: 24px;
             right: 24px;
-            background: rgba(0,0,0,0.03);
+            background: rgba(0,0,0,0.04);
             border: none;
             width: 32px;
             height: 32px;
@@ -361,10 +401,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
         }
 
-        .close-modal:hover { background: rgba(0,0,0,0.08); }
+        .close-modal:hover { background: rgba(0,0,0,0.08); transform: rotate(90deg); }
 
         .login-title {
             font-family: 'Manrope', sans-serif;
@@ -372,10 +412,11 @@
             margin-bottom: 8px;
             color: var(--text-main);
             letter-spacing: -0.03em;
+            font-weight: 700;
         }
         
         .login-subtitle {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
             margin-bottom: 32px;
         }
@@ -392,7 +433,7 @@
             border-radius: 16px;
             font-family: inherit;
             font-size: 1rem;
-            background: #FAFAFA;
+            background: rgba(250, 250, 250, 0.8);
             color: var(--text-main);
             outline: none;
             transition: all 0.3s ease;
@@ -400,12 +441,8 @@
 
         .login-input:focus {
             background: #fff;
-            border-color: var(--signal-violet);
-            box-shadow: 0 0 0 4px rgba(94, 23, 235, 0.05);
-        }
-
-        .login-input::placeholder {
-            color: #C7C7CC;
+            border-color: #5E17EB;
+            box-shadow: 0 0 0 4px rgba(94, 23, 235, 0.08);
         }
 
         .login-submit {
@@ -416,12 +453,12 @@
             border: none;
             border-radius: 16px;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             margin-top: 8px;
-            transition: transform 0.2s, opacity 0.2s;
+            transition: transform 0.2s, opacity 0.2s, background-color 0.2s;
         }
-
+        .login-submit:hover { background-color: #000; }
         .login-submit:active { transform: scale(0.98); }
         .login-submit:disabled { opacity: 0.7; cursor: wait; }
 
@@ -429,7 +466,7 @@
             color: #FF3B30;
             font-size: 0.8rem;
             margin-top: 16px;
-            font-weight: 500;
+            font-weight: 600;
             opacity: 0;
             transform: translateY(-5px);
             transition: all 0.3s;
@@ -440,20 +477,37 @@
             transform: translateY(0);
         }
 
-        /* Animations */
+        /* --- New Animations --- */
+        
+        /* Subtle breathing for the orbs */
         @keyframes breathe {
             0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.1) translate(20px, -20px); }
+            100% { transform: scale(1.15) translate(30px, -30px); }
         }
 
+        /* Slow float for the third orb */
         @keyframes float {
-            0% { transform: rotate(0deg) translateX(50px) rotate(0deg); }
-            100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+            0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
         }
 
+        /* General element fade up */
         @keyframes driftUp {
-            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            from { opacity: 0; transform: translateY(40px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* The premium text reveal */
+        @keyframes textReveal {
+            from { opacity: 0; transform: translateY(120%); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* The living button pulse */
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 0 0px rgba(18, 18, 18, 0.0); }
+            50% { box-shadow: 0 0 0 12px rgba(18, 18, 18, 0.05); }
+            100% { box-shadow: 0 0 0 0px rgba(18, 18, 18, 0.0); }
         }
 
         @keyframes shake {
@@ -461,22 +515,26 @@
             20%, 60% { transform: translateX(-4px); }
             40%, 80% { transform: translateX(4px); }
         }
-
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
 
         /* Responsive */
         @media(max-width: 1024px) {
-            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 48px; }
+            h1 { margin-bottom: 40px; }
         }
 
         @media(max-width: 768px) {
             main { padding: 120px 24px 60px; }
-            h1 { font-size: 3.5rem; letter-spacing: -0.03em; margin-bottom: 24px; }
+            h1 { font-size: 4rem; letter-spacing: -0.03em; margin-bottom: 32px; font-weight: 700; }
+            .headline-line { display: inline; } /* Revert to normal wrap on mobile */
+            .headline-line span { display: inline; transform: none; opacity: 0; animation: driftUp 1s ease forwards 0.5s; background: var(--text-main); -webkit-text-fill-color: var(--text-main); }
+            .sub-hero { font-size: 1.2rem; }
             .copy-block { font-size: 1.15rem; }
             nav { padding: 24px; }
             footer { padding: 40px 24px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-            .orb { opacity: 0.3; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .orb { opacity: 0.3; filter: blur(80px); }
+            .primary-btn { padding: 20px 40px; width: 100%; }
         }
     </style>
 </head>
@@ -496,27 +554,27 @@
     <main>
         <div class="hero-label">Stealth Mode</div>
         
-        <h1 id="headline" class="text-mask">
-            Translating the<br>biological signal.
+        <h1 id="headline">
+            <span class="headline-line line-1"><span>Translating the</span></span>
+            <span class="headline-line line-2"><span>biological signal.</span></span>
         </h1>
 
         <div class="copy-block">
-            Your body speaks a language you cannot hear.
-            <br><br>
+            <div class="sub-hero">Your body speaks a language you cannot hear.</div>
             Dysregulation isn't chaos—it’s data. Nomad is the first precision interface to map, interpret, and modulate your neural signature.
             <br><br>
             <strong>Stop guessing. Start engineering.</strong>
         </div>
 
         <div class="cta-wrap">
-            <a href="mailto:access@nomadneuro.com" class="primary-btn">Request Early Access</a>
+            <a href="#" class="primary-btn">Request Early Access</a>
         </div>
     </main>
 
     <footer>
         <div class="footer-grid">
             <div class="footer-item">
-                <div class="footer-label">United Kingdom Company Number</div>
+                <div class="footer-label">UK Company Number</div>
                 <div class="footer-value">16558472</div>
             </div>
             <div class="footer-item">
@@ -564,11 +622,9 @@
     </div>
 
     <script>
-        // 1. Text Entry Animation
+        // 1. Trigger Text Animation on Load
         window.onload = () => {
-            const h1 = document.getElementById('headline');
-            // We use JS to trigger the fade in to ensure font is loaded
-            h1.style.animation = "driftUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s";
+           document.getElementById('headline').classList.add('animate-headline');
         };
 
         // 2. Login Logic (Maintains the dummy functionality)
@@ -582,7 +638,6 @@
             const isActive = modal.classList.contains('active');
             if (isActive) {
                 modal.classList.remove('active');
-                // Clean up after animation finishes
                 setTimeout(() => {
                     errorMsg.classList.remove('visible');
                     loginForm.reset();
@@ -591,19 +646,16 @@
                 }, 400);
             } else {
                 modal.classList.add('active');
-                // Auto focus first input
                 setTimeout(() => {
                     loginForm.querySelector('input').focus();
                 }, 100);
             }
         }
 
-        // Close on clicking outside
         modal.addEventListener('click', (e) => {
             if (e.target === modal) toggleLogin();
         });
 
-        // Close on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === "Escape" && modal.classList.contains('active')) {
                 toggleLogin();
@@ -612,33 +664,21 @@
 
         function handleFakeLogin(e) {
             e.preventDefault();
-            
-            // UI State: Loading
             submitBtn.innerText = "Verifying Signal...";
             submitBtn.disabled = true;
             errorMsg.classList.remove('visible');
 
-            // Fake Network Delay with random variation
             const delay = 1000 + Math.random() * 800;
 
             setTimeout(() => {
-                // UI State: Failure
                 submitBtn.innerText = "Authenticate";
                 submitBtn.disabled = false;
-                
-                // Shake Animation
                 card.classList.add('shake');
-                
-                // Show Error
                 errorMsg.classList.add('visible');
-                
-                // Reset Shake
                 setTimeout(() => {
                     card.classList.remove('shake');
-                    // Clear password for realism
                     loginForm.querySelectorAll('input')[1].value = '';
                 }, 500);
-
             }, delay); 
         }
     </script>
