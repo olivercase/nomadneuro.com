@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -105,15 +106,23 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
-        /* --- Main Hero --- */
+        /* --- Layout Structure --- */
         main {
             flex: 1;
+            display: block; 
+            width: 100%;
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            min-height: 100svh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 160px 24px 80px;
+            position: relative;
         }
 
         .stealth-label {
@@ -144,7 +153,7 @@
             animation: pulseDot 3s infinite ease-in-out;
         }
 
-        /* --- THE HEADLINE FIX --- */
+        /* --- THE HEADLINE --- */
         h1 {
             font-size: clamp(3.5rem, 10vw, 7.5rem);
             line-height: 1.1; 
@@ -157,7 +166,6 @@
             align-items: center;
         }
 
-        /* CRITICAL FIX: The deep buffer for descenders */
         .text-mask {
             display: block;
             overflow: hidden;
@@ -220,6 +228,138 @@
             transform: none;
         }
 
+        /* --- Advisory Board Section --- */
+        .advisors-section {
+            padding: 80px 48px 160px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-header {
+            margin-bottom: 64px;
+            text-align: left;
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+        
+        .section-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 400;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+        }
+        .section-subtitle {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-family: 'Space Mono', monospace; /* Tech feel */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            max-width: 800px;
+        }
+
+        /* Grid Layout */
+        .advisors-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px 24px; /* More vertical space between rows */
+        }
+
+        /* Card Design - Refined for "Neatness" */
+        .advisor-card {
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            opacity: 0; 
+            transform: translateY(30px);
+            padding: 0;
+            border: none;
+            border-radius: 0;
+        }
+
+        .advisor-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s var(--ease-out-soft), transform 0.8s var(--ease-out-soft);
+        }
+
+        /* Compact/Smaller styling for image to look neater */
+        .advisor-img-container {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 16px; /* Slightly tighter radius */
+            margin-bottom: 16px; /* Reduced margin */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.4s var(--ease-out-soft), box-shadow 0.4s var(--ease-out-soft);
+        }
+        
+        .advisor-card:hover .advisor-img-container {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .img-placeholder-icon {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: #D1D1D6;
+            position: relative;
+            opacity: 0.5;
+        }
+
+        .advisor-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+            filter: grayscale(100%);
+            -webkit-filter: grayscale(100%);
+        }
+
+        /* Typography Refinement */
+        .advisor-name {
+            font-size: 1.05rem; /* Slightly smaller for neatness */
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: var(--text-main);
+            letter-spacing: -0.01em;
+        }
+
+        .advisor-role {
+            font-size: 0.75rem;
+            color: var(--signal-purple);
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .advisor-bio {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Separate section for Non-Exec or just styled differently? 
+           Based on "make smaller", putting Ben Black in the grid but ensuring he fits well.
+        */
+
         /* --- Footer --- */
         footer {
             padding: 40px 48px;
@@ -233,13 +373,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
-            font-weight: 500;
+            max-width: 1400px; margin: 0 auto; width: 100%;
+            
+            /* Monospaced Font Update */
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 400;
+            text-transform: uppercase;
             color: var(--text-muted);
-            max-width: 1200px; margin: 0 auto; width: 100%;
+            letter-spacing: 0.05em;
         }
 
-        /* --- Animations --- */
+        /* --- Animations & Utilities --- */
         @keyframes textReveal {
             from { transform: translateY(120%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -310,14 +455,25 @@
         }
         .error-msg.show { opacity: 1; transform: translateY(0); }
 
-        /* Mobile */
+        /* Responsive Breakpoints */
+        @media(max-width: 1200px) {
+            .advisors-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media(max-width: 900px) {
+            .advisors-grid { grid-template-columns: repeat(2, 1fr); }
+        }
         @media(max-width: 768px) {
             h1 { font-size: 3.5rem; line-height: 1.15; }
             nav { padding: 24px; }
             .copy-block { font-size: 1.15rem; padding: 0 16px; }
             footer { padding: 32px 24px; }
-            .footer-content { flex-direction: column; gap: 16px; }
+            .footer-content { flex-direction: column; gap: 16px; text-align: center; }
             .login-box { padding: 32px; }
+            
+            .advisors-section { padding: 60px 24px 100px; }
+            .section-title { font-size: 1.75rem; }
+            .section-subtitle { font-size: 0.8rem; }
+            .advisor-img-container { border-radius: 20px; }
         }
     </style>
 </head>
@@ -334,32 +490,127 @@
     </nav>
 
     <main>
-        <div class="stealth-label">
-            <div class="status-dot"></div>
-            Stealth Mode
-        </div>
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="stealth-label">
+                <div class="status-dot"></div>
+                Stealth Mode
+            </div>
 
-        <h1 id="mainHeadline">
-            <span class="text-mask mask-1">
-                <span class="text-line">Translating the</span>
-            </span>
-            <span class="text-mask mask-2">
-                <span class="text-line">biological signal.</span>
-            </span>
-        </h1>
+            <h1 id="mainHeadline">
+                <span class="text-mask mask-1">
+                    <span class="text-line">Translating the</span>
+                </span>
+                <span class="text-mask mask-2">
+                    <span class="text-line">biological signal.</span>
+                </span>
+            </h1>
 
-        <div class="copy-block">
-            Your body speaks a language you cannot hear. <br>
-            Nomad maps, interprets, and modulates your neural signature.
-        </div>
+            <div class="copy-block">
+                Your body speaks a language you cannot hear. <br>
+                Nomad maps, interprets, and modulates your neural signature.
+            </div>
 
-        <a href="#" class="cta-btn">Request Access</a>
+            <a href="#advisory-board" class="cta-btn" onclick="scrollToAdvisors(event)">Request Access</a>
+        </section>
+
+        <!-- ADVISORY BOARD SECTION -->
+        <section class="advisors-section" id="advisory-board">
+            <div class="section-header">
+                <h2 class="section-title">Advisory Board</h2>
+                <p class="section-subtitle">Derived from research from leading universities.</p>
+            </div>
+            
+            <div class="advisors-grid">
+                
+                <!-- Advisor 1 -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Ben_Newton.png" alt="Ben Newton">
+                    </div>
+                    <div class="advisor-name">Ben Newton</div>
+                    <span class="advisor-role">Technology Advisor</span>
+                    <p class="advisor-bio">Strategy, delivery and management for the world's top financials. Guidance on technology implementation.</p>
+                </div>
+
+                <!-- Advisor 2 -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Guy_Winter.png" alt="Lt Col, Dr Guy Winter">
+                    </div>
+                    <div class="advisor-name">Lt Col, Dr Guy Winter</div>
+                    <span class="advisor-role">Defence Advisor</span>
+                    <p class="advisor-bio">Defence contracts specialist and behavioural scientist with experience in business management within the UK's largest PSCs.</p>
+                </div>
+
+                <!-- Advisor 3 -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Anders_Borg.jpg" alt="Anders Borg">
+                    </div>
+                    <div class="advisor-name">Anders Borg</div>
+                    <span class="advisor-role">Fundraising Advisor</span>
+                    <p class="advisor-bio">Former Managing Director at KKR with deep expertise in global economics.</p>
+                </div>
+
+                <!-- Advisor 4 -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Imanuel_Lerman.png" alt="Prof Imanual Lerman">
+                    </div>
+                    <div class="advisor-name">Prof Imanual Lerman</div>
+                    <span class="advisor-role">Clincial Advisor</span>
+                    <p class="advisor-bio">Professor and practicing neurologist at UCSD. Serial entrepreneur with expertise in medical device development.</p>
+                </div>
+
+                <!-- Advisor 5 -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Carolina_Beppi.png" alt="Dr Carolina Beppi">
+                    </div>
+                    <div class="advisor-name">Dr Carolina Beppi</div>
+                    <span class="advisor-role">Clinical Advisor</span>
+                    <p class="advisor-bio">Senior neuroscientist at University Hospital Zurich and former Chief Scientific Officer of bioengineering company.</p>
+                </div>
+
+                <!-- Advisor 6 -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Steve_Alty.png" alt="Prof Steve Alty">
+                    </div>
+                    <div class="advisor-name">Prof Steve Alty</div>
+                    <span class="advisor-role">Electrical Advisor</span>
+                    <p class="advisor-bio">Head of Department of Electrical Engineering. Deep expertise in signal processing and biomedical applications.</p>
+                </div>
+
+                <!-- Advisor 7 -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Patrik_Nilsson.png" alt="Patrik Nilsson">
+                    </div>
+                    <div class="advisor-name">Patrik Nilsson</div>
+                    <span class="advisor-role">Supply Chain Advisor</span>
+                    <p class="advisor-bio">Founder & Director at Emporium Partners. Specialist in supply chain resilience for critical industries.</p>
+                </div>
+
+                <!-- Advisor 8: Ben Black -->
+                <div class="advisor-card">
+                    <div class="advisor-img-container">
+                        <img src="Ben_Black.jpeg" alt="Ben Black">
+                    </div>
+                    <div class="advisor-name">Ben Black</div>
+                    <span class="advisor-role">Non-Executive Director</span>
+                    <p class="advisor-bio">Strategic guidance and governance. Extensive experience in executive leadership and corporate direction.</p>
+                </div>
+
+            </div>
+        </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <span>Nomad Neuroscience Ltd.</span>
-            <span>© 2025 London, UK</span>
+            <span>© 2025 Nomad Neuroscience, Inc. All Rights Reserved</span>
         </div>
     </footer>
 
@@ -383,7 +634,36 @@
         // Init Animation
         window.onload = () => {
             document.getElementById('mainHeadline').classList.add('animate-text');
+            setupObserver();
         };
+
+        function scrollToAdvisors(e) {
+            e.preventDefault();
+            document.getElementById('advisory-board').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- Intersection Observer for Scroll Animations ---
+        function setupObserver() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 80); 
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const itemsToObserve = document.querySelectorAll('.advisor-card, .section-header');
+            itemsToObserve.forEach((el) => observer.observe(el));
+        }
 
         const modal = document.getElementById('loginModal');
         const loginBox = document.getElementById('loginBox');
