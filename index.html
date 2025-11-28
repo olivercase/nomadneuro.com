@@ -2,386 +2,455 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Nomad Neuroscience — Precision Neuromodulation</title>
-    <meta name="description" content="Symptoms are just shadows. Nomad helps you see the signals your body has been sending all along. Precision neuromodulation coming soon.">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nomad Neuroscience — The Signal Within</title>
+    <meta name="description" content="Precision neuromodulation. Decoupling the signal from the noise.">
     
-    <meta property="og:title" content="Nomad Neuroscience">
-    <meta property="og:description" content="Precision neuromodulation. Coming soon.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://nomadneuro.com/">
-    <meta name="twitter:card" content="summary_large_image">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- 1. Variables & Reset --- */
         :root {
-            --primary: #111111;
-            --secondary: #52525b;
-            --tertiary: #a1a1aa;
+            /* Palette: Oura-esque, Natural yet Digital */
+            --bg: #F9F9FB; /* Very slight off-white, porcelain feel */
+            --text-main: #1C1C1E;
+            --text-muted: #86868B;
+            --border: rgba(0,0,0,0.08);
             
-            /* The Brand Color */
-            --accent: #FF10CB;
-            --accent-glow: rgba(255, 16, 203, 0.3);
+            /* The "Living" Gradient Colors */
+            --g1: #1C1C1E;
+            --g2: #FF00CC; /* Hot Pink */
+            --g3: #333399; /* Deep Blurple */
             
-            --bg: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            
-            --font-main: "Aktiv Grotesk", "Inter", system-ui, -apple-system, sans-serif;
-            
-            --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
-            --safe-bottom: env(safe-area-inset-bottom, 20px);
+            --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --ease-smooth: cubic-bezier(0.6, 0.01, -0.05, 0.95);
         }
 
-        /* Font Loading Fallbacks (Keep your local paths) */
-        @font-face { font-family: "Aktiv Grotesk"; src: url("fonts/aktiv-grotesk/AktivGrotesk-Regular.otf"); font-weight: 400; font-display: swap; }
-        @font-face { font-family: "Aktiv Grotesk"; src: url("fonts/aktiv-grotesk/AktivGrotesk-Medium.otf"); font-weight: 500; font-display: swap; }
-        @font-face { font-family: "Aktiv Grotesk"; src: url("fonts/aktiv-grotesk/AktivGrotesk-Bold.otf"); font-weight: 700; font-display: swap; }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        ::selection {
-            background: var(--accent);
-            color: white;
-        }
-
-        html {
-            font-size: 16px;
-            -webkit-text-size-adjust: 100%;
-            height: 100%;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: var(--font-main);
-            background: var(--bg);
-            color: var(--primary);
-            line-height: 1.6;
-            min-height: 100svh;
+            font-family: 'Inter Tight', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            height: 100svh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
-            position: relative;
         }
 
-        /* --- 2. Background Atmospherics --- */
-        .ambient-noise {
+        /* --- Ambient Background --- */
+        .ambient-canvas {
             position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        .ambient-glow {
-            position: fixed;
-            width: 80vw;
-            height: 80vw;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 16, 203, 0.08), transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            pointer-events: none;
-            filter: blur(60px);
-            animation: breathe 8s infinite alternate ease-in-out;
-        }
-
-        /* --- 3. Header / Logo --- */
-        .header {
-            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 2rem;
-            z-index: 10;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(255, 0, 204, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(51, 51, 153, 0.04) 0%, transparent 40%);
+            filter: blur(60px);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 24px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 50;
         }
 
         .logo {
-            font-size: 0.875rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            font-size: 1.1rem;
+            color: var(--text-main);
             text-transform: uppercase;
-            color: var(--primary);
-            opacity: 0.8;
-            position: relative;
         }
 
-        /* --- 4. Main Content --- */
-        .main-stage {
+        .investor-trigger {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: relative;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .investor-trigger::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background: var(--text-main);
+            transition: width 0.3s ease;
+        }
+
+        .investor-trigger:hover { color: var(--text-main); }
+        .investor-trigger:hover::after { width: 100%; }
+
+        /* --- Main Hero --- */
+        main {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 6rem 1.5rem 10rem; /* Bottom padding accounts for footer */
+            padding: 0 20px;
             position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
         }
 
-        /* Staggered Animation Classes */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 1s var(--ease-out) forwards;
-        }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.3s; }
-        .delay-3 { animation-delay: 0.5s; }
-        .delay-4 { animation-delay: 0.7s; }
-
-        .status-pill {
-            display: inline-block;
+        .hero-label {
             font-size: 0.75rem;
-            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding: 0.4em 1em;
-            border-radius: 999px;
-            background: rgba(17, 17, 17, 0.05);
-            color: var(--secondary);
-            margin-bottom: 2rem;
-            backdrop-filter: blur(4px);
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: driftUp 1s ease forwards 0.2s;
         }
 
-        h1.headline {
-            font-size: clamp(2.5rem, 8vw, 5.5rem);
-            font-weight: 600; /* Medium-Bold for modern look */
+        /* The Gradient Text */
+        h1 {
+            font-size: clamp(3rem, 9vw, 6.5rem);
             line-height: 1.05;
-            letter-spacing: -0.03em;
-            margin-bottom: 2.5rem;
-            background: linear-gradient(135deg, #000 30%, #444 100%);
+            font-weight: 500; /* Lighter weight = More premium */
+            letter-spacing: -0.04em;
+            margin-bottom: 32px;
+            max-width: 1200px;
+            
+            background: linear-gradient(
+                90deg, 
+                var(--g1) 0%, 
+                var(--g2) 25%, 
+                var(--g1) 50%, 
+                var(--g3) 75%, 
+                var(--g1) 100%
+            );
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-wrap: balance;
+            background-clip: text;
+            text-fill-color: transparent;
+            
+            animation: shine 8s linear infinite;
+            opacity: 0; /* JS Fade in */
         }
 
-        .manifesto {
-            max-width: 600px;
-            font-size: 1.125rem;
-            color: var(--secondary);
+        /* The Copy */
+        .copy-block {
+            max-width: 580px;
+            margin: 0 auto 48px;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            font-weight: 300;
+            opacity: 0;
+            animation: driftUp 1s ease forwards 0.8s;
+        }
+
+        .copy-block span {
+            color: var(--text-main);
             font-weight: 400;
-            margin-bottom: 3rem;
-            line-height: 1.7;
         }
 
-        .manifesto p + p {
-            margin-top: 1rem;
+        /* The Button */
+        .cta-wrap {
+            opacity: 0;
+            animation: driftUp 1s ease forwards 1s;
         }
 
-        .highlight-text {
-            color: var(--primary);
+        .primary-btn {
+            display: inline-block;
+            padding: 16px 36px;
+            background: var(--text-main);
+            color: #fff;
+            border-radius: 99px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: transform 0.4s var(--ease-elastic), box-shadow 0.4s ease;
+        }
+
+        .primary-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 30px 40px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            align-items: center;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-center { text-align: center; }
+        .footer-right { text-align: right; }
+
+        /* --- LOGIN MODAL (The fake investor part) --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .login-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.4s var(--ease-elastic);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .modal-overlay.active .login-card {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+
+        .login-title {
+            font-size: 1.25rem;
+            margin-bottom: 24px;
             font-weight: 500;
         }
 
-        /* --- 5. CTA Button --- */
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .login-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-family: inherit;
             font-size: 1rem;
-            font-weight: 600;
-            color: #fff;
-            background-color: var(--primary);
-            text-decoration: none;
-            padding: 1rem 2.5rem;
-            border-radius: 999px;
-            transition: all 0.3s var(--ease-out);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid transparent;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: #FAFAFA;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        .cta-button:hover {
-            background-color: var(--accent);
-            box-shadow: 0 8px 30px var(--accent-glow);
-            transform: translateY(-2px);
+        .login-input:focus { border-color: var(--text-main); }
+
+        .login-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--text-main);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
         }
 
-        .cta-button:active {
+        .login-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .error-msg {
+            color: #FF3B30;
+            font-size: 0.8rem;
+            margin-top: 12px;
+            min-height: 1.2em;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.2s;
+        }
+
+        .error-msg.visible {
+            opacity: 1;
             transform: translateY(0);
         }
 
-        /* --- 6. Glass Footer --- */
-        .company-footer {
-            width: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(0,0,0,0.06);
-            padding: 2rem 2rem calc(2rem + var(--safe-bottom));
-            z-index: 20;
-            font-size: 0.8125rem;
+        /* Animations */
+        @keyframes shine {
+            to { background-position: 200% center; }
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .footer-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--tertiary);
-            font-weight: 600;
-        }
-
-        .footer-value {
-            color: var(--primary);
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        .footer-value a {
-            color: var(--primary);
-            text-decoration: none;
-            position: relative;
-            transition: color 0.2s;
-        }
-
-        .footer-value a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background-color: var(--accent);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s var(--ease-out);
-        }
-
-        .footer-value a:hover { color: var(--accent); }
-        .footer-value a:hover::after { transform: scaleX(1); transform-origin: left; }
-
-        /* --- 7. Animations & Media Queries --- */
-        @keyframes breathe {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.4; }
-        }
-
-        @keyframes fadeUp {
+        @keyframes driftUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 850px) {
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem 1rem;
-            }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
         }
 
-        @media (max-width: 600px) {
-            .header { padding: 1.5rem; }
-            .logo { font-size: 0.75rem; }
-            
-            .main-stage {
-                padding-top: 5rem;
-                padding-left: 1.25rem;
-                padding-right: 1.25rem;
-            }
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
 
-            .manifesto { font-size: 1rem; }
-            
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .footer-item {
-                align-items: center;
-                text-align: center;
-            }
+        /* Responsive */
+        @media(max-width: 768px) {
+            h1 { font-size: 3rem; margin-top: 20px; }
+            .copy-block { font-size: 1.1rem; padding: 0 10px; }
+            footer { grid-template-columns: 1fr; gap: 16px; text-align: center; }
+            .footer-right { text-align: center; }
+            nav { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-glow"></div>
-    <div class="ambient-noise"></div>
+    <div class="ambient-canvas"></div>
 
-    <header class="header fade-in">
-        <div class="logo">Nomad Neuroscience</div>
-    </header>
+    <nav>
+        <div class="logo">Nomad</div>
+        <button class="investor-trigger" onclick="toggleLogin()">Investor Access</button>
+    </nav>
 
-    <main class="main-stage">
+    <main>
+        <div class="hero-label">Stealth Mode</div>
         
-        <div class="status-pill fade-in delay-1">Coming Soon</div>
-        
-        <h1 class="headline fade-in delay-2">
-            Precision<br>
-            neuromodulation
+        <h1 id="headline">
+            Translating the<br>biological signal.
         </h1>
 
-        <div class="manifesto fade-in delay-3">
-            <p>Dysregulation hides in the noise. It thrives where we cannot measure.</p>
-            <p>Nomad helps you see the signals your body has been sending all along. Every twitch, every beat, every breath—an insight waiting to be understood.</p>
-            <p class="highlight-text">Symptoms are just shadows. We reveal the fingerprints.</p>
+        <div class="copy-block">
+            Your body speaks a language you cannot hear.
+            <br><br>
+            Dysregulation isn't chaos—it’s data. Nomad is the first precision interface to map, interpret, and modulate your neural signature.
+            <br><br>
+            <span>Stop guessing. Start engineering.</span>
         </div>
 
-        <div class="fade-in delay-4">
-            <a href="mailto:hello@nomadneuro.com" class="cta-button">
-                Get in Touch
-            </a>
+        <div class="cta-wrap">
+            <a href="mailto:access@nomadneuro.com" class="primary-btn">Request Early Access</a>
         </div>
-
     </main>
 
-    <footer class="company-footer fade-in delay-4">
-        <div class="footer-grid">
-            <div class="footer-item">
-                <span class="footer-label">Company Number</span>
-                <span class="footer-value">16558472</span>
-            </div>
-            <div class="footer-item">
-                <span class="footer-label">Address</span>
-                <span class="footer-value">
-                    71-75 Shelton Street<br>
-                    Covent Garden, London<br>
-                    WC2H 9JQ, UK
-                </span>
-            </div>
-            <div class="footer-item">
-                <span class="footer-label">Classification</span>
-                <span class="footer-value">
-                    71129 - Engineering<br>
-                    72110 - Biotech R&D
-                </span>
-            </div>
-            <div class="footer-item">
-                <span class="footer-label">Contact</span>
-                <span class="footer-value">
-                    <a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a>
-                </span>
-            </div>
-        </div>
+    <footer>
+        <div class="footer-left">Nomad Neuroscience Ltd</div>
+        <div class="footer-center">London, UK</div>
+        <div class="footer-right">© 2024</div>
     </footer>
 
+    <div class="modal-overlay" id="loginModal">
+        <div class="login-card" id="loginCard">
+            <button class="close-modal" onclick="toggleLogin()">×</button>
+            <h3 class="login-title">Investor Portal</h3>
+            
+            <form id="loginForm" onsubmit="handleFakeLogin(event)">
+                <input type="email" placeholder="Partner Email" class="login-input" required>
+                <input type="password" placeholder="Passkey" class="login-input" required>
+                <button type="submit" class="login-submit" id="submitBtn">Authenticate</button>
+            </form>
+            
+            <div class="error-msg" id="errorMsg">Invalid credentials. Access logged.</div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Text Animation Trigger
+        window.onload = () => {
+            const h1 = document.getElementById('headline');
+            h1.style.animation = "shine 8s linear infinite, driftUp 1.2s ease forwards 0.4s";
+            h1.style.opacity = "1"; // Ensure it sticks after animation
+        };
+
+        // 2. Login Logic
+        const modal = document.getElementById('loginModal');
+        const card = document.getElementById('loginCard');
+        const errorMsg = document.getElementById('errorMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function toggleLogin() {
+            const isActive = modal.classList.contains('active');
+            if (isActive) {
+                modal.classList.remove('active');
+                // Reset form on close
+                setTimeout(() => {
+                    errorMsg.classList.remove('visible');
+                    document.getElementById('loginForm').reset();
+                    submitBtn.innerText = "Authenticate";
+                    submitBtn.disabled = false;
+                }, 400);
+            } else {
+                modal.classList.add('active');
+            }
+        }
+
+        // Close on clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) toggleLogin();
+        });
+
+        function handleFakeLogin(e) {
+            e.preventDefault();
+            
+            // UI State: Loading
+            submitBtn.innerText = "Verifying...";
+            submitBtn.disabled = true;
+            errorMsg.classList.remove('visible');
+
+            // Fake Network Delay
+            setTimeout(() => {
+                // UI State: Failure
+                submitBtn.innerText = "Authenticate";
+                submitBtn.disabled = false;
+                
+                // Shake Animation
+                card.classList.add('shake');
+                
+                // Show Error
+                errorMsg.classList.add('visible');
+                
+                // Reset Shake
+                setTimeout(() => {
+                    card.classList.remove('shake');
+                }, 500);
+
+            }, 1200); // 1.2 second delay
+        }
+    </script>
 </body>
 </html>
