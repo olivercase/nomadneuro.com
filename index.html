@@ -2,411 +2,386 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nomad Neuroscience - Coming Soon</title>
-    <meta name="description" content="Precision neuromodulation">
-    <meta name="theme-color" content="#FF10CB">
-    <meta property="og:title" content="Nomad Neuroscience — Coming Soon">
-    <meta property="og:description" content="Precision neuromodulation.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nomad Neuroscience — Precision Neuromodulation</title>
+    <meta name="description" content="Symptoms are just shadows. Nomad helps you see the signals your body has been sending all along. Precision neuromodulation coming soon.">
+    <meta name="theme-color" content="#ffffff">
+    
+    <meta property="og:title" content="Nomad Neuroscience">
+    <meta property="og:description" content="Precision neuromodulation. Coming soon.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nomadneuro.com/">
     <meta name="twitter:card" content="summary_large_image">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <!-- Local Aktiv Grotesk font files are loaded via @font-face below -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
     <style>
+        /* --- 1. Variables & Reset --- */
         :root {
             --primary: #111111;
-            --secondary: #4b5563;
+            --secondary: #52525b;
+            --tertiary: #a1a1aa;
+            
+            /* The Brand Color */
             --accent: #FF10CB;
-            --accent-secondary: #FF10CB;
-            --background: #ffffff;
-            --text-light: #9aa3af;
-            --border-light: #e5e7eb;
-            --surface: #fafafa;
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --footer-h: 180px;
+            --accent-glow: rgba(255, 16, 203, 0.3);
+            
+            --bg: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            
+            --font-main: "Aktiv Grotesk", "Inter", system-ui, -apple-system, sans-serif;
+            
+            --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+            --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Font Loading Fallbacks (Keep your local paths) */
+        @font-face { font-family: "Aktiv Grotesk"; src: url("fonts/aktiv-grotesk/AktivGrotesk-Regular.otf"); font-weight: 400; font-display: swap; }
+        @font-face { font-family: "Aktiv Grotesk"; src: url("fonts/aktiv-grotesk/AktivGrotesk-Medium.otf"); font-weight: 500; font-display: swap; }
+        @font-face { font-family: "Aktiv Grotesk"; src: url("fonts/aktiv-grotesk/AktivGrotesk-Bold.otf"); font-weight: 700; font-display: swap; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        ::selection {
+            background: var(--accent);
+            color: white;
         }
 
         html {
             font-size: 16px;
-        }
-
-        /* Self-hosted Aktiv Grotesk */
-        @font-face {
-            font-family: "Aktiv Grotesk";
-            src: url("fonts/aktiv-grotesk/AktivGrotesk-Regular.otf") format("opentype");
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Aktiv Grotesk";
-            src: url("fonts/aktiv-grotesk/AktivGrotesk-Medium.otf") format("opentype");
-            font-weight: 500 600;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Aktiv Grotesk";
-            src: url("fonts/aktiv-grotesk/AktivGrotesk-Bold.otf") format("opentype");
-            font-weight: 700;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Aktiv Grotesk";
-            src: url("fonts/aktiv-grotesk/AktivGrotesk-Black.otf") format("opentype");
-            font-weight: 900;
-            font-style: normal;
-            font-display: swap;
+            -webkit-text-size-adjust: 100%;
+            height: 100%;
         }
 
         body {
-            font-family: "Aktiv Grotesk", 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            background: var(--background);
+            font-family: var(--font-main);
+            background: var(--bg);
             color: var(--primary);
-            line-height: 1.5;
-            font-weight: 400;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100svh;
-        }
-
-        .container {
+            line-height: 1.6;
             min-height: 100svh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
             position: relative;
-            padding-bottom: calc(var(--footer-h) + var(--safe-bottom)); /* space for fixed footer */
         }
 
-        /* Ambient orb + subtle noise texture (attach to body so footer sticky works) */
-        body::before {
-            content: "";
-            position: absolute;
-            inset: -20vmax -10vmax auto auto;
-            width: 120vmax;
-            height: 120vmax;
-            background:
-                radial-gradient(60vmax 60vmax at 20% 30%, rgba(255,16,203,0.08), transparent 60%),
-                radial-gradient(40vmax 40vmax at 80% 20%, rgba(255,16,203,0.06), transparent 60%),
-                radial-gradient(30vmax 30vmax at 70% 70%, rgba(16,16,18,0.05), transparent 70%);
-            filter: blur(40px);
-            pointer-events: none;
-            z-index: 0;
-            animation: orbDrift 36s ease-in-out infinite alternate;
-        }
-
-        body::after {
-            content: "";
-            position: absolute;
+        /* --- 2. Background Atmospherics --- */
+        .ambient-noise {
+            position: fixed;
             inset: 0;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.035'/></svg>");
-            background-size: 220px 220px;
-            mix-blend-mode: multiply;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 0;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        .main-content {
-            text-align: center;
+        .ambient-glow {
+            position: fixed;
+            width: 80vw;
+            height: 80vw;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 16, 203, 0.08), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(60px);
+            animation: breathe 8s infinite alternate ease-in-out;
+        }
+
+        /* --- 3. Header / Logo --- */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--primary);
+            opacity: 0.8;
+            position: relative;
+        }
+
+        /* --- 4. Main Content --- */
+        .main-stage {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 6rem 2rem 4rem;
-            max-width: 1100px;
-            width: 100%;
-            margin: 0 auto;
+            text-align: center;
+            padding: 6rem 1.5rem 10rem; /* Bottom padding accounts for footer */
             position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        .logo {
-            position: fixed;
-            top: 16px;
-            right: 20px;
-            font-family: "Aktiv Grotesk", 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: rgba(0, 0, 0, 0.5);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin: 0;
-            z-index: 2;
+        /* Staggered Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s var(--ease-out) forwards;
         }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.5s; }
+        .delay-4 { animation-delay: 0.7s; }
 
-        .coming-soon {
-            font-size: clamp(3.75rem, 10vw, 7rem);
+        .status-pill {
+            display: inline-block;
+            font-size: 0.75rem;
             font-weight: 600;
-            background: linear-gradient(120deg, #0b0b0c 0%, #1a1a1c 18%, #2a2a2c 28%, var(--accent) 56%, var(--accent-secondary) 92%);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.4em 1em;
+            border-radius: 999px;
+            background: rgba(17, 17, 17, 0.05);
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(4px);
+        }
+
+        h1.headline {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-weight: 600; /* Medium-Bold for modern look */
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, #000 30%, #444 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
-            line-height: 1.04;
-            background-size: 250% 100%;
-            animation: headlineShift 14s ease-in-out infinite;
-            position: relative;
-            z-index: 1;
+            text-wrap: balance;
         }
 
-        .subtitle {
-            font-size: 1rem;
-            color: var(--secondary);
-            font-weight: 500;
-            margin-bottom: 1.25rem;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .description {
-            max-width: 720px;
-            margin: 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .description p {
-            font-size: 1.0625rem;
+        .manifesto {
+            max-width: 600px;
+            font-size: 1.125rem;
             color: var(--secondary);
             font-weight: 400;
+            margin-bottom: 3rem;
             line-height: 1.7;
-            margin-bottom: 0.75rem;
         }
 
-        .description p:nth-last-child(2) {
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+        .manifesto p + p {
+            margin-top: 1rem;
         }
 
-        .contact-email {
-            text-align: center;
-            margin-bottom: 0 !important;
-        }
-
-        .contact-email a {
-            font-size: 1.125rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 20px;
-            border: 1.5px solid var(--accent);
-            border-radius: 9999px;
-            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-            display: inline-block;
-        }
-
-        .contact-email a:hover {
-            color: #ffffff;
-            background: var(--accent);
-            box-shadow: 0 8px 24px rgba(255,16,203,0.25);
-        }
-
-        .contact-email a:focus-visible {
-            outline: 2px solid var(--accent-secondary);
-            outline-offset: 2px;
-            box-shadow: 0 0 0 4px rgba(255,16,203,0.25);
-        }
-
-        .company-info {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: #ffffff;
-            border-top: 1px solid var(--border-light);
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 3;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            padding-bottom: calc(0.75rem + var(--safe-bottom));
-        }
-
-        .company-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(140px, 1fr));
-            gap: 1rem;
-            max-width: 1000px;
-            margin: 0.25rem auto;
-            align-items: start;
-        }
-
-        .company-item {
-            text-align: left;
-            min-width: 140px;
-            padding: 0 0.5rem;
-            border-left: 1px solid #eef2f6;
-        }
-        .company-item:first-child { border-left: none; padding-left: 0; }
-
-        .company-label {
-            font-size: 0.625rem;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        .company-value {
-            font-size: 0.875rem;
+        .highlight-text {
             color: var(--primary);
             font-weight: 500;
-            line-height: 1.45;
         }
 
-        .company-value a {
-            color: var(--accent);
+        /* --- 5. CTA Button --- */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: var(--primary);
             text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 999px;
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        /* Motion */
-        @keyframes headlineShift {
-            0%, 100% { background-position: 0% center; }
-            50% { background-position: 100% center; }
+        .cta-button:hover {
+            background-color: var(--accent);
+            box-shadow: 0 8px 30px var(--accent-glow);
+            transform: translateY(-2px);
         }
 
-        @keyframes orbDrift {
-            0% { transform: translate3d(-2%, 0, 0) scale(1); }
-            50% { transform: translate3d(2%, 1%, 0) scale(1.03); }
-            100% { transform: translate3d(0, -1%, 0) scale(1.01); }
+        .cta-button:active {
+            transform: translateY(0);
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .coming-soon { animation: none; }
-            .container::before { animation: none; }
+        /* --- 6. Glass Footer --- */
+        .company-footer {
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding: 2rem 2rem calc(2rem + var(--safe-bottom));
+            z-index: 20;
+            font-size: 0.8125rem;
         }
 
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 2.5rem 1rem 2rem;
-                max-width: 100%;
-            }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-            .logo {
-                margin-bottom: 1.5rem;
-                font-size: 0.875rem;
-            }
+        .footer-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
 
-            .subtitle {
-                margin-bottom: 1.5rem;
-                font-size: 0.9375rem;
-                letter-spacing: 0.02em;
-            }
+        .footer-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--tertiary);
+            font-weight: 600;
+        }
 
-            .description {
-                padding: 0;
-                margin: 0;
-            }
+        .footer-value {
+            color: var(--primary);
+            font-weight: 500;
+            line-height: 1.5;
+        }
 
-            .description p {
-                font-size: 1rem;
-                margin-bottom: 0.9rem;
-            }
+        .footer-value a {
+            color: var(--primary);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.2s;
+        }
 
-            .coming-soon {
-                margin-bottom: 1rem;
-            }
+        .footer-value a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s var(--ease-out);
+        }
 
-            .company-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0.75rem 0.75rem;
-                text-align: left;
-            }
-            .company-item { border-left: none; padding: 0; }
+        .footer-value a:hover { color: var(--accent); }
+        .footer-value a:hover::after { transform: scaleX(1); transform-origin: left; }
 
-            .company-info {
-                padding: 0.75rem 1rem;
+        /* --- 7. Animations & Media Queries --- */
+        @keyframes breathe {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.4; }
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 850px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem 1rem;
             }
         }
 
-        @media (max-width: 480px) {
-            .company-grid {
-                gap: 0.75rem;
-                grid-template-columns: 1fr; /* single column on very small screens */
+        @media (max-width: 600px) {
+            .header { padding: 1.5rem; }
+            .logo { font-size: 0.75rem; }
+            
+            .main-stage {
+                padding-top: 5rem;
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            .manifesto { font-size: 1rem; }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
             
-            .company-info {
-                padding: 0.75rem 1rem;
-            }
-
-            .company-item {
-                min-width: auto;
-            }
-        }
-
-        /* Print styles */
-        @media print {
-            .company-info {
-                border-top: 2px solid #000;
-                background: white;
-                margin-top: 2rem;
+            .footer-item {
+                align-items: center;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
 
+    <div class="ambient-glow"></div>
+    <div class="ambient-noise"></div>
+
+    <header class="header fade-in">
+        <div class="logo">Nomad Neuroscience</div>
+    </header>
+
+    <main class="main-stage">
         
-        <main class="main-content">
-            <div class="logo">NOMAD</div>
-            <h1 class="coming-soon">Precision neuromodulation</h1>
-            <p class="subtitle">Coming soon</p>
+        <div class="status-pill fade-in delay-1">Coming Soon</div>
+        
+        <h1 class="headline fade-in delay-2">
+            Precision<br>
+            neuromodulation
+        </h1>
 
-            <div class="description">
-                <p>Dysregulation isn't a tyrant. It hides in the noise, thrives where we can't measure.</p>
-                <p>Nomad helps you see the signals your body has been sending all along. Every twitch, every beat, every breath—an insight waiting to be understood.</p>
-                <p>Symptoms are just shadows. We reveal the fingerprints.</p>
-                <p class="contact-email"><a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a></p>
-            </div>
-        </main>
+        <div class="manifesto fade-in delay-3">
+            <p>Dysregulation hides in the noise. It thrives where we cannot measure.</p>
+            <p>Nomad helps you see the signals your body has been sending all along. Every twitch, every beat, every breath—an insight waiting to be understood.</p>
+            <p class="highlight-text">Symptoms are just shadows. We reveal the fingerprints.</p>
+        </div>
 
-        <footer class="company-info">
-            <div class="company-grid">
-                <div class="company-item">
-                    <div class="company-label">United Kingdom Company Number</div>
-                    <div class="company-value">16558472</div>
-                </div>
-                <div class="company-item">
-                    <div class="company-label">Address</div>
-                    <div class="company-value">
-                        71-75 Shelton Street<br>
-                        Covent Garden<br>
-                        London, WC2H 9JQ<br>
-                        United Kingdom
-                    </div>
-                </div>
-                <div class="company-item">
-                    <div class="company-label">SIC Codes</div>
-                    <div class="company-value">
-                        71129 - Other engineering activities<br>
-                        72110 - Research and experimental development on biotechnology
-                    </div>
-                </div>
-                <div class="company-item">
-                    <div class="company-label">Contact</div>
-                    <div class="company-value">
-                        <a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a>
-                    </div>
-                </div>
+        <div class="fade-in delay-4">
+            <a href="mailto:hello@nomadneuro.com" class="cta-button">
+                Get in Touch
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="company-footer fade-in delay-4">
+        <div class="footer-grid">
+            <div class="footer-item">
+                <span class="footer-label">Company Number</span>
+                <span class="footer-value">16558472</span>
             </div>
-        </footer>
-    </div>
+            <div class="footer-item">
+                <span class="footer-label">Address</span>
+                <span class="footer-value">
+                    71-75 Shelton Street<br>
+                    Covent Garden, London<br>
+                    WC2H 9JQ, UK
+                </span>
+            </div>
+            <div class="footer-item">
+                <span class="footer-label">Classification</span>
+                <span class="footer-value">
+                    71129 - Engineering<br>
+                    72110 - Biotech R&D
+                </span>
+            </div>
+            <div class="footer-item">
+                <span class="footer-label">Contact</span>
+                <span class="footer-value">
+                    <a href="mailto:hello@nomadneuro.com">hello@nomadneuro.com</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
 </body>
-</html> 
+</html>
