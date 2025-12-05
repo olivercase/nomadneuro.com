@@ -2,872 +2,475 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nomad Neuroscience — The Signal Within</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomad Neuroscience - The Operating System for Your Body</title>
     
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+
+    <!-- Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nomad: {
+                            black: '#1C1B1A',
+                            base: '#F9EBF0', 
+                            white: '#FFF5F8',
+                            accent: '#7D7671'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Newsreader', 'serif'],
+                    },
+                    animation: {
+                        'slow-zoom': 'slowZoom 20s infinite alternate ease-in-out',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        slowZoom: {
+                            '0%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1.15)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            /* Palette: Premium Ceramic & Signal Tones */
-            --bg-base: #F5F5F7;
-            --text-main: #1A1A1C;
-            --text-muted: #6E6E78;
-            
-            /* The Signal Colors */
-            --signal-purple: #9D50BB;
-            --signal-pink: #F48FB1;
-            
-            /* Easing */
-            --ease-out-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
-            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-
-        body {
-            font-family: 'Manrope', sans-serif;
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            overflow-x: hidden;
-            min-height: 100svh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- Premium Diffused Background --- */
-        .premium-bg {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background: var(--bg-base);
-            overflow: hidden;
-        }
-
-        .light-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(140px); /* Maximum Diffusion */
-            opacity: 0.4;
-            will-change: transform;
-        }
-
-        .orb-purple {
-            width: 80vw; height: 80vw;
-            background: var(--signal-purple);
-            top: -30%; left: -20%;
-            animation: breathePos 25s infinite alternate ease-in-out;
-        }
-
-        .orb-pink {
-            width: 70vw; height: 70vw;
-            background: var(--signal-pink);
-            bottom: -20%; right: -15%;
-            animation: breathePos 35s infinite alternate-reverse ease-in-out;
-        }
-
-        /* --- Navigation --- */
-        nav {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
-            padding: 32px 48px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 50;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.15rem;
-            letter-spacing: -0.02em;
-            text-transform: uppercase;
-            color: var(--text-main);
-        }
-
-        .investor-pill {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-main);
-            background: rgba(255,255,255,0.4);
-            border: 1px solid rgba(255,255,255,0.6);
-            padding: 10px 22px;
-            border-radius: 99px;
-            cursor: pointer;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transition: all 0.3s var(--ease-out-soft);
-        }
-        .investor-pill:hover {
-            background: #fff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        /* --- Layout Structure --- */
-        main {
-            flex: 1;
-            display: block; 
-            width: 100%;
-        }
-
-        /* --- Hero Section --- */
-        .hero-section-new {
-            min-height: 100svh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 24px 80px;
-            position: relative;
-        }
-
-        /* Deck Badge */
-        .deck-badge {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 6px 16px;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            margin-bottom: 48px;
-            opacity: 0;
-            transform: translateY(32px);
-            transition: all 1s var(--ease-out-expo);
-            transition-delay: 200ms;
-        }
-
-        .deck-badge.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .status-dot-new {
-            position: relative;
-            display: flex;
-            height: 8px;
-            width: 8px;
-        }
-
-        .ping-dot {
-            position: absolute;
-            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-            height: 100%;
-            width: 100%;
-            border-radius: 50%;
-            background: #9D50BB;
-            opacity: 0.75;
-        }
-
-        .static-dot {
-            position: relative;
-            display: inline-flex;
-            border-radius: 50%;
-            height: 8px;
-            width: 8px;
-            background: #9D50BB;
-        }
-
-        .badge-text {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-family: 'Space Mono', monospace;
-            color: #1A1A1C;
-        }
-
-        /* Hero Headline */
-        .hero-headline {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: clamp(3rem, 8vw, 9rem);
-            font-weight: 500;
-            letter-spacing: -0.04em;
-            line-height: 0.95;
-            margin-bottom: 48px;
-            color: #1A1A1C;
-        }
-
-        .headline-line {
-            display: block;
-            overflow: hidden;
-        }
-
-        .headline-text {
-            display: block;
-            transform: translateY(100%);
-            transition: transform 1s var(--ease-out-expo);
-        }
-
-        .headline-text.visible {
-            transform: translateY(0);
-        }
-
-        .headline-gradient {
-            background: linear-gradient(to right, #1A1A1C, #6E6E78);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Hero Subcopy */
-        .hero-subcopy {
-            max-width: 36rem;
-            font-size: clamp(1.125rem, 2vw, 1.25rem);
-            color: #6E6E78;
-            line-height: 1.75;
-            margin-bottom: 64px;
-            opacity: 0;
-            transform: translateY(32px);
-            transition: all 1s var(--ease-out-expo);
-            transition-delay: 600ms;
-        }
-
-        .hero-subcopy.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .subcopy-break {
-            margin-top: 1rem;
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .subcopy-break {
-                display: block;
-            }
-        }
-
-        .subcopy-highlight {
-            color: #1A1A1C;
-        }
-
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 22px 56px;
-            background: #1A1A1C;
-            color: #fff;
-            border-radius: 99px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.4s var(--ease-out-soft);
-            opacity: 0;
-            animation: fadeUp 1s var(--ease-out-expo) forwards 1s;
-            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.15);
-            border: none;
-            cursor: pointer;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25);
-        }
+        html { scroll-behavior: smooth; }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .cta-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* --- Advisory Board Section --- */
-        .advisors-section {
-            padding: 80px 48px 160px;
-            max-width: 700px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .section-header {
-            margin-bottom: 40px;
-            text-align: left;
-            opacity: 0; 
-            transform: translateY(20px);
-            transition: all 0.8s var(--ease-out-expo);
-        }
-        
-        .section-header.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-title {
-            font-size: 2.25rem;
-            font-weight: 400;
-            letter-spacing: -0.04em;
-            color: var(--text-main);
-        }
-        .section-subtitle {
-            margin-top: 12px;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-family: 'Space Mono', monospace; /* Tech feel */
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            max-width: 800px;
-        }
-
-        /* Grid Layout */
-        .advisors-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0; /* Images touching with no gap */
-        }
-
-        /* Card Design - Refined for "Neatness" */
-        .advisor-card {
-            display: flex;
-            flex-direction: column;
-            background: transparent;
-            opacity: 0; 
-            transform: translateY(30px);
-            padding: 0;
-            border: none;
-            border-radius: 0;
-        }
-
-        .advisor-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.8s var(--ease-out-soft), transform 0.8s var(--ease-out-soft);
-        }
-
-        /* Compact/Smaller styling for image to look neater */
-        .advisor-img-container {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background: transparent;
-            border-radius: 0;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            transition: transform 0.4s var(--ease-out-soft), box-shadow 0.4s var(--ease-out-soft);
-        }
-        
-        .advisor-card:hover .advisor-img-container {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
-            background: transparent;
-        }
-
-        .img-placeholder-icon {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: #D1D1D6;
-            position: relative;
-            opacity: 0.5;
-        }
-
-        .advisor-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 0;
-            filter: grayscale(100%);
-            -webkit-filter: grayscale(100%);
-        }
-
-        /* Typography Refinement */
-        .advisor-name {
-            font-size: 1.05rem; /* Slightly smaller for neatness */
-            font-weight: 700;
-            margin-bottom: 2px;
-            color: var(--text-main);
-            letter-spacing: -0.01em;
-        }
-
-        .advisor-role {
-            font-size: 0.75rem;
-            color: var(--signal-purple);
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .advisor-bio {
-            font-size: 0.8rem;
-            line-height: 1.5;
-            color: var(--text-muted);
-            font-weight: 400;
-            opacity: 0.9;
-        }
-
-        /* Separate section for Non-Exec or just styled differently? 
-           Based on "make smaller", putting Ben Black in the grid but ensuring he fits well.
-        */
-
-        /* --- Footer --- */
-        footer {
-            padding: 40px 48px;
-            background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(30px);
-            margin-top: auto;
-            border-top: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px; margin: 0 auto; width: 100%;
-            
-            /* Monospaced Font Update */
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-        }
-
-        /* --- Animations & Utilities --- */
-        @keyframes textReveal {
-            from { transform: translateY(120%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes breathePos {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(8%, 4%) scale(1.1); }
-            100% { transform: translate(-4%, 8%) scale(1.05); }
-        }
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.9); }
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-        @keyframes ping {
-            75%, 100% {
-                transform: scale(2);
-                opacity: 0;
-            }
-        }
-
-        /* --- Login Modal Styles --- */
-        .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(245, 245, 247, 0.75); 
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            z-index: 100; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
-        
-        .login-box {
-            background: rgba(255,255,255,0.9); padding: 48px;
-            border-radius: 32px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.8);
-            width: 90%; max-width: 400px; text-align: center;
-            transform: scale(0.95); transition: transform 0.4s var(--ease-out-expo);
-            position: relative;
-        }
-        .modal-overlay.active .login-box { transform: scale(1); }
-        .shake-it { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
-
-        .login-input {
-            width: 100%; padding: 18px; margin-bottom: 12px;
-            border: 1px solid rgba(0,0,0,0.08); border-radius: 16px;
-            background: rgba(245,245,247, 0.6); 
-            font-family: inherit; font-size: 1rem; color: var(--text-main);
-            outline: none; transition: all 0.2s;
-        }
-        .login-input:focus {
-            background: #fff;
-            border-color: #8A2BE2;
-            box-shadow: 0 0 0 4px rgba(138, 43, 226, 0.1);
-        }
-        
-        .close-btn {
-            position: absolute; top: 24px; right: 24px;
-            background: transparent; border: none; font-size: 1.5rem; color: var(--text-muted);
-            cursor: pointer; line-height: 1;
-        }
-        
-        .error-msg {
-            color: #FF3B30; font-size: 0.85rem; font-weight: 500;
-            margin-top: 16px; opacity: 0; transform: translateY(-5px); transition: all 0.3s;
-        }
-        .error-msg.show { opacity: 1; transform: translateY(0); }
-
-        /* Responsive Breakpoints */
-        @media(max-width: 1200px) {
-            .advisors-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media(max-width: 900px) {
-            .advisors-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media(max-width: 768px) {
-            h1 { font-size: 3.5rem; line-height: 1.15; }
-            nav { padding: 24px; }
-            .copy-block { font-size: 1.15rem; padding: 0 16px; }
-            footer { padding: 32px 24px; }
-            .footer-content { flex-direction: column; gap: 16px; text-align: center; }
-            .login-box { padding: 32px; }
-            
-            .advisors-section { padding: 60px 24px 100px; }
-            .section-title { font-size: 1.75rem; }
-            .section-subtitle { font-size: 0.8rem; }
-            .advisor-img-container { border-radius: 20px; }
+        ::selection {
+            background: #1C1B1A;
+            color: #F9EBF0;
         }
     </style>
 </head>
 <body>
+    <div id="root"></div>
 
-    <div class="premium-bg">
-        <div class="light-orb orb-purple"></div>
-        <div class="light-orb orb-pink"></div>
-    </div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
 
-    <nav>
-        <div class="logo">Nomad</div>
-        <button class="investor-pill" onclick="toggleLogin()">Investor Access</button>
-    </nav>
+        /* --- ICONS --- */
+        const IconWrapper = ({ children, size = 24, color = "currentColor", className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+        const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconWrapper>;
+        const X = (props) => <IconWrapper {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconWrapper>;
+        const ArrowRight = (props) => <IconWrapper {...props}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></IconWrapper>;
+        const Activity = (props) => <IconWrapper {...props}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></IconWrapper>;
+        const Brain = (props) => <IconWrapper {...props}><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></IconWrapper>;
+        const HeartPulse = (props) => <IconWrapper {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></IconWrapper>;
+        const ShieldCheck = (props) => <IconWrapper {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></IconWrapper>;
+        const Lock = (props) => <IconWrapper {...props}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></IconWrapper>;
 
-    <main>
-        <!-- HERO SECTION -->
-        <section class="hero-section-new">
-            <!-- Deck Badge -->
-            <div class="deck-badge" id="deckBadge">
-                <span class="status-dot-new">
-                    <span class="ping-dot"></span>
-                    <span class="static-dot"></span>
-                </span>
-                <span class="badge-text">Coming Soon...</span>
-            </div>
-
-            <!-- Headline -->
-            <h1 class="hero-headline">
-                <span class="headline-line">
-                    <span class="headline-text" id="headlineText1">Your body has an</span>
-                </span>
-                <span class="headline-line">
-                    <span class="headline-text headline-gradient" id="headlineText2">operating system.</span>
-                </span>
-            </h1>
-
-            <!-- Subcopy -->
-            <div class="hero-subcopy" id="heroSubcopy">
-                We decode and regulate it.
-                <br class="subcopy-break" />
-                <span class="subcopy-highlight">376M consumers</span> and <span class="subcopy-highlight">53M patients</span> suffer from autonomic dysfunction.
-                <br/>No one is fixing it. Until now.
-            </div>
-
-            <a href="mailto:hello@nomadneuro.com" class="cta-btn">Join the Waitlist</a>
-        </section>
-
-        <!-- FOUNDERS SECTION -->
-        <section class="advisors-section" id="founders">
-            <div class="section-header">
-                <h2 class="section-title">Founders</h2>
-                <p class="section-subtitle">DERIVED FROM RESEARCH FROM LEADING UNIVERSITIES</p>
-            </div>
-            
-            <div class="advisors-grid">
-                
-                <!-- Founder -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Santi.jpg" alt="Santiago">
-                    </div>
-                    <div class="advisor-name">Santiago</div>
-                    <span class="advisor-role">CEO</span>
-                    <p class="advisor-bio">MSc in Financial Mathematics. Ex Y Combinator.</p>
-                </div>
-
-                <!-- Founder -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Ollie.png" alt="Ollie">
-                    </div>
-                    <div class="advisor-name">Ollie</div>
-                    <span class="advisor-role">Head Scientist</span>
-                    <p class="advisor-bio">MSc Neuroscience and doing a PhD in Neuroscience, UCL.</p>
-                </div>
-
-                <!-- Founder -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="callum.png" alt="Callum">
-                    </div>
-                    <div class="advisor-name">Callum</div>
-                    <span class="advisor-role">Lead Hardware Engineer</span>
-                    <p class="advisor-bio">Specialising in hardware design and engineering.</p>
-                </div>
-
-                <!-- Founder -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Marcelo.png" alt="Marcelo">
-                    </div>
-                    <div class="advisor-name">Marcelo</div>
-                    <span class="advisor-role">Lead Systems Engineer</span>
-                    <p class="advisor-bio">Specialising in Systems.</p>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- ADVISORY BOARD SECTION -->
-        <section class="advisors-section" id="advisory-board">
-            <div class="section-header">
-                <h2 class="section-title">Advisory Board</h2>
-                <p class="section-subtitle">Expert guidance from industry leaders and academia.</p>
-            </div>
-            
-            <div class="advisors-grid">
-                
-                <!-- Advisor 1 -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Ben_newton.png" alt="Ben Newton">
-                    </div>
-                    <div class="advisor-name">Ben Newton</div>
-                    <span class="advisor-role">Technology Advisor</span>
-                    <p class="advisor-bio">Strategy, delivery and management for the world's top financials. Guidance on technology implementation.</p>
-                </div>
-
-                <!-- Advisor 2 -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Guy_Winter.png" alt="Lt Col, Dr Guy Winter">
-                    </div>
-                    <div class="advisor-name">Lt Col, Dr Guy Winter</div>
-                    <span class="advisor-role">Defence Advisor</span>
-                    <p class="advisor-bio">Defence contracts specialist and behavioural scientist with experience in business management within the UK's largest PSCs.</p>
-                </div>
-
-                <!-- Advisor 3 -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Anders_borg.png" alt="Anders Borg">
-                    </div>
-                    <div class="advisor-name">Anders Borg</div>
-                    <span class="advisor-role">Fundraising Advisor</span>
-                    <p class="advisor-bio">Former Managing Director at KKR with deep expertise in global economics.</p>
-                </div>
-
-                <!-- Advisor 4 -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Imanuel_Lerman.png" alt="Prof Imanual Lerman">
-                    </div>
-                    <div class="advisor-name">Prof Imanual Lerman</div>
-                    <span class="advisor-role">Clincial Advisor</span>
-                    <p class="advisor-bio">Professor and practicing neurologist at UCSD. Serial entrepreneur with expertise in medical device development.</p>
-                </div>
-
-                <!-- Advisor 6 -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Steve_Alty.png" alt="Prof Steve Alty">
-                    </div>
-                    <div class="advisor-name">Prof Steve Alty</div>
-                    <span class="advisor-role">Electrical Advisor</span>
-                    <p class="advisor-bio">Head of Department of Electrical Engineering. Deep expertise in signal processing and biomedical applications.</p>
-                </div>
-
-                <!-- Advisor 7 -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="Patrik_Nilsson.png" alt="Patrik Nilsson">
-                    </div>
-                    <div class="advisor-name">Patrik Nilsson</div>
-                    <span class="advisor-role">Supply Chain Advisor</span>
-                    <p class="advisor-bio">Founder & Director at Emporium Partners. Specialist in supply chain resilience for critical industries.</p>
-                </div>
-
-                <!-- Advisor 8: Ben Black -->
-                <div class="advisor-card">
-                    <div class="advisor-img-container">
-                        <img src="ben_black.png" alt="Ben Black">
-                    </div>
-                    <div class="advisor-name">Ben Black</div>
-                    <span class="advisor-role">Non-Executive Director</span>
-                    <p class="advisor-bio">Strategic guidance and governance. Extensive experience in executive leadership and corporate direction.</p>
-                </div>
-
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <span>Nomad Neuroscience Ltd.</span>
-            <span>© 2025 Nomad Neuroscience, Inc. All Rights Reserved</span>
-        </div>
-    </footer>
-
-    <div class="modal-overlay" id="loginModal">
-        <div class="login-box" id="loginBox">
-            <button class="close-btn" onclick="toggleLogin()">×</button>
-            <h3 style="margin-bottom: 8px; font-weight: 600; font-size: 1.5rem;">Portal Access</h3>
-            <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 0.9rem;">Secure partners only.</p>
-            
-            <form onsubmit="handleDummyLogin(event)" id="loginForm">
-                <input type="email" placeholder="Partner ID" class="login-input" required>
-                <input type="password" placeholder="Passkey" class="login-input" required>
-                <button type="submit" class="cta-btn" style="width:100%; margin-top: 8px;" id="loginBtn">Authenticate</button>
-            </form>
-            
-            <div class="error-msg" id="errorMsg">Invalid credentials. Access denied.</div>
-        </div>
-    </div>
-
-    <script>
-        // Init Hero Animation
-        window.onload = () => {
-            // Show deck badge
-            const deckBadge = document.getElementById('deckBadge');
-            if (deckBadge) {
-                setTimeout(() => {
-                    deckBadge.classList.add('visible');
-                }, 200);
-            }
-
-            // Show headline texts
-            const headlineText1 = document.getElementById('headlineText1');
-            const headlineText2 = document.getElementById('headlineText2');
-            if (headlineText1) {
-                setTimeout(() => {
-                    headlineText1.classList.add('visible');
-                }, 300);
-            }
-            if (headlineText2) {
-                setTimeout(() => {
-                    headlineText2.classList.add('visible');
-                }, 450);
-            }
-
-            // Show subcopy
-            const heroSubcopy = document.getElementById('heroSubcopy');
-            if (heroSubcopy) {
-                setTimeout(() => {
-                    heroSubcopy.classList.add('visible');
-                }, 600);
-            }
-
-            setupObserver();
+        /* --- UTILITIES --- */
+        const useScrollPosition = () => {
+            const [scrollPosition, setScrollPosition] = useState(0);
+            useEffect(() => {
+                const updatePosition = () => setScrollPosition(window.scrollY);
+                window.addEventListener('scroll', updatePosition);
+                return () => window.removeEventListener('scroll', updatePosition);
+            }, []);
+            return scrollPosition;
         };
 
-        function scrollToAdvisors(e) {
-            e.preventDefault();
-            document.getElementById('advisory-board').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // --- Intersection Observer for Scroll Animations ---
-        function setupObserver() {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
+        const Button = ({ children, variant = 'primary', className = '', onClick, href }) => {
+            const baseStyle = "relative px-8 py-3.5 rounded-full font-medium text-sm tracking-wide transition-all duration-300 overflow-hidden group active:scale-95";
+            const variants = {
+                primary: "bg-nomad-black text-white hover:bg-[#333] shadow-md hover:shadow-xl",
+                secondary: "bg-nomad-base text-nomad-black border border-nomad-black/10 hover:border-nomad-black",
+                outline: "bg-transparent text-white border border-white hover:bg-white hover:text-nomad-black"
             };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, index * 80); 
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            const itemsToObserve = document.querySelectorAll('.advisor-card, .section-header');
-            itemsToObserve.forEach((el) => observer.observe(el));
-        }
-
-        const modal = document.getElementById('loginModal');
-        const loginBox = document.getElementById('loginBox');
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const errorMsg = document.getElementById('errorMsg');
-
-        // Toggle Modal
-        function toggleLogin() {
-            const isActive = modal.classList.contains('active');
             
-            if (isActive) {
-                modal.classList.remove('active');
-                // Reset form state after closing
-                setTimeout(() => {
-                    loginForm.reset();
-                    errorMsg.classList.remove('show');
-                    loginBtn.innerText = "Authenticate";
-                    loginBtn.disabled = false;
-                    loginBox.classList.remove('shake-it');
-                }, 300);
-            } else {
-                modal.classList.add('active');
-                // Focus first input
-                setTimeout(() => {
-                    document.querySelector('.login-input').focus();
-                }, 100);
+            if (href) {
+                return (
+                    <a href={href} className={`${baseStyle} ${variants[variant]} ${className} inline-flex items-center justify-center`}>
+                        <span className="relative z-10 flex items-center justify-center gap-2">{children}</span>
+                    </a>
+                );
             }
-        }
-
-        // Close on clicking outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) toggleLogin();
-        });
-
-        // Dummy Login Logic
-        function handleDummyLogin(e) {
-            e.preventDefault();
             
-            // 1. Loading State
-            loginBtn.innerText = "Verifying...";
-            loginBtn.disabled = true;
-            errorMsg.classList.remove('show');
-            loginBox.classList.remove('shake-it');
+            return (
+                <button onClick={onClick} className={`${baseStyle} ${variants[variant]} ${className}`}>
+                    <span className="relative z-10 flex items-center justify-center gap-2">{children}</span>
+                </button>
+            );
+        };
 
-            // 2. Fake Delay
-            setTimeout(() => {
-                // 3. Error State
-                loginBtn.innerText = "Authenticate";
-                loginBtn.disabled = false;
-                
-                // Shake Animation
-                loginBox.classList.add('shake-it');
-                
-                // Show Error Message
-                errorMsg.classList.add('show');
-                
-                // Remove shake class after animation so it can run again
-                setTimeout(() => {
-                    loginBox.classList.remove('shake-it');
-                    // Clear password field for effect
-                    document.querySelectorAll('.login-input')[1].value = "";
-                }, 500);
+        const FadeIn = ({ children, delay = 0 }) => {
+            const [isVisible, setIsVisible] = useState(false);
+            const ref = useRef(null);
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) setIsVisible(true);
+                    },
+                    { threshold: 0.1, rootMargin: "50px" }
+                );
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, []);
+            return (
+                <div
+                    ref={ref}
+                    className={`transition-all duration-1000 ease-out transform ${
+                        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    }`}
+                    style={{ transitionDelay: `${delay}ms` }}
+                >
+                    {children}
+                </div>
+            );
+        };
 
-            }, 1200); // 1.2 second fake wait
-        }
+        /* --- SECTIONS --- */
+        const Navbar = () => {
+            const scrollPos = useScrollPosition();
+            const isScrolled = scrollPos > 50;
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            return (
+                <>
+                    <nav
+                        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+                            isScrolled || mobileMenuOpen ? 'bg-nomad-base/80 backdrop-blur-md py-4 border-b border-black/5 shadow-sm' : 'bg-transparent py-6'
+                        }`}
+                    >
+                        <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between">
+                            <div className="flex-1">
+                                <a href="#" className="text-2xl tracking-[0.1em] font-serif font-bold text-nomad-black hover:opacity-80 transition-opacity uppercase">
+                                    Nomad
+                                </a>
+                            </div>
+                            <div className="hidden md:flex items-center gap-8 text-sm font-medium text-nomad-black">
+                                <a href="#technology" className="hover:text-gray-600 transition-colors">Technology</a>
+                                <a href="#advisors" className="hover:text-gray-600 transition-colors">Advisors</a>
+                            </div>
+                            <div className="flex-1 flex justify-end items-center gap-4">
+                                <button className="p-2 hover:bg-black/5 rounded-full transition-colors relative group">
+                                    <Lock size={18} color="#1C1B1A" />
+                                </button>
+                                <button 
+                                    className="md:hidden p-2 hover:bg-black/5 rounded-full transition-colors"
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                >
+                                    {mobileMenuOpen ? <X size={20} color="#1C1B1A" /> : <Menu size={20} color="#1C1B1A" />}
+                                </button>
+                                <Button href="mailto:hello@nomadneuro.com" className="hidden md:inline-flex py-2.5 px-6 text-xs">Join Waitlist</Button>
+                            </div>
+                        </div>
+                    </nav>
+                    <div className={`fixed inset-0 z-40 bg-nomad-base pt-24 px-6 transition-transform duration-500 ease-in-out md:hidden ${mobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+                        <div className="flex flex-col gap-6 text-3xl font-serif text-nomad-black">
+                            <a href="#technology" className="border-b border-black/10 pb-4">Technology</a>
+                            <a href="#advisors" className="border-b border-black/10 pb-4">Advisors</a>
+                            <Button href="mailto:hello@nomadneuro.com" className="mt-4 w-full">Join Waitlist</Button>
+                        </div>
+                    </div>
+                </>
+            );
+        };
+
+        const Hero = () => {
+            return (
+                <div className="relative min-h-screen w-full overflow-hidden bg-nomad-base">
+                    <div className="absolute inset-0 z-0">
+                        <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center opacity-70 scale-105 animate-slow-zoom mix-blend-multiply"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-nomad-base via-nomad-base/40 to-transparent"></div>
+                    </div>
+                    <div className="relative z-10 flex flex-col justify-end min-h-screen pb-24 px-6 md:px-12 max-w-[1600px] mx-auto">
+                        <FadeIn>
+                            <div className="flex items-center gap-3 mb-6">
+                                <span className="relative flex h-2 w-2">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-nomad-black opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-nomad-black"></span>
+                                </span>
+                                <span className="text-xs font-bold tracking-[0.2em] uppercase text-nomad-black/60">Coming Soon</span>
+                            </div>
+                            <h1 className="font-serif text-5xl md:text-7xl lg:text-[6rem] leading-[0.95] tracking-tight text-nomad-black max-w-5xl mb-8 drop-shadow-sm">
+                                Your body has an <br />
+                                <span className="italic font-light text-nomad-black/80">operating system.</span>
+                            </h1>
+                        </FadeIn>
+                        
+                        <FadeIn delay={200}>
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-t border-nomad-black/10 pt-8">
+                                <div className="text-lg md:text-2xl text-nomad-black/80 max-w-xl leading-relaxed font-medium">
+                                    <p className="mb-4">We decode and regulate it.</p>
+                                    <p><span className="text-nomad-black font-semibold">376M consumers</span> and <span className="text-nomad-black font-semibold">53M patients</span> suffer from autonomic dysfunction.</p>
+                                    <p className="mt-2">No one is fixing it. Until now.</p>
+                                </div>
+                                <div className="flex gap-4">
+                                    <Button href="mailto:hello@nomadneuro.com">Join Waitlist</Button>
+                                    <Button variant="secondary">Investor Login</Button>
+                                </div>
+                            </div>
+                        </FadeIn>
+                    </div>
+                </div>
+            );
+        };
+
+        const FeatureCard = ({ title, icon: Icon, image, dark = false }) => {
+            return (
+                <div className={`relative group rounded-3xl overflow-hidden h-[650px] w-full transition-transform hover:-translate-y-1 duration-500 shadow-sm hover:shadow-xl ${dark ? 'bg-nomad-black text-white' : 'bg-white text-nomad-black'}`}>
+                    <div className="absolute inset-0 z-0">
+                        <img 
+                            src={image} 
+                            alt={title} 
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90 blur-[2px]"
+                        />
+                        <div className={`absolute inset-0 transition-opacity duration-500 bg-black/60 group-hover:bg-black/50`}></div>
+                    </div>
+                    
+                    <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-between items-center text-center">
+                        <div className="mt-12 p-4 bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
+                            <Icon size={32} className="text-white" />
+                        </div>
+                        
+                        <div className="mb-12">
+                            <h3 className="text-3xl md:text-4xl font-serif mb-6 leading-tight text-white">{title}</h3>
+                            
+                            <div className="flex flex-col items-center gap-4 opacity-70">
+                                <Lock size={20} className="text-white" />
+                                <p className="text-sm font-medium uppercase tracking-widest text-white">Confidential</p>
+                            </div>
+                            <div className="mt-8">
+                                <button className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/30 hover:bg-white/30 transition-all">
+                                    Login to View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Features = () => {
+            const features = [
+                {
+                    title: "Cardiac Sync",
+                    icon: HeartPulse,
+                    image: "https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=2940&auto=format&fit=crop",
+                    dark: true
+                },
+                {
+                    title: "Nomad Engine",
+                    icon: Brain,
+                    image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=2832&auto=format&fit=crop",
+                    dark: true
+                },
+                {
+                    title: "Postural Awareness",
+                    icon: Activity,
+                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2940&auto=format&fit=crop",
+                    dark: true
+                },
+                {
+                    title: "Panic Detect",
+                    icon: ShieldCheck,
+                    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2031&auto=format&fit=crop",
+                    dark: true
+                }
+            ];
+            return (
+                <section id="technology" className="bg-nomad-base px-6 md:px-12 py-32">
+                    <div className="max-w-[1600px] mx-auto">
+                        <FadeIn>
+                            <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12">
+                                <div>
+                                    <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">The Nomad Difference</h2>
+                                    <p className="font-serif text-4xl md:text-6xl text-nomad-black leading-[1.05]">
+                                        Precise. AI, <br />
+                                        <span className="italic text-nomad-black/60">patented.</span>
+                                    </p>
+                                </div>
+                                <div className="max-w-xl">
+                                    <p className="text-nomad-black/70 text-lg leading-relaxed mb-6">
+                                        Current market solutions are either high-risk surgical implants or low-efficacy wearables. Nomad bridges the gap with closed-loop, physiology-driven adaptive stimulation. 
+                                    </p>
+                                    <p className="text-nomad-black/70 text-lg leading-relaxed">
+                                        Clinical grade tech for consumers, patients and the military. Novel Biomarkers to decode your body and regulate in real time, no one else does this.
+                                    </p>
+                                </div>
+                            </div>
+                        </FadeIn>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {features.map((feature, idx) => (
+                                <FadeIn key={idx} delay={idx * 100}>
+                                    <FeatureCard {...feature} />
+                                </FadeIn>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const TeamMemberCard = ({ name, role, desc, image }) => {
+            return (
+                <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-white shadow-sm cursor-pointer">
+                    <div className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center bg-nomad-white transition-opacity duration-500">
+                        <h4 className="font-serif text-2xl mb-2 text-nomad-black">{name}</h4>
+                        <p className="text-xs uppercase tracking-wider text-nomad-black/50 font-bold mb-4">{role}</p>
+                        <p className="text-nomad-black/70 text-sm leading-relaxed">{desc}</p>
+                    </div>
+                    <div className="absolute inset-0 z-10 transition-opacity duration-500 ease-in-out group-hover:opacity-0 bg-nomad-black/5">
+                        <img 
+                            src={image} 
+                            alt={name} 
+                            className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
+                        />
+                    </div>
+                </div>
+            );
+        };
+
+        const Advisors = () => {
+             const founders = [
+                { name: "Santiago", role: "CEO", desc: "MSc Financial Mathematics. Ex Y Combinator.", image: "Santi.jpg" },
+                { name: "Ollie", role: "Head Scientist", desc: "PhD Neuroscience, UCL.", image: "Ollie.png" },
+                { name: "Callum", role: "Lead Hardware", desc: "Expert in hardware design and engineering.", image: "callum.png" },
+                { name: "Marcelo", role: "Lead Systems", desc: "BAE Systems.", image: "Marcelo.png" }
+            ];
+            const advisors = [
+                { name: "Ben Newton", role: "Technology Advisor", desc: "Strategy, delivery and management for the world's top financials.", image: "Ben_newton.png" },
+                { name: "Lt Col, Dr Guy Winter", role: "Defence Advisor", desc: "Defence contracts specialist and behavioural scientist.", image: "Guy_Winter.png" },
+                { name: "Anders Borg", role: "Fundraising Advisor", desc: "Former MD at KKR, expert in fundraising and global economics.", image: "Anders_borg.png" },
+                { name: "Prof Imanual Lerman", role: "Clinical Advisor", desc: "Professor and practicing neurologist at UCSD.", image: "Imanuel_Lerman.png" },
+                { name: "Prof Steve Alty", role: "Electrical Advisor", desc: "Head of Department of Electrical Engineering.", image: "Steve_Alty.png" },
+                { name: "Patrik Nilsson", role: "Supply Chain Advisor", desc: "Founder & Director at Emporium Partners.", image: "Patrik_Nilsson.png" },
+                { name: "Ben Black", role: "Non-Executive Director", desc: "Strategic guidance and governance.", image: "ben_black.png" }
+            ];
+            return (
+                <section id="advisors" className="bg-nomad-base py-32 px-6 md:px-12 border-t border-nomad-black/5">
+                    <div className="max-w-[1600px] mx-auto">
+                        
+                        {/* Founders Section */}
+                        <div className="mb-32">
+                            <div className="text-center mb-16">
+                                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">The Team</h2>
+                                <h3 className="font-serif text-4xl md:text-5xl text-nomad-black">Founders</h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {founders.map((item, idx) => (
+                                    <FadeIn key={idx} delay={idx * 50}>
+                                        <TeamMemberCard {...item} />
+                                    </FadeIn>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Advisors Section */}
+                        <div>
+                            <div className="text-center mb-16">
+                                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">Leadership</h2>
+                                <h3 className="font-serif text-4xl md:text-5xl text-nomad-black">Backed by Industry Leaders</h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {advisors.map((item, idx) => (
+                                    <FadeIn key={idx} delay={idx * 50}>
+                                        <TeamMemberCard {...item} />
+                                    </FadeIn>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Footer = () => {
+            return (
+                <footer className="bg-nomad-black text-white pt-24 pb-12 px-6 md:px-12">
+                    <div className="max-w-[1600px] mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-24">
+                            <div>
+                                <div className="text-2xl font-serif font-bold mb-8 tracking-[0.1em] uppercase">Nomad</div>
+                                <p className="text-white/60 max-w-xs leading-relaxed">
+                                    Redefining how humans interact with their nervous systems.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-white/40">Product</h4>
+                                <ul className="space-y-4 text-white/80 font-light text-sm">
+                                    <li><a href="#technology" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Technology</a></li>
+                                    <li><a href="#" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Clinical Trials</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-white/40">Company</h4>
+                                <ul className="space-y-4 text-white/80 font-light text-sm">
+                                    <li><a href="#advisors" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Team</a></li>
+                                    <li><a href="#" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Investors</a></li>
+                                    <li><a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Contact</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-white/40">Stay Updated</h4>
+                                <div className="flex gap-2">
+                                    <input 
+                                        type="email" 
+                                        placeholder="Enter your email" 
+                                        className="bg-white/10 border border-white/20 rounded-full px-6 py-3 text-sm w-full focus:outline-none focus:border-white transition-colors text-white placeholder:text-white/40 font-light"
+                                    />
+                                    <button className="bg-white text-black rounded-full px-6 py-3 text-sm font-bold hover:bg-white/90 transition-colors">
+                                        Join
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/40 font-medium">
+                            <div className="flex gap-6">
+                                <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                                <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
+                            </div>
+                            <div>
+                                © 2025 Nomad Neuroscience Ltd. All rights reserved.
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        const App = () => {
+            return (
+                <div className="font-sans text-nomad-black bg-nomad-base antialiased selection:bg-nomad-black selection:text-nomad-base">
+                    <Navbar />
+                    <Hero />
+                    <Features />
+                    <Advisors />
+                    <Footer />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
