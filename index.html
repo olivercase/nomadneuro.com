@@ -319,7 +319,7 @@
 
         const FeatureCard = ({ title, icon: Icon, image, onLoginClick }) => {
             return (
-                <div className="relative group rounded-3xl overflow-hidden h-[650px] w-full transition-transform hover:-translate-y-1 duration-500 shadow-sm hover:shadow-xl bg-nomad-black text-white">
+                <div className="relative group rounded-3xl overflow-hidden h-[350px] w-full transition-transform hover:-translate-y-1 duration-500 shadow-sm hover:shadow-xl bg-nomad-black text-white">
                     <div className="absolute inset-0 z-0">
                         <img 
                             src={image} 
@@ -329,22 +329,22 @@
                         <div className="absolute inset-0 transition-opacity duration-500 bg-black/60 group-hover:bg-black/50"></div>
                     </div>
                     
-                    <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-between items-center text-center">
-                        <div className="mt-12 p-4 bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
-                            <Icon size={32} className="text-white" />
+                    <div className="relative z-10 p-6 h-full flex flex-col justify-between items-center text-center">
+                        <div className="mt-4 p-3 bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
+                            <Icon size={24} className="text-white" />
                         </div>
                         
-                        <div className="mb-12">
-                            <h3 className="text-3xl md:text-4xl font-serif mb-6 leading-tight text-white">{title}</h3>
+                        <div className="mb-4">
+                            <h3 className="text-xl md:text-2xl font-serif mb-3 leading-tight text-white">{title}</h3>
                             
-                            <div className="flex flex-col items-center gap-4 opacity-70">
-                                <Lock size={20} className="text-white" />
-                                <p className="text-sm font-medium uppercase tracking-widest text-white">Confidential</p>
+                            <div className="flex flex-col items-center gap-2 opacity-70">
+                                <Lock size={16} className="text-white" />
+                                <p className="text-xs font-medium uppercase tracking-widest text-white">Confidential</p>
                             </div>
-                            <div className="mt-8">
+                            <div className="mt-4">
                                 <button 
                                     onClick={onLoginClick}
-                                    className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/30 hover:bg-white/30 transition-all"
+                                    className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider border border-white/30 hover:bg-white/30 transition-all"
                                 >
                                     Login to View
                                 </button>
@@ -435,8 +435,8 @@
             const team = [
                 { name: "Santiago", role: "CEO", bio: "MSc Financial Mathematics. Ex Y Combinator.", image: "Santi.jpg" },
                 { name: "Ollie", role: "Head Scientist", bio: "MSc Neuroscience, doing PHD Autonomic Neuroscience at UCL.", image: "Ollie.png" },
-                { name: "Callum", role: "Lead Hardware", bio: "Expert in hardware design and engineering.", image: "callum.png" },
-                { name: "Marcelo", role: "Lead Systems", bio: "BAE Systems.", image: "Marcelo.png" },
+                { name: "Callum", role: "Lead Hardware", bio: "Specialsit in hardware design and engineering.", image: "callum.png" },
+                { name: "Marcelo", role: "Lead Systems", bio: "Systems Specalist.", image: "Marcelo.png" },
                 { name: "Ben Newton", role: "Technology Advisor", bio: "Strategy, delivery and management for the world's top financials.", image: "Ben_newton.png" },
                 { name: "Guy Winter", role: "Defence Advisor", bio: "Defence contracts specialist and behavioural scientist.", image: "Guy_Winter.png" },
                 { name: "Anders Borg", role: "Fundraising Advisor", bio: "Former MD at KKR, expert in fundraising and global economics.", image: "Anders_borg.png" },
