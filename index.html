@@ -114,88 +114,141 @@
         }
 
         /* --- Hero Section --- */
-        .hero-section {
+        .hero-section-new {
             min-height: 100svh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 160px 24px 80px;
+            padding: 120px 24px 80px;
             position: relative;
         }
 
-        .stealth-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--text-main);
-            margin-bottom: 48px;
+        /* Deck Badge */
+        .deck-badge {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 48px;
             opacity: 0;
-            animation: fadeUp 1s var(--ease-out-expo) forwards 0.2s;
-            font-weight: 600;
-            
-            padding: 6px 14px 6px 10px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.4);
+            transform: translateY(32px);
+            transition: all 1s var(--ease-out-expo);
+            transition-delay: 200ms;
         }
 
-        .status-dot {
-            width: 6px; height: 6px;
-            background: #8A2BE2; /* Purple */
+        .deck-badge.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-dot-new {
+            position: relative;
+            display: flex;
+            height: 8px;
+            width: 8px;
+        }
+
+        .ping-dot {
+            position: absolute;
+            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+            height: 100%;
+            width: 100%;
             border-radius: 50%;
-            box-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
-            animation: pulseDot 3s infinite ease-in-out;
+            background: #9D50BB;
+            opacity: 0.75;
         }
 
-        /* --- THE HEADLINE --- */
-        h1 {
-            font-size: clamp(3.5rem, 10vw, 7.5rem);
-            line-height: 1.1; 
-            font-weight: 400;
-            letter-spacing: -0.04em;
-            margin-bottom: 40px;
-            color: var(--text-main);
+        .static-dot {
+            position: relative;
+            display: inline-flex;
+            border-radius: 50%;
+            height: 8px;
+            width: 8px;
+            background: #9D50BB;
+        }
+
+        .badge-text {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-family: 'Space Mono', monospace;
+            color: #1A1A1C;
+        }
+
+        /* Hero Headline */
+        .hero-headline {
             display: flex;
             flex-direction: column;
             align-items: center;
+            font-size: clamp(3rem, 8vw, 9rem);
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            line-height: 0.95;
+            margin-bottom: 48px;
+            color: #1A1A1C;
         }
 
-        .text-mask {
+        .headline-line {
             display: block;
             overflow: hidden;
-            padding-bottom: 0.6em; 
-            margin-bottom: -0.6em; 
         }
 
-        .text-line {
+        .headline-text {
             display: block;
-            transform: translateY(120%);
-            opacity: 0;
-            color: var(--text-main);
+            transform: translateY(100%);
+            transition: transform 1s var(--ease-out-expo);
         }
 
-        .animate-text .text-line {
-            animation: textReveal 1.5s var(--ease-out-expo) forwards;
+        .headline-text.visible {
+            transform: translateY(0);
         }
-        .animate-text .mask-2 .text-line { animation-delay: 0.15s; }
 
-        /* --- Copy & CTA --- */
-        .copy-block {
-            max-width: 540px;
-            font-size: 1.25rem;
-            line-height: 1.6;
-            color: var(--text-muted);
-            font-weight: 400;
-            letter-spacing: -0.01em;
-            margin-bottom: 56px;
+        .headline-gradient {
+            background: linear-gradient(to right, #1A1A1C, #6E6E78);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Hero Subcopy */
+        .hero-subcopy {
+            max-width: 36rem;
+            font-size: clamp(1.125rem, 2vw, 1.25rem);
+            color: #6E6E78;
+            line-height: 1.75;
+            margin-bottom: 64px;
             opacity: 0;
-            animation: fadeUp 1s var(--ease-out-expo) forwards 0.8s;
+            transform: translateY(32px);
+            transition: all 1s var(--ease-out-expo);
+            transition-delay: 600ms;
+        }
+
+        .hero-subcopy.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .subcopy-break {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .subcopy-break {
+                display: block;
+            }
+        }
+
+        .subcopy-highlight {
+            color: #1A1A1C;
         }
 
         .cta-btn {
@@ -407,6 +460,12 @@
             20%, 60% { transform: translateX(-5px); }
             40%, 80% { transform: translateX(5px); }
         }
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
 
         /* --- Login Modal Styles --- */
         .modal-overlay {
@@ -491,24 +550,32 @@
 
     <main>
         <!-- HERO SECTION -->
-        <section class="hero-section">
-            <div class="stealth-label">
-                <div class="status-dot"></div>
-                Stealth Mode
+        <section class="hero-section-new">
+            <!-- Deck Badge -->
+            <div class="deck-badge" id="deckBadge">
+                <span class="status-dot-new">
+                    <span class="ping-dot"></span>
+                    <span class="static-dot"></span>
+                </span>
+                <span class="badge-text">Equi / Mk 1</span>
             </div>
 
-            <h1 id="mainHeadline">
-                <span class="text-mask mask-1">
-                    <span class="text-line">Translating the</span>
+            <!-- Headline -->
+            <h1 class="hero-headline">
+                <span class="headline-line">
+                    <span class="headline-text" id="headlineText1">Your body has an</span>
                 </span>
-                <span class="text-mask mask-2">
-                    <span class="text-line">biological signal.</span>
+                <span class="headline-line">
+                    <span class="headline-text headline-gradient" id="headlineText2">operating system.</span>
                 </span>
             </h1>
 
-            <div class="copy-block">
-                Your body speaks a language you cannot hear. <br>
-                Nomad maps, interprets, and modulates your neural signature.
+            <!-- Subcopy -->
+            <div class="hero-subcopy" id="heroSubcopy">
+                We decode and regulate it.
+                <br class="subcopy-break" />
+                <span class="subcopy-highlight">376M consumers</span> and <span class="subcopy-highlight">53M patients</span> suffer from autonomic dysfunction.
+                <br/>No one is fixing it. Until now.
             </div>
 
             <a href="mailto:hello@nomadneuro.com" class="cta-btn">Join the Waitlist</a>
@@ -530,7 +597,7 @@
                     </div>
                     <div class="advisor-name">Santiago</div>
                     <span class="advisor-role">CEO</span>
-                    <p class="advisor-bio">MSC in Financial Mathematics. Ex Y Combinator.</p>
+                    <p class="advisor-bio">MSc in Financial Mathematics. Ex Y Combinator.</p>
                 </div>
 
                 <!-- Founder -->
@@ -673,9 +740,38 @@
     </div>
 
     <script>
-        // Init Animation
+        // Init Hero Animation
         window.onload = () => {
-            document.getElementById('mainHeadline').classList.add('animate-text');
+            // Show deck badge
+            const deckBadge = document.getElementById('deckBadge');
+            if (deckBadge) {
+                setTimeout(() => {
+                    deckBadge.classList.add('visible');
+                }, 200);
+            }
+
+            // Show headline texts
+            const headlineText1 = document.getElementById('headlineText1');
+            const headlineText2 = document.getElementById('headlineText2');
+            if (headlineText1) {
+                setTimeout(() => {
+                    headlineText1.classList.add('visible');
+                }, 300);
+            }
+            if (headlineText2) {
+                setTimeout(() => {
+                    headlineText2.classList.add('visible');
+                }, 450);
+            }
+
+            // Show subcopy
+            const heroSubcopy = document.getElementById('heroSubcopy');
+            if (heroSubcopy) {
+                setTimeout(() => {
+                    heroSubcopy.classList.add('visible');
+                }, 600);
+            }
+
             setupObserver();
         };
 
