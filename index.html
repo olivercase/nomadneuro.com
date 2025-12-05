@@ -79,9 +79,14 @@
     <form name="waitlist" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
         <input type="hidden" name="form-name" value="waitlist" />
         <input type="text" name="bot-field" />
-        <input type="text" name="firstName" />
-        <input type="text" name="lastName" />
+        <input type="text" name="fullName" />
         <input type="email" name="email" />
+        <select name="userType">
+            <option value="patient">Patient</option>
+            <option value="investor">Potential Investor</option>
+            <option value="consumer">Consumer</option>
+            <option value="government">Government</option>
+        </select>
     </form>
     
     <div id="root"></div>
@@ -238,9 +243,9 @@
 
         /* --- WAITLIST MODAL --- */
         const WaitlistModal = ({ isOpen, onClose }) => {
-            const [firstName, setFirstName] = useState('');
-            const [lastName, setLastName] = useState('');
+            const [fullName, setFullName] = useState('');
             const [email, setEmail] = useState('');
+            const [userType, setUserType] = useState('');
             const [isLoading, setIsLoading] = useState(false);
             const [success, setSuccess] = useState(false);
             const [error, setError] = useState('');
@@ -253,9 +258,9 @@
                 try {
                     const formData = new FormData();
                     formData.append('form-name', 'waitlist');
-                    formData.append('firstName', firstName);
-                    formData.append('lastName', lastName);
+                    formData.append('fullName', fullName);
                     formData.append('email', email);
+                    formData.append('userType', userType);
                     
                     const response = await fetch('/', {
                         method: 'POST',
@@ -265,9 +270,9 @@
                     
                     if (response.ok) {
                         setSuccess(true);
-                        setFirstName('');
-                        setLastName('');
+                        setFullName('');
                         setEmail('');
+                        setUserType('');
                     } else {
                         throw new Error('Failed to submit');
                     }
@@ -281,9 +286,9 @@
             const handleClose = () => {
                 setSuccess(false);
                 setError('');
-                setFirstName('');
-                setLastName('');
+                setFullName('');
                 setEmail('');
+                setUserType('');
                 onClose();
             };
 
@@ -325,26 +330,15 @@
                                 
                                 <form onSubmit={handleSubmit}>
                                     <input type="hidden" name="form-name" value="waitlist" />
-                                    <div className="flex gap-3 mb-4">
-                                        <input
-                                            type="text"
-                                            name="firstName"
-                                            placeholder="First name"
-                                            value={firstName}
-                                            onChange={(e) => setFirstName(e.target.value)}
-                                            required
-                                            className="w-1/2 px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
-                                        />
-                                        <input
-                                            type="text"
-                                            name="lastName"
-                                            placeholder="Last name"
-                                            value={lastName}
-                                            onChange={(e) => setLastName(e.target.value)}
-                                            required
-                                            className="w-1/2 px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
-                                        />
-                                    </div>
+                                    <input
+                                        type="text"
+                                        name="fullName"
+                                        placeholder="Full name"
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
+                                        required
+                                        className="w-full px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 mb-4 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
+                                    />
                                     <input
                                         type="email"
                                         name="email"
@@ -352,8 +346,22 @@
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
-                                        className="w-full px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 mb-6 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
+                                        className="w-full px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 mb-4 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
                                     />
+                                    <select
+                                        name="userType"
+                                        value={userType}
+                                        onChange={(e) => setUserType(e.target.value)}
+                                        required
+                                        className="w-full px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 mb-6 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black appearance-none cursor-pointer"
+                                        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231C1B1A' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.5rem' }}
+                                    >
+                                        <option value="" disabled>I am a...</option>
+                                        <option value="patient">Patient</option>
+                                        <option value="investor">Potential Investor</option>
+                                        <option value="consumer">Consumer</option>
+                                        <option value="government">Government</option>
+                                    </select>
                                     <button
                                         type="submit"
                                         disabled={isLoading}
