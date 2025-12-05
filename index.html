@@ -40,6 +40,7 @@
                     animation: {
                         'slow-zoom': 'slowZoom 20s infinite alternate ease-in-out',
                         'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
                     },
                     keyframes: {
                         slowZoom: {
@@ -49,6 +50,11 @@
                         fadeInUp: {
                             '0%': { opacity: '0', transform: 'translateY(20px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '20%, 60%': { transform: 'translateX(-5px)' },
+                            '40%, 80%': { transform: 'translateX(5px)' },
                         }
                     }
                 }
@@ -79,7 +85,6 @@
         );
         const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconWrapper>;
         const X = (props) => <IconWrapper {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconWrapper>;
-        const ArrowRight = (props) => <IconWrapper {...props}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></IconWrapper>;
         const Activity = (props) => <IconWrapper {...props}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></IconWrapper>;
         const Brain = (props) => <IconWrapper {...props}><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></IconWrapper>;
         const HeartPulse = (props) => <IconWrapper {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></IconWrapper>;
@@ -146,8 +151,83 @@
             );
         };
 
+        /* --- LOGIN MODAL --- */
+        const LoginModal = ({ isOpen, onClose }) => {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+            const [error, setError] = useState('');
+            const [shake, setShake] = useState(false);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setIsLoading(true);
+                setError('');
+                
+                // Simulate API call
+                setTimeout(() => {
+                    setIsLoading(false);
+                    setError('Invalid credentials. Access denied.');
+                    setShake(true);
+                    setPassword('');
+                    setTimeout(() => setShake(false), 500);
+                }, 1200);
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div 
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-base/80 backdrop-blur-xl"
+                    onClick={(e) => e.target === e.currentTarget && onClose()}
+                >
+                    <div className={`bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-black/5 ${shake ? 'animate-shake' : ''}`}>
+                        <button 
+                            onClick={onClose}
+                            className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-black transition-colors"
+                        >
+                            <X size={24} />
+                        </button>
+                        
+                        <h3 className="font-serif text-3xl mb-2 text-nomad-black">Investor Portal</h3>
+                        <p className="text-nomad-black/50 mb-8 text-sm">Secure partners only.</p>
+                        
+                        <form onSubmit={handleSubmit}>
+                            <input
+                                type="email"
+                                placeholder="Partner Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                className="w-full px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 mb-4 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
+                            />
+                            <input
+                                type="password"
+                                placeholder="Passkey"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="w-full px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 mb-6 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
+                            />
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="w-full py-4 bg-nomad-black text-white rounded-xl font-semibold hover:bg-[#333] transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                            >
+                                {isLoading ? 'Verifying...' : 'Authenticate'}
+                            </button>
+                        </form>
+                        
+                        {error && (
+                            <p className="mt-4 text-red-500 text-sm text-center font-medium">{error}</p>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
         /* --- SECTIONS --- */
-        const Navbar = () => {
+        const Navbar = ({ onLoginClick }) => {
             const scrollPos = useScrollPosition();
             const isScrolled = scrollPos > 50;
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -166,10 +246,13 @@
                             </div>
                             <div className="hidden md:flex items-center gap-8 text-sm font-medium text-nomad-black">
                                 <a href="#technology" className="hover:text-gray-600 transition-colors">Technology</a>
-                                <a href="#advisors" className="hover:text-gray-600 transition-colors">Advisors</a>
+                                <a href="#team" className="hover:text-gray-600 transition-colors">Team</a>
                             </div>
                             <div className="flex-1 flex justify-end items-center gap-4">
-                                <button className="p-2 hover:bg-black/5 rounded-full transition-colors relative group">
+                                <button 
+                                    onClick={onLoginClick}
+                                    className="p-2 hover:bg-black/5 rounded-full transition-colors relative group"
+                                >
                                     <Lock size={18} color="#1C1B1A" />
                                 </button>
                                 <button 
@@ -185,7 +268,8 @@
                     <div className={`fixed inset-0 z-40 bg-nomad-base pt-24 px-6 transition-transform duration-500 ease-in-out md:hidden ${mobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
                         <div className="flex flex-col gap-6 text-3xl font-serif text-nomad-black">
                             <a href="#technology" className="border-b border-black/10 pb-4">Technology</a>
-                            <a href="#advisors" className="border-b border-black/10 pb-4">Advisors</a>
+                            <a href="#team" className="border-b border-black/10 pb-4">Team</a>
+                            <button onClick={onLoginClick} className="border-b border-black/10 pb-4 text-left">Investor Login</button>
                             <Button href="mailto:hello@nomadneuro.com" className="mt-4 w-full">Join Waitlist</Button>
                         </div>
                     </div>
@@ -193,7 +277,7 @@
             );
         };
 
-        const Hero = () => {
+        const Hero = ({ onLoginClick }) => {
             return (
                 <div className="relative min-h-screen w-full overflow-hidden bg-nomad-base">
                     <div className="absolute inset-0 z-0">
@@ -224,7 +308,7 @@
                                 </div>
                                 <div className="flex gap-4">
                                     <Button href="mailto:hello@nomadneuro.com">Join Waitlist</Button>
-                                    <Button variant="secondary">Investor Login</Button>
+                                    <Button variant="secondary" onClick={onLoginClick}>Investor Login</Button>
                                 </div>
                             </div>
                         </FadeIn>
@@ -233,16 +317,16 @@
             );
         };
 
-        const FeatureCard = ({ title, icon: Icon, image, dark = false }) => {
+        const FeatureCard = ({ title, icon: Icon, image, onLoginClick }) => {
             return (
-                <div className={`relative group rounded-3xl overflow-hidden h-[650px] w-full transition-transform hover:-translate-y-1 duration-500 shadow-sm hover:shadow-xl ${dark ? 'bg-nomad-black text-white' : 'bg-white text-nomad-black'}`}>
+                <div className="relative group rounded-3xl overflow-hidden h-[650px] w-full transition-transform hover:-translate-y-1 duration-500 shadow-sm hover:shadow-xl bg-nomad-black text-white">
                     <div className="absolute inset-0 z-0">
                         <img 
                             src={image} 
                             alt={title} 
                             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90 blur-[2px]"
                         />
-                        <div className={`absolute inset-0 transition-opacity duration-500 bg-black/60 group-hover:bg-black/50`}></div>
+                        <div className="absolute inset-0 transition-opacity duration-500 bg-black/60 group-hover:bg-black/50"></div>
                     </div>
                     
                     <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-between items-center text-center">
@@ -258,7 +342,10 @@
                                 <p className="text-sm font-medium uppercase tracking-widest text-white">Confidential</p>
                             </div>
                             <div className="mt-8">
-                                <button className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/30 hover:bg-white/30 transition-all">
+                                <button 
+                                    onClick={onLoginClick}
+                                    className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/30 hover:bg-white/30 transition-all"
+                                >
                                     Login to View
                                 </button>
                             </div>
@@ -268,31 +355,27 @@
             );
         };
 
-        const Features = () => {
+        const Features = ({ onLoginClick }) => {
             const features = [
                 {
                     title: "Cardiac Sync",
                     icon: HeartPulse,
-                    image: "https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=2940&auto=format&fit=crop",
-                    dark: true
+                    image: "https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=2940&auto=format&fit=crop"
                 },
                 {
                     title: "Nomad Engine",
                     icon: Brain,
-                    image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=2832&auto=format&fit=crop",
-                    dark: true
+                    image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=2832&auto=format&fit=crop"
                 },
                 {
                     title: "Postural Awareness",
                     icon: Activity,
-                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2940&auto=format&fit=crop",
-                    dark: true
+                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2940&auto=format&fit=crop"
                 },
                 {
                     title: "Panic Detect",
                     icon: ShieldCheck,
-                    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2031&auto=format&fit=crop",
-                    dark: true
+                    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2031&auto=format&fit=crop"
                 }
             ];
             return (
@@ -320,7 +403,7 @@
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {features.map((feature, idx) => (
                                 <FadeIn key={idx} delay={idx * 100}>
-                                    <FeatureCard {...feature} />
+                                    <FeatureCard {...feature} onLoginClick={onLoginClick} />
                                 </FadeIn>
                             ))}
                         </div>
@@ -329,74 +412,56 @@
             );
         };
 
-        const TeamMemberCard = ({ name, role, desc, image }) => {
+        /* --- PHOTO GRID --- */
+        const PhotoGridItem = ({ name, role, image }) => {
             return (
-                <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-white shadow-sm cursor-pointer">
-                    <div className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center bg-nomad-white transition-opacity duration-500">
-                        <h4 className="font-serif text-2xl mb-2 text-nomad-black">{name}</h4>
-                        <p className="text-xs uppercase tracking-wider text-nomad-black/50 font-bold mb-4">{role}</p>
-                        <p className="text-nomad-black/70 text-sm leading-relaxed">{desc}</p>
-                    </div>
-                    <div className="absolute inset-0 z-10 transition-opacity duration-500 ease-in-out group-hover:opacity-0 bg-nomad-black/5">
-                        <img 
-                            src={image} 
-                            alt={name} 
-                            className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
-                        />
+                <div className="relative aspect-square overflow-hidden group">
+                    <img 
+                        src={image} 
+                        alt={name} 
+                        className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                            <h4 className="text-white font-semibold text-sm">{name}</h4>
+                            <p className="text-white/70 text-xs">{role}</p>
+                        </div>
                     </div>
                 </div>
             );
         };
 
-        const Advisors = () => {
-             const founders = [
-                { name: "Santiago", role: "CEO", desc: "MSc Financial Mathematics. Ex Y Combinator.", image: "Santi.jpg" },
-                { name: "Ollie", role: "Head Scientist", desc: "PhD Neuroscience, UCL.", image: "Ollie.png" },
-                { name: "Callum", role: "Lead Hardware", desc: "Expert in hardware design and engineering.", image: "callum.png" },
-                { name: "Marcelo", role: "Lead Systems", desc: "BAE Systems.", image: "Marcelo.png" }
+        const Team = () => {
+            const team = [
+                { name: "Santiago", role: "CEO", image: "Santi.jpg" },
+                { name: "Ollie", role: "Head Scientist", image: "Ollie.png" },
+                { name: "Callum", role: "Lead Hardware", image: "callum.png" },
+                { name: "Marcelo", role: "Lead Systems", image: "Marcelo.png" },
+                { name: "Ben Newton", role: "Technology Advisor", image: "Ben_newton.png" },
+                { name: "Guy Winter", role: "Defence Advisor", image: "Guy_Winter.png" },
+                { name: "Anders Borg", role: "Fundraising Advisor", image: "Anders_borg.png" },
+                { name: "Prof Imanual Lerman", role: "Clinical Advisor", image: "Imanuel_Lerman.png" },
+                { name: "Prof Steve Alty", role: "Electrical Advisor", image: "Steve_Alty.png" },
+                { name: "Patrik Nilsson", role: "Supply Chain Advisor", image: "Patrik_Nilsson.png" },
+                { name: "Ben Black", role: "Non-Executive Director", image: "ben_black.png" }
             ];
-            const advisors = [
-                { name: "Ben Newton", role: "Technology Advisor", desc: "Strategy, delivery and management for the world's top financials.", image: "Ben_newton.png" },
-                { name: "Lt Col, Dr Guy Winter", role: "Defence Advisor", desc: "Defence contracts specialist and behavioural scientist.", image: "Guy_Winter.png" },
-                { name: "Anders Borg", role: "Fundraising Advisor", desc: "Former MD at KKR, expert in fundraising and global economics.", image: "Anders_borg.png" },
-                { name: "Prof Imanual Lerman", role: "Clinical Advisor", desc: "Professor and practicing neurologist at UCSD.", image: "Imanuel_Lerman.png" },
-                { name: "Prof Steve Alty", role: "Electrical Advisor", desc: "Head of Department of Electrical Engineering.", image: "Steve_Alty.png" },
-                { name: "Patrik Nilsson", role: "Supply Chain Advisor", desc: "Founder & Director at Emporium Partners.", image: "Patrik_Nilsson.png" },
-                { name: "Ben Black", role: "Non-Executive Director", desc: "Strategic guidance and governance.", image: "ben_black.png" }
-            ];
-            return (
-                <section id="advisors" className="bg-nomad-base py-32 px-6 md:px-12 border-t border-nomad-black/5">
-                    <div className="max-w-[1600px] mx-auto">
-                        
-                        {/* Founders Section */}
-                        <div className="mb-32">
-                            <div className="text-center mb-16">
-                                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">The Team</h2>
-                                <h3 className="font-serif text-4xl md:text-5xl text-nomad-black">Founders</h3>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {founders.map((item, idx) => (
-                                    <FadeIn key={idx} delay={idx * 50}>
-                                        <TeamMemberCard {...item} />
-                                    </FadeIn>
-                                ))}
-                            </div>
-                        </div>
 
-                        {/* Advisors Section */}
-                        <div>
-                            <div className="text-center mb-16">
-                                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">Leadership</h2>
-                                <h3 className="font-serif text-4xl md:text-5xl text-nomad-black">Backed by Industry Leaders</h3>
+            return (
+                <section id="team" className="bg-nomad-base py-24 border-t border-nomad-black/5">
+                    <div className="max-w-[1600px] mx-auto px-6 md:px-12 mb-16">
+                        <FadeIn>
+                            <div className="text-center">
+                                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">The Team</h2>
+                                <h3 className="font-serif text-4xl md:text-5xl text-nomad-black">Founders & Advisors</h3>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {advisors.map((item, idx) => (
-                                    <FadeIn key={idx} delay={idx * 50}>
-                                        <TeamMemberCard {...item} />
-                                    </FadeIn>
-                                ))}
-                            </div>
-                        </div>
+                        </FadeIn>
+                    </div>
+                    
+                    {/* Photo Grid - No gaps, square edges touching */}
+                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                        {team.map((member, idx) => (
+                            <PhotoGridItem key={idx} {...member} />
+                        ))}
                     </div>
                 </section>
             );
@@ -424,7 +489,7 @@
                             <div>
                                 <h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-white/40">Company</h4>
                                 <ul className="space-y-4 text-white/80 font-light text-sm">
-                                    <li><a href="#advisors" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Team</a></li>
+                                    <li><a href="#team" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Team</a></li>
                                     <li><a href="#" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Investors</a></li>
                                     <li><a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors hover:pl-2 duration-300 block">Contact</a></li>
                                 </ul>
@@ -458,13 +523,16 @@
         };
 
         const App = () => {
+            const [loginOpen, setLoginOpen] = useState(false);
+            
             return (
                 <div className="font-sans text-nomad-black bg-nomad-base antialiased selection:bg-nomad-black selection:text-nomad-base">
-                    <Navbar />
-                    <Hero />
-                    <Features />
-                    <Advisors />
+                    <Navbar onLoginClick={() => setLoginOpen(true)} />
+                    <Hero onLoginClick={() => setLoginOpen(true)} />
+                    <Features onLoginClick={() => setLoginOpen(true)} />
+                    <Team />
                     <Footer />
+                    <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
                 </div>
             );
         };
