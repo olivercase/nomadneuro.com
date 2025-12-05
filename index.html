@@ -75,6 +75,12 @@
     </style>
 </head>
 <body>
+    <!-- Hidden form for Netlify to detect during build -->
+    <form name="waitlist" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="bot-field" />
+        <input type="email" name="email" />
+    </form>
+    
     <div id="root"></div>
 
     <script type="text/babel">
@@ -227,8 +233,121 @@
             );
         };
 
+        /* --- WAITLIST MODAL --- */
+        const WaitlistModal = ({ isOpen, onClose }) => {
+            const [email, setEmail] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+            const [success, setSuccess] = useState(false);
+            const [error, setError] = useState('');
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setIsLoading(true);
+                setError('');
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('form-name', 'waitlist');
+                    formData.append('email', email);
+                    
+                    const response = await fetch('/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(formData).toString()
+                    });
+                    
+                    if (response.ok) {
+                        setSuccess(true);
+                        setEmail('');
+                    } else {
+                        throw new Error('Failed to submit');
+                    }
+                } catch (err) {
+                    setError('Something went wrong. Please try again.');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleClose = () => {
+                setSuccess(false);
+                setError('');
+                setEmail('');
+                onClose();
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div 
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-base/80 backdrop-blur-xl"
+                    onClick={(e) => e.target === e.currentTarget && handleClose()}
+                >
+                    <div className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-black/5">
+                        <button 
+                            onClick={handleClose}
+                            className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-black transition-colors"
+                        >
+                            <X size={24} />
+                        </button>
+                        
+                        {success ? (
+                            <div className="text-center py-8">
+                                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <h3 className="font-serif text-3xl mb-3 text-nomad-black">You're In!</h3>
+                                <p className="text-nomad-black/60 mb-6">We'll be in touch soon with updates on Nomad.</p>
+                                <button 
+                                    onClick={handleClose}
+                                    className="px-8 py-3 bg-nomad-black text-white rounded-full font-semibold hover:bg-[#333] transition-colors"
+                                >
+                                    Done
+                                </button>
+                            </div>
+                        ) : (
+                            <>
+                                <h3 className="font-serif text-3xl mb-2 text-nomad-black">Join the Waitlist</h3>
+                                <p className="text-nomad-black/50 mb-8 text-sm">Be the first to experience Nomad.</p>
+                                
+                                <form onSubmit={handleSubmit}>
+                                    <input type="hidden" name="form-name" value="waitlist" />
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        placeholder="Your email address"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                        className="w-full px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 mb-6 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
+                                    />
+                                    <button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="w-full py-4 bg-nomad-black text-white rounded-xl font-semibold hover:bg-[#333] transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                                    >
+                                        {isLoading ? 'Joining...' : 'Join Waitlist'}
+                                    </button>
+                                </form>
+                                
+                                {error && (
+                                    <p className="mt-4 text-red-500 text-sm text-center font-medium">{error}</p>
+                                )}
+                                
+                                <p className="mt-6 text-center text-nomad-black/40 text-xs">
+                                    No spam. Unsubscribe anytime.
+                                </p>
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
         /* --- SECTIONS --- */
-        const Navbar = ({ onLoginClick }) => {
+        const Navbar = ({ onLoginClick, onWaitlistClick }) => {
             const scrollPos = useScrollPosition();
             const isScrolled = scrollPos > 50;
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -262,7 +381,7 @@
                                 >
                                     {mobileMenuOpen ? <X size={20} color="#1C1B1A" /> : <Menu size={20} color="#1C1B1A" />}
                                 </button>
-                                <Button href="mailto:hello@nomadneuro.com" className="hidden md:inline-flex py-2.5 px-6 text-xs">Join Waitlist</Button>
+                                <Button onClick={onWaitlistClick} className="hidden md:inline-flex py-2.5 px-6 text-xs">Join Waitlist</Button>
                             </div>
                         </div>
                     </nav>
@@ -271,14 +390,14 @@
                             <a href="#technology" className="border-b border-black/10 pb-4">Technology</a>
                             <a href="#team" className="border-b border-black/10 pb-4">Team</a>
                             <button onClick={onLoginClick} className="border-b border-black/10 pb-4 text-left">Investor Login</button>
-                            <Button href="mailto:hello@nomadneuro.com" className="mt-4 w-full">Join Waitlist</Button>
+                            <Button onClick={onWaitlistClick} className="mt-4 w-full">Join Waitlist</Button>
                         </div>
                     </div>
                 </>
             );
         };
 
-        const Hero = ({ onLoginClick }) => {
+        const Hero = ({ onLoginClick, onWaitlistClick }) => {
             return (
                 <div className="relative min-h-screen w-full overflow-hidden bg-nomad-base">
                     <div className="absolute inset-0 z-0">
@@ -308,7 +427,7 @@
                                     <p className="mt-2">We are Nomad.</p>
                                 </div>
                                 <div className="flex gap-4">
-                                    <Button href="mailto:hello@nomadneuro.com">Join Waitlist</Button>
+                                    <Button onClick={onWaitlistClick}>Join Waitlist</Button>
                                     <Button variant="secondary" onClick={onLoginClick}>Investor Login</Button>
                                 </div>
                             </div>
@@ -469,6 +588,37 @@
         };
 
         const Footer = () => {
+            const [footerEmail, setFooterEmail] = useState('');
+            const [footerSubmitting, setFooterSubmitting] = useState(false);
+            const [footerSuccess, setFooterSuccess] = useState(false);
+            
+            const handleFooterSubmit = async (e) => {
+                e.preventDefault();
+                setFooterSubmitting(true);
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('form-name', 'waitlist');
+                    formData.append('email', footerEmail);
+                    
+                    const response = await fetch('/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(formData).toString()
+                    });
+                    
+                    if (response.ok) {
+                        setFooterSuccess(true);
+                        setFooterEmail('');
+                        setTimeout(() => setFooterSuccess(false), 3000);
+                    }
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    setFooterSubmitting(false);
+                }
+            };
+            
             return (
                 <footer className="bg-nomad-black text-white pt-24 pb-12 px-6 md:px-12">
                     <div className="max-w-[1600px] mx-auto">
@@ -497,16 +647,26 @@
                             </div>
                             <div>
                                 <h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-white/40">Stay Updated</h4>
-                                <div className="flex gap-2">
+                                <form onSubmit={handleFooterSubmit} className="flex gap-2">
                                     <input 
                                         type="email" 
                                         placeholder="Enter your email" 
+                                        value={footerEmail}
+                                        onChange={(e) => setFooterEmail(e.target.value)}
+                                        required
                                         className="bg-white/10 border border-white/20 rounded-full px-6 py-3 text-sm w-full focus:outline-none focus:border-white transition-colors text-white placeholder:text-white/40 font-light"
                                     />
-                                    <button className="bg-white text-black rounded-full px-6 py-3 text-sm font-bold hover:bg-white/90 transition-colors">
-                                        Join
+                                    <button 
+                                        type="submit"
+                                        disabled={footerSubmitting}
+                                        className="bg-white text-black rounded-full px-6 py-3 text-sm font-bold hover:bg-white/90 transition-colors disabled:opacity-70 whitespace-nowrap"
+                                    >
+                                        {footerSuccess ? '✓' : footerSubmitting ? '...' : 'Join'}
                                     </button>
-                                </div>
+                                </form>
+                                {footerSuccess && (
+                                    <p className="text-green-400 text-xs mt-2">You're on the list!</p>
+                                )}
                             </div>
                         </div>
                         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/40 font-medium">
@@ -525,15 +685,17 @@
 
         const App = () => {
             const [loginOpen, setLoginOpen] = useState(false);
+            const [waitlistOpen, setWaitlistOpen] = useState(false);
             
             return (
                 <div className="font-sans text-nomad-black bg-nomad-base antialiased selection:bg-nomad-black selection:text-nomad-base">
-                    <Navbar onLoginClick={() => setLoginOpen(true)} />
-                    <Hero onLoginClick={() => setLoginOpen(true)} />
+                    <Navbar onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
+                    <Hero onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
                     <Features onLoginClick={() => setLoginOpen(true)} />
                     <Team />
                     <Footer />
                     <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
+                    <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
                 </div>
             );
         };
