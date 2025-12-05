@@ -79,6 +79,8 @@
     <form name="waitlist" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
         <input type="hidden" name="form-name" value="waitlist" />
         <input type="text" name="bot-field" />
+        <input type="text" name="firstName" />
+        <input type="text" name="lastName" />
         <input type="email" name="email" />
     </form>
     
@@ -236,6 +238,8 @@
 
         /* --- WAITLIST MODAL --- */
         const WaitlistModal = ({ isOpen, onClose }) => {
+            const [firstName, setFirstName] = useState('');
+            const [lastName, setLastName] = useState('');
             const [email, setEmail] = useState('');
             const [isLoading, setIsLoading] = useState(false);
             const [success, setSuccess] = useState(false);
@@ -249,6 +253,8 @@
                 try {
                     const formData = new FormData();
                     formData.append('form-name', 'waitlist');
+                    formData.append('firstName', firstName);
+                    formData.append('lastName', lastName);
                     formData.append('email', email);
                     
                     const response = await fetch('/', {
@@ -259,6 +265,8 @@
                     
                     if (response.ok) {
                         setSuccess(true);
+                        setFirstName('');
+                        setLastName('');
                         setEmail('');
                     } else {
                         throw new Error('Failed to submit');
@@ -273,6 +281,8 @@
             const handleClose = () => {
                 setSuccess(false);
                 setError('');
+                setFirstName('');
+                setLastName('');
                 setEmail('');
                 onClose();
             };
@@ -315,10 +325,30 @@
                                 
                                 <form onSubmit={handleSubmit}>
                                     <input type="hidden" name="form-name" value="waitlist" />
+                                    <div className="flex gap-3 mb-4">
+                                        <input
+                                            type="text"
+                                            name="firstName"
+                                            placeholder="First name"
+                                            value={firstName}
+                                            onChange={(e) => setFirstName(e.target.value)}
+                                            required
+                                            className="w-1/2 px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="lastName"
+                                            placeholder="Last name"
+                                            value={lastName}
+                                            onChange={(e) => setLastName(e.target.value)}
+                                            required
+                                            className="w-1/2 px-5 py-4 rounded-xl border border-black/10 bg-nomad-base/50 focus:outline-none focus:border-nomad-black transition-colors text-nomad-black placeholder:text-nomad-black/40"
+                                        />
+                                    </div>
                                     <input
                                         type="email"
                                         name="email"
-                                        placeholder="Your email address"
+                                        placeholder="Email address"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
