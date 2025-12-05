@@ -415,18 +415,17 @@
         /* --- PHOTO GRID --- */
         const PhotoGridItem = ({ name, role, bio, image }) => {
             return (
-                <div className="group">
-                    <div className="relative aspect-square overflow-hidden">
-                        <img 
-                            src={image} 
-                            alt={name} 
-                            className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" 
-                        />
-                    </div>
-                    <div className="p-4 bg-white">
-                        <h4 className="font-semibold text-sm text-nomad-black">{name}</h4>
-                        <p className="text-xs uppercase tracking-wider text-nomad-black/50 font-medium mb-2">{role}</p>
-                        <p className="text-xs text-nomad-black/60 leading-relaxed">{bio}</p>
+                <div className="relative aspect-square overflow-hidden group cursor-pointer">
+                    <img 
+                        src={image} 
+                        alt={name} 
+                        className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" 
+                    />
+                    {/* Overlay with info on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                        <h4 className="text-white font-semibold text-sm mb-1">{name}</h4>
+                        <p className="text-white/70 text-xs uppercase tracking-wider font-medium mb-2">{role}</p>
+                        <p className="text-white/60 text-xs leading-relaxed">{bio}</p>
                     </div>
                 </div>
             );
@@ -435,7 +434,7 @@
         const Team = () => {
             const team = [
                 { name: "Santiago", role: "CEO", bio: "MSc Financial Mathematics. Ex Y Combinator.", image: "Santi.jpg" },
-                { name: "Ollie", role: "Head Scientist", bio: "PhD Neuroscience, UCL.", image: "Ollie.png" },
+                { name: "Ollie", role: "Head Scientist", bio: "MSc Neuroscience, doing PHD Autonomic Neuroscience at UCL.", image: "Ollie.png" },
                 { name: "Callum", role: "Lead Hardware", bio: "Expert in hardware design and engineering.", image: "callum.png" },
                 { name: "Marcelo", role: "Lead Systems", bio: "BAE Systems.", image: "Marcelo.png" },
                 { name: "Ben Newton", role: "Technology Advisor", bio: "Strategy, delivery and management for the world's top financials.", image: "Ben_newton.png" },
