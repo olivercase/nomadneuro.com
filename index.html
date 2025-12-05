@@ -18,7 +18,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 
     <!-- Configuration -->
     <script>
@@ -34,7 +34,7 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
                         serif: ['Newsreader', 'serif'],
                     },
                     animation: {
@@ -413,19 +413,20 @@
         };
 
         /* --- PHOTO GRID --- */
-        const PhotoGridItem = ({ name, role, image }) => {
+        const PhotoGridItem = ({ name, role, bio, image }) => {
             return (
-                <div className="relative aspect-square overflow-hidden group">
-                    <img 
-                        src={image} 
-                        alt={name} 
-                        className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="absolute bottom-0 left-0 right-0 p-4">
-                            <h4 className="text-white font-semibold text-sm">{name}</h4>
-                            <p className="text-white/70 text-xs">{role}</p>
-                        </div>
+                <div className="group">
+                    <div className="relative aspect-square overflow-hidden">
+                        <img 
+                            src={image} 
+                            alt={name} 
+                            className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" 
+                        />
+                    </div>
+                    <div className="p-4 bg-white">
+                        <h4 className="font-semibold text-sm text-nomad-black">{name}</h4>
+                        <p className="text-xs uppercase tracking-wider text-nomad-black/50 font-medium mb-2">{role}</p>
+                        <p className="text-xs text-nomad-black/60 leading-relaxed">{bio}</p>
                     </div>
                 </div>
             );
@@ -433,17 +434,17 @@
 
         const Team = () => {
             const team = [
-                { name: "Santiago", role: "CEO", image: "Santi.jpg" },
-                { name: "Ollie", role: "Head Scientist", image: "Ollie.png" },
-                { name: "Callum", role: "Lead Hardware", image: "callum.png" },
-                { name: "Marcelo", role: "Lead Systems", image: "Marcelo.png" },
-                { name: "Ben Newton", role: "Technology Advisor", image: "Ben_newton.png" },
-                { name: "Guy Winter", role: "Defence Advisor", image: "Guy_Winter.png" },
-                { name: "Anders Borg", role: "Fundraising Advisor", image: "Anders_borg.png" },
-                { name: "Prof Imanual Lerman", role: "Clinical Advisor", image: "Imanuel_Lerman.png" },
-                { name: "Prof Steve Alty", role: "Electrical Advisor", image: "Steve_Alty.png" },
-                { name: "Patrik Nilsson", role: "Supply Chain Advisor", image: "Patrik_Nilsson.png" },
-                { name: "Ben Black", role: "Non-Executive Director", image: "ben_black.png" }
+                { name: "Santiago", role: "CEO", bio: "MSc Financial Mathematics. Ex Y Combinator.", image: "Santi.jpg" },
+                { name: "Ollie", role: "Head Scientist", bio: "PhD Neuroscience, UCL.", image: "Ollie.png" },
+                { name: "Callum", role: "Lead Hardware", bio: "Expert in hardware design and engineering.", image: "callum.png" },
+                { name: "Marcelo", role: "Lead Systems", bio: "BAE Systems.", image: "Marcelo.png" },
+                { name: "Ben Newton", role: "Technology Advisor", bio: "Strategy, delivery and management for the world's top financials.", image: "Ben_newton.png" },
+                { name: "Guy Winter", role: "Defence Advisor", bio: "Defence contracts specialist and behavioural scientist.", image: "Guy_Winter.png" },
+                { name: "Anders Borg", role: "Fundraising Advisor", bio: "Former MD at KKR, expert in fundraising and global economics.", image: "Anders_borg.png" },
+                { name: "Prof Imanual Lerman", role: "Clinical Advisor", bio: "Professor and practicing neurologist at UCSD.", image: "Imanuel_Lerman.png" },
+                { name: "Prof Steve Alty", role: "Electrical Advisor", bio: "Head of Department of Electrical Engineering.", image: "Steve_Alty.png" },
+                { name: "Patrik Nilsson", role: "Supply Chain Advisor", bio: "Founder & Director at Emporium Partners.", image: "Patrik_Nilsson.png" },
+                { name: "Ben Black", role: "Non-Executive Director", bio: "Strategic guidance and governance.", image: "ben_black.png" }
             ];
 
             return (
