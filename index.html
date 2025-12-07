@@ -68,6 +68,9 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
+        /* Italic text uses serif font */
+        .italic, i, em { font-family: 'Newsreader', serif; }
+        
         ::selection {
             background: #1C1B1A;
             color: #F9EBF0;
@@ -204,7 +207,7 @@
                             <X size={24} />
                         </button>
                         
-                        <h3 className="font-serif text-3xl mb-2 text-nomad-black">Investor Portal</h3>
+                        <h3 className="text-3xl font-bold mb-2 text-nomad-black">Investor Portal</h3>
                         <p className="text-nomad-black/50 mb-8 text-sm">Secure partners only.</p>
                         
                         <form onSubmit={handleSubmit}>
@@ -314,7 +317,7 @@
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                 </div>
-                                <h3 className="font-serif text-3xl mb-3 text-nomad-black">You're In!</h3>
+                                <h3 className="text-3xl font-bold mb-3 text-nomad-black">You're In!</h3>
                                 <p className="text-nomad-black/60 mb-6">We'll be in touch soon with updates on Nomad.</p>
                                 <button 
                                     onClick={handleClose}
@@ -325,7 +328,7 @@
                             </div>
                         ) : (
                             <>
-                                <h3 className="font-serif text-3xl mb-2 text-nomad-black">Join the Waitlist</h3>
+                                <h3 className="text-3xl font-bold mb-2 text-nomad-black">Join the Waitlist</h3>
                                 <p className="text-nomad-black/50 mb-8 text-sm">Be the first to experience Nomad.</p>
                                 
                                 <form onSubmit={handleSubmit}>
@@ -399,7 +402,7 @@
                     >
                         <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between">
                             <div className="flex-1">
-                                <a href="#" className="text-2xl tracking-[0.1em] font-serif font-bold text-nomad-black hover:opacity-80 transition-opacity uppercase">
+                                <a href="#" className="text-2xl tracking-[0.1em] font-bold text-nomad-black hover:opacity-80 transition-opacity uppercase">
                                     Nomad
                                 </a>
                             </div>
@@ -425,7 +428,7 @@
                         </div>
                     </nav>
                     <div className={`fixed inset-0 z-40 bg-nomad-base pt-24 px-6 transition-transform duration-500 ease-in-out md:hidden ${mobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-                        <div className="flex flex-col gap-6 text-3xl font-serif text-nomad-black">
+                        <div className="flex flex-col gap-6 text-3xl font-medium text-nomad-black">
                             <a href="#technology" className="border-b border-black/10 pb-4">Technology</a>
                             <a href="#team" className="border-b border-black/10 pb-4">Team</a>
                             <button onClick={onLoginClick} className="border-b border-black/10 pb-4 text-left">Investor Login</button>
@@ -452,7 +455,7 @@
                                 </span>
                                 <span className="text-xs font-bold tracking-[0.2em] uppercase text-nomad-black/60">Coming Soon</span>
                             </div>
-                            <h1 className="font-serif text-5xl md:text-7xl lg:text-[6rem] leading-[0.95] tracking-tight text-nomad-black max-w-5xl mb-8 drop-shadow-sm">
+                            <h1 className="text-5xl md:text-7xl lg:text-[6rem] font-medium leading-[0.95] tracking-tight text-nomad-black max-w-5xl mb-8 drop-shadow-sm">
                                 Your body runs on an <br />
                                 <span className="italic font-light text-nomad-black/80">operating system.</span>
                             </h1>
@@ -483,8 +486,8 @@
                         <FadeIn>
                             <div className="max-w-4xl">
                                 <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-8">Mission</h2>
-                                <p className="font-serif text-3xl md:text-5xl lg:text-6xl leading-[1.15] text-white">
-                                    We design therapeutic neurotechnology that restores the body from within — <span className="italic text-white/70">beginning with the autonomic nervous system.</span>
+                                <p className="text-3xl md:text-5xl lg:text-6xl font-medium leading-[1.15] text-white">
+                                    We design therapeutic neurotechnology that restores the body from within — <span className="italic font-light text-white/70">beginning with the autonomic nervous system.</span>
                                 </p>
                             </div>
                         </FadeIn>
@@ -518,9 +521,9 @@
                         <FadeIn>
                             <div className="text-center mb-24">
                                 <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">Introducing</h2>
-                                <h3 className="font-serif text-4xl md:text-6xl lg:text-7xl text-nomad-black leading-[1.05] mb-8">
+                                <h3 className="text-4xl md:text-6xl lg:text-7xl font-medium text-nomad-black leading-[1.05] mb-8">
                                     One platform.<br />
-                                    <span className="italic text-nomad-black/60">Endless applications.</span>
+                                    <span className="italic font-light text-nomad-black/60">Endless applications.</span>
                                 </h3>
                                 <p className="text-nomad-black/70 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
                                     The autonomic nervous system governs every organ, every heartbeat, every moment of balance. When it falters, human life narrows. When it's restored, everything opens.
@@ -542,7 +545,7 @@
                                                 <div className="mb-6 p-4 bg-nomad-base rounded-2xl inline-block">
                                                     <pillar.icon size={28} color="#1C1B1A" />
                                                 </div>
-                                                <h5 className="font-serif text-2xl md:text-3xl text-nomad-black mb-4">{pillar.title}</h5>
+                                                <h5 className="text-2xl md:text-3xl font-semibold text-nomad-black mb-4">{pillar.title}</h5>
                                                 <p className="text-nomad-black/70 leading-relaxed">{pillar.description}</p>
                                             </div>
                                         </FadeIn>
@@ -596,8 +599,8 @@
                         <FadeIn>
                             <div className="text-center max-w-4xl mx-auto">
                                 <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">The Team</h2>
-                                <p className="font-serif text-2xl md:text-3xl text-nomad-black/80 leading-relaxed">
-                                    Created by neuroscientists, engineers, and innovators united by one mission: <span className="italic">to redefine how humans interact with their nervous systems.</span>
+                                <p className="text-2xl md:text-3xl font-medium text-nomad-black/80 leading-relaxed">
+                                    Created by neuroscientists, engineers, and innovators united by one mission: <span className="italic font-light">to redefine how humans interact with their nervous systems.</span>
                                 </p>
                             </div>
                         </FadeIn>
@@ -650,7 +653,7 @@
                     <div className="max-w-[1600px] mx-auto">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-24">
                             <div>
-                                <div className="text-2xl font-serif font-bold mb-8 tracking-[0.1em] uppercase">Nomad</div>
+                                <div className="text-2xl font-bold mb-8 tracking-[0.1em] uppercase">Nomad</div>
                                 <p className="text-white/60 max-w-xs leading-relaxed">
                                     Redefining how humans interact with their nervous systems.
                                 </p>
