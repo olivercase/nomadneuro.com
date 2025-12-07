@@ -462,8 +462,8 @@
                             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-t border-nomad-black/10 pt-8">
                                 <div className="text-lg md:text-2xl text-nomad-black/80 max-w-xl leading-relaxed font-medium">
                                     <p className="mb-4">We decode it. We regulate it.</p>
-                                    <p><span className="text-nomad-black font-semibold">376M consumers</span> and <span className="text-nomad-black font-semibold">53M patients</span> live with autonomic dysfunction. Until now, no one has solved it.</p>
-                                    <p className="mt-2">We are Nomad.</p>
+                                    <p className="mb-4">Autonomic dysfunction affects <span className="text-nomad-black font-semibold">376 million consumers</span> and <span className="text-nomad-black font-semibold">53 million patients</span>. Until now, no one has been able to treat the system itself.</p>
+                                    <p className="text-nomad-black font-semibold">Nomad is changing that.</p>
                                 </div>
                                 <div className="flex gap-4">
                                     <Button onClick={onWaitlistClick}>Join Waitlist</Button>
@@ -476,100 +476,85 @@
             );
         };
 
-        const FeatureCard = ({ title, icon: Icon, image, onLoginClick }) => {
+        const Mission = () => {
             return (
-                <div className="relative group rounded-3xl overflow-hidden h-[350px] w-full transition-transform hover:-translate-y-1 duration-500 shadow-sm hover:shadow-xl bg-nomad-black text-white">
-                    <div className="absolute inset-0 z-0">
-                        <img 
-                            src={image} 
-                            alt={title} 
-                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90 blur-[2px]"
-                        />
-                        <div className="absolute inset-0 transition-opacity duration-500 bg-black/60 group-hover:bg-black/50"></div>
-                    </div>
-                    
-                    <div className="relative z-10 p-6 h-full flex flex-col justify-between items-center text-center">
-                        <div className="mt-4 p-3 bg-white/10 backdrop-blur-xl rounded-full border border-white/20">
-                            <Icon size={24} className="text-white" />
-                        </div>
-                        
-                        <div className="mb-4">
-                            <h3 className="text-xl md:text-2xl font-serif mb-3 leading-tight text-white">{title}</h3>
-                            
-                            <div className="flex flex-col items-center gap-2 opacity-70">
-                                <Lock size={16} className="text-white" />
-                                <p className="text-xs font-medium uppercase tracking-widest text-white">Confidential</p>
-                            </div>
-                            <div className="mt-4">
-                                <button 
-                                    onClick={onLoginClick}
-                                    className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider border border-white/30 hover:bg-white/30 transition-all"
-                                >
-                                    Login to View
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const Features = ({ onLoginClick }) => {
-            const features = [
-                {
-                    title: "Cardiac Sync",
-                    icon: HeartPulse,
-                    image: "https://images.unsplash.com/photo-1518655048521-f130df041f66?q=80&w=2940&auto=format&fit=crop"
-                },
-                {
-                    title: "Nomad Engine",
-                    icon: Brain,
-                    image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=2832&auto=format&fit=crop"
-                },
-                {
-                    title: "Postural Awareness",
-                    icon: Activity,
-                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2940&auto=format&fit=crop"
-                },
-                {
-                    title: "Panic Detect",
-                    icon: ShieldCheck,
-                    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2031&auto=format&fit=crop"
-                }
-            ];
-            return (
-                <section id="technology" className="bg-nomad-base px-6 md:px-12 py-32">
+                <section className="bg-nomad-black text-white py-32 px-6 md:px-12">
                     <div className="max-w-[1600px] mx-auto">
                         <FadeIn>
-                            <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-12">
-                                <div>
-                                    <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">The Difference</h2>
-                                    <p className="font-serif text-4xl md:text-6xl text-nomad-black leading-[1.05]">
-                                        Precise. Patented. <br />
-                                        <span className="italic text-nomad-black/60">AI-Driven.</span>
-                                    </p>
-                                </div>
-                                <div className="max-w-xl">
-                                    <p className="text-nomad-black/70 text-lg leading-relaxed mb-6">
-                                        Current solutions force a choice: high-risk surgical implants or low-efficacy wearables. Nomad bridges the gap with the first closed-loop, physiology-driven adaptive stimulation device.
-                                    </p>
-                                    <p className="text-nomad-black/70 text-lg leading-relaxed">
-                                        Clinical-grade technology designed for consumers, patients, and defense. By utilizing novel biomarkers, we decode your body's signals and regulate them in real-time. No one else does this.
-                                    </p>
-                                </div>
+                            <div className="max-w-4xl">
+                                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-8">Mission</h2>
+                                <p className="font-serif text-3xl md:text-5xl lg:text-6xl leading-[1.15] text-white">
+                                    We design therapeutic neurotechnology that restores the body from within — <span className="italic text-white/70">beginning with the autonomic nervous system.</span>
+                                </p>
                             </div>
                         </FadeIn>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {features.map((feature, idx) => (
-                                <FadeIn key={idx} delay={idx * 100}>
-                                    <FeatureCard {...feature} onLoginClick={onLoginClick} />
-                                </FadeIn>
-                            ))}
-                        </div>
                     </div>
                 </section>
             );
         };
+
+        const Platform = () => {
+            const pillars = [
+                {
+                    title: "Neurotechnology",
+                    description: "We build sensing and stimulation systems capable of resolving autonomic signals with unmatched precision. Small enough to disappear into everyday life. Powerful enough to reshape physiology.",
+                    icon: Activity
+                },
+                {
+                    title: "Neurobiology",
+                    description: "We uncover how the autonomic nervous system governs health, emotion, and performance — decoding the electrical language that keeps the body upright, calm, and alive.",
+                    icon: Brain
+                },
+                {
+                    title: "AI & Machine Learning",
+                    description: "Our adaptive algorithms learn from each person in real time. Signals are decoded, responses predicted, and therapy tailored — generating the first dynamic map of autonomic function in the human body.",
+                    icon: HeartPulse
+                }
+            ];
+
+            return (
+                <section id="technology" className="bg-nomad-base px-6 md:px-12 py-32">
+                    <div className="max-w-[1600px] mx-auto">
+                        <FadeIn>
+                            <div className="text-center mb-24">
+                                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">Introducing</h2>
+                                <h3 className="font-serif text-4xl md:text-6xl lg:text-7xl text-nomad-black leading-[1.05] mb-8">
+                                    One platform.<br />
+                                    <span className="italic text-nomad-black/60">Endless applications.</span>
+                                </h3>
+                                <p className="text-nomad-black/70 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                                    The autonomic nervous system governs every organ, every heartbeat, every moment of balance. When it falters, human life narrows. When it's restored, everything opens.
+                                </p>
+                            </div>
+                        </FadeIn>
+
+                        <FadeIn delay={100}>
+                            <div className="border-t border-nomad-black/10 pt-16">
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16">
+                                    <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40">The Nomad Platform</h4>
+                                    <p className="text-nomad-black/70 text-lg">Our approach is built on three interconnected pillars.</p>
+                                </div>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {pillars.map((pillar, idx) => (
+                                        <FadeIn key={idx} delay={idx * 100 + 200}>
+                                            <div className="bg-white rounded-3xl p-8 md:p-10 h-full shadow-sm hover:shadow-xl transition-shadow duration-500 border border-nomad-black/5">
+                                                <div className="mb-6 p-4 bg-nomad-base rounded-2xl inline-block">
+                                                    <pillar.icon size={28} color="#1C1B1A" />
+                                                </div>
+                                                <h5 className="font-serif text-2xl md:text-3xl text-nomad-black mb-4">{pillar.title}</h5>
+                                                <p className="text-nomad-black/70 leading-relaxed">{pillar.description}</p>
+                                            </div>
+                                        </FadeIn>
+                                    ))}
+                                </div>
+                            </div>
+                        </FadeIn>
+                    </div>
+                </section>
+            );
+        };
+
 
         /* --- PHOTO GRID --- */
         const PhotoGridItem = ({ name, role, bio, image }) => {
@@ -609,9 +594,11 @@
                 <section id="team" className="bg-nomad-base py-24 border-t border-nomad-black/5">
                     <div className="max-w-[1600px] mx-auto px-6 md:px-12 mb-16">
                         <FadeIn>
-                            <div className="text-center">
+                            <div className="text-center max-w-4xl mx-auto">
                                 <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-nomad-black/40 mb-6">The Team</h2>
-                                <h3 className="font-serif text-4xl md:text-5xl text-nomad-black">Founders & Advisors</h3>
+                                <p className="font-serif text-2xl md:text-3xl text-nomad-black/80 leading-relaxed">
+                                    Created by neuroscientists, engineers, and innovators united by one mission: <span className="italic">to redefine how humans interact with their nervous systems.</span>
+                                </p>
                             </div>
                         </FadeIn>
                     </div>
@@ -730,7 +717,8 @@
                 <div className="font-sans text-nomad-black bg-nomad-base antialiased selection:bg-nomad-black selection:text-nomad-base">
                     <Navbar onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
                     <Hero onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
-                    <Features onLoginClick={() => setLoginOpen(true)} />
+                    <Mission />
+                    <Platform />
                     <Team />
                     <Footer />
                     <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
