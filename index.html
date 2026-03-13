@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nomad Neuroscience - The Operating System for Your Body</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    
+
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
+
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
+        rel="stylesheet">
+
     <style>
         /* Unica77 LL Font Family - Local Files */
         @font-face {
@@ -29,84 +32,98 @@
             font-weight: 100;
             font-style: normal;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-ThinItalic.otf") format("opentype");
             font-weight: 100;
             font-style: italic;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Light.otf") format("opentype");
             font-weight: 300;
             font-style: normal;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-LightItalic.otf") format("opentype");
             font-weight: 300;
             font-style: italic;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Regular.otf") format("opentype");
             font-weight: 400;
             font-style: normal;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-RegularItalic.otf") format("opentype");
             font-weight: 400;
             font-style: italic;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Medium.otf") format("opentype");
             font-weight: 500;
             font-style: normal;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-MediumItalic.otf") format("opentype");
             font-weight: 500;
             font-style: italic;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Bold.otf") format("opentype");
             font-weight: 700;
             font-style: normal;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-BoldItalic.otf") format("opentype");
             font-weight: 700;
             font-style: italic;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Black.otf") format("opentype");
             font-weight: 900;
             font-style: normal;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-BlackItalic.otf") format("opentype");
             font-weight: 900;
             font-style: italic;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-ExtraBlack.otf") format("opentype");
             font-weight: 950;
             font-style: normal;
         }
+
         @font-face {
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-ExtraBlackItalic.otf") format("opentype");
             font-weight: 950;
             font-style: italic;
         }
+
         /* Aktiv Grotesk Font Family */
         @font-face {
             font-family: 'Aktiv Grotesk';
@@ -114,90 +131,105 @@
             font-weight: 100;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-HairlineItalic.otf') format('opentype');
             font-weight: 100;
             font-style: italic;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Thin.otf') format('opentype');
             font-weight: 200;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-ThinItalic.otf') format('opentype');
             font-weight: 200;
             font-style: italic;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Light.otf') format('opentype');
             font-weight: 300;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-LightItalic.otf') format('opentype');
             font-weight: 300;
             font-style: italic;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Regular.otf') format('opentype');
             font-weight: 400;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Italic.otf') format('opentype');
             font-weight: 400;
             font-style: italic;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Medium.otf') format('opentype');
             font-weight: 500;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-MediumItalic.otf') format('opentype');
             font-weight: 500;
             font-style: italic;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Bold.otf') format('opentype');
             font-weight: 700;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-BoldItalic.otf') format('opentype');
             font-weight: 700;
             font-style: italic;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-XBold.otf') format('opentype');
             font-weight: 800;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-XBoldItalic.otf') format('opentype');
             font-weight: 800;
             font-style: italic;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Black.otf') format('opentype');
             font-weight: 900;
             font-style: normal;
         }
+
         @font-face {
             font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-BlackItalic.otf') format('opentype');
@@ -215,7 +247,7 @@
                         nomad: {
                             black: '#0A0A0A',
                             dark: '#1C1B1A',
-                            base: '#FAFAFA', 
+                            base: '#FAFAFA',
                             cream: '#F5F5F0',
                             white: '#FFFFFF',
                             pink: '#FF1B8D',
@@ -270,22 +302,37 @@
         }
     </script>
     <style>
-        html { scroll-behavior: smooth; }
-        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         /* Italic text uses serif font for elegant contrast */
-        .italic, i, em { 
-            font-family: 'Newsreader', Georgia, serif; 
+        .italic,
+        i,
+        em {
+            font-family: 'Newsreader', Georgia, serif;
             font-style: italic;
         }
-        
+
         ::selection {
             background: #FF1B8D;
             color: #FFFFFF;
         }
-        
+
         /* Nomad gradient text - like Superpower */
         .nomad-gradient {
             background: linear-gradient(135deg, #FF1B8D 0%, #FF6B6B 25%, #FFB4A2 50%, #FF6B6B 75%, #FF1B8D 100%);
@@ -295,12 +342,19 @@
             background-clip: text;
             animation: gradientFlow 8s ease infinite;
         }
-        
+
         @keyframes gradientFlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
-        
+
         /* Static gradient for logo */
         .nomad-gradient-static {
             background: linear-gradient(135deg, #FF1B8D 0%, #FF6B6B 50%, #FFB4A2 100%);
@@ -308,23 +362,23 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         /* Display heading */
         .display-heading {
             font-size: clamp(3rem, 10vw, 7rem);
             line-height: 0.9;
             letter-spacing: -0.03em;
-            font-weight: 500;
+            font-weight: 300;
         }
-        
+
         /* Hero display - extra large */
         .display-hero {
             font-size: clamp(3.5rem, 12vw, 9rem);
             line-height: 0.85;
             letter-spacing: -0.04em;
-            font-weight: 400;
+            font-weight: 200;
         }
-        
+
         /* Stats counter animation */
         .stat-number {
             font-size: clamp(3rem, 10vw, 6rem);
@@ -332,35 +386,50 @@
             line-height: 1;
             letter-spacing: -0.03em;
         }
-        
+
         /* Pink glow effect */
         .pink-glow {
             box-shadow: 0 0 60px rgba(255, 27, 141, 0.3);
         }
-        
+
         .pink-glow-sm {
             box-shadow: 0 0 30px rgba(255, 27, 141, 0.2);
         }
-        
+
         /* Card hover lift effect */
         .card-lift {
             transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
         }
+
         .card-lift:hover {
             transform: translateY(-12px);
             box-shadow: 0 30px 60px -15px rgba(255, 27, 141, 0.2);
         }
-        
+
         /* Scroll indicator */
         .scroll-indicator {
             animation: bounce 2s infinite;
         }
+
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
         }
-        
+
         /* Checklist checkmark - pink */
         .check-icon {
             width: 20px;
@@ -372,7 +441,7 @@
             justify-content: center;
             flex-shrink: 0;
         }
-        
+
         /* Mono/label text style */
         .text-mono {
             font-size: 0.7rem;
@@ -380,20 +449,21 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
         }
-        
+
         /* Pink pill badge */
         .pill-pink {
             background: linear-gradient(135deg, rgba(255, 27, 141, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
             border: 1px solid rgba(255, 27, 141, 0.2);
             color: #FF1B8D;
         }
-        
+
         /* Animated border gradient */
         .gradient-border {
             position: relative;
             background: white;
             border-radius: 24px;
         }
+
         .gradient-border::before {
             content: '';
             position: absolute;
@@ -404,16 +474,22 @@
             z-index: -1;
             animation: gradientFlow 4s ease infinite;
         }
-        
+
         /* Marquee animation */
         @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
+
         .animate-marquee {
             animation: marquee 30s linear infinite;
         }
-        
+
         /* Fade mask for marquee */
         .fade-mask {
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
@@ -421,6 +497,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Hidden form for Netlify to detect during build -->
     <form name="waitlist" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
@@ -434,7 +511,7 @@
             <option value="government">Government</option>
         </select>
     </form>
-    
+
     <div id="root"></div>
 
     <script type="text/babel">
@@ -444,13 +521,13 @@
         const IconWrapper = ({ children, size = 24, color = "currentColor", className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
-        const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconWrapper>;
-        const X = (props) => <IconWrapper {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconWrapper>;
-        const Activity = (props) => <IconWrapper {...props}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></IconWrapper>;
-        const Brain = (props) => <IconWrapper {...props}><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></IconWrapper>;
-        const HeartPulse = (props) => <IconWrapper {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></IconWrapper>;
-        const ShieldCheck = (props) => <IconWrapper {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></IconWrapper>;
-        const Lock = (props) => <IconWrapper {...props}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></IconWrapper>;
+        const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></IconWrapper>;
+        const X = (props) => <IconWrapper {...props}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></IconWrapper>;
+        const Activity = (props) => <IconWrapper {...props}><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></IconWrapper>;
+        const Brain = (props) => <IconWrapper {...props}><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" /><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" /></IconWrapper>;
+        const HeartPulse = (props) => <IconWrapper {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27" /></IconWrapper>;
+        const ShieldCheck = (props) => <IconWrapper {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" /><path d="m9 12 2 2 4-4" /></IconWrapper>;
+        const Lock = (props) => <IconWrapper {...props}><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></IconWrapper>;
 
         /* --- UTILITIES --- */
         const useScrollPosition = () => {
@@ -477,7 +554,7 @@
                 outline: "bg-transparent text-white border-2 border-white hover:bg-white hover:text-nomad-black",
                 ghost: "bg-transparent text-nomad-black hover:bg-black/5"
             };
-            
+
             if (href) {
                 return (
                     <a href={href} className={`${baseStyle} ${sizes[size]} ${variants[variant]} ${className} inline-flex items-center justify-center gap-2`}>
@@ -485,7 +562,7 @@
                     </a>
                 );
             }
-            
+
             return (
                 <button onClick={onClick} className={`${baseStyle} ${sizes[size]} ${variants[variant]} ${className} inline-flex items-center justify-center gap-2`}>
                     {children}
@@ -509,9 +586,8 @@
             return (
                 <div
                     ref={ref}
-                    className={`transition-all duration-1000 ease-out transform ${
-                        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                    }`}
+                    className={`transition-all duration-[1200ms] ease-out transform ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-8 blur-[8px]'
+                        }`}
                     style={{ transitionDelay: `${delay}ms` }}
                 >
                     {children}
@@ -531,7 +607,7 @@
                 e.preventDefault();
                 setIsLoading(true);
                 setError('');
-                
+
                 // Simulate API call
                 setTimeout(() => {
                     setIsLoading(false);
@@ -545,21 +621,21 @@
             if (!isOpen) return null;
 
             return (
-                <div 
+                <div
                     className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-black/60 backdrop-blur-xl"
                     onClick={(e) => e.target === e.currentTarget && onClose()}
                 >
                     <div className={`bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10 ${shake ? 'animate-shake' : ''}`}>
-                        <button 
+                        <button
                             onClick={onClose}
                             className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"
                         >
                             <X size={24} />
                         </button>
-                        
+
                         <h3 className="text-3xl font-black mb-2 text-nomad-black">Investor Portal</h3>
                         <p className="text-nomad-black/50 mb-8 text-sm">Secure partners only.</p>
-                        
+
                         <form onSubmit={handleSubmit}>
                             <input
                                 type="email"
@@ -585,7 +661,7 @@
                                 {isLoading ? 'Verifying...' : 'Authenticate'}
                             </button>
                         </form>
-                        
+
                         {error && (
                             <p className="mt-4 text-red-500 text-sm text-center font-medium">{error}</p>
                         )}
@@ -657,18 +733,18 @@
             if (!isOpen) return null;
 
             return (
-                <div 
+                <div
                     className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-black/60 backdrop-blur-xl"
                     onClick={(e) => e.target === e.currentTarget && handleClose()}
                 >
                     <div className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10">
-                        <button 
+                        <button
                             onClick={handleClose}
                             className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"
                         >
                             <X size={24} />
                         </button>
-                        
+
                         {success ? (
                             <div className="text-center py-8">
                                 <div className="w-16 h-16 bg-nomad-pink/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -678,7 +754,7 @@
                                 </div>
                                 <h3 className="text-3xl font-black mb-3 text-nomad-black">You're In!</h3>
                                 <p className="text-nomad-black/60 mb-6">We'll be in touch soon with updates on Nomad.</p>
-                                <button 
+                                <button
                                     onClick={handleClose}
                                     className="px-8 py-3 bg-nomad-pink text-white rounded-full font-bold hover:bg-nomad-magenta transition-colors"
                                 >
@@ -689,7 +765,7 @@
                             <>
                                 <h3 className="text-3xl font-black mb-2 text-nomad-black">Get Early Access</h3>
                                 <p className="text-nomad-black/50 mb-8 text-sm">Be the first to experience Nomad.</p>
-                                
+
                                 <form onSubmit={handleSubmit} noValidate>
                                     <input type="hidden" name="form-name" value="waitlist" />
                                     <input
@@ -741,11 +817,11 @@
                                         <p className="mt-3 text-xs text-red-500 text-center">Please complete all fields correctly before submitting.</p>
                                     )}
                                 </form>
-                                
+
                                 {error && (
                                     <p className="mt-4 text-red-500 text-sm text-center font-medium">{error}</p>
                                 )}
-                                
+
                                 <p className="mt-6 text-center text-nomad-black/40 text-xs">
                                     No spam. Unsubscribe anytime.
                                 </p>
@@ -764,62 +840,48 @@
             return (
                 <>
                     <nav
-                        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-                            isScrolled || mobileMenuOpen ? 'bg-white py-4 border-b border-black/5' : 'bg-transparent py-8'
-                        }`}
+                        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 rounded-full border bg-white/80 border-black/10 shadow-lg backdrop-blur-2xl flex items-center justify-between px-6 py-2.5 w-[92%] md:w-auto md:min-w-[700px] lg:min-w-[900px]`}
                     >
-                        <div className="max-w-[1800px] mx-auto px-6 md:px-16 lg:px-24 flex items-center justify-between">
-                            <div className="flex-1">
-                                <a href="#" className={`font-display text-lg tracking-[0.1em] font-medium lowercase transition-colors ${
-                                    isScrolled ? 'text-nomad-black' : 'text-white'
-                                }`}>
-                                    nomad
-                                </a>
-                            </div>
-                            <div className={`hidden lg:flex items-center gap-10 text-sm font-medium transition-colors ${
-                                isScrolled ? 'text-nomad-black' : 'text-white'
-                            }`}>
-                                <a href="#platform" className="hover:opacity-60 transition-opacity">Platform</a>
-                                <a href="#applications" className="hover:opacity-60 transition-opacity">Applications</a>
-                                <a href="#technology" className="hover:opacity-60 transition-opacity">Technology</a>
-                                <a href="#team" className="hover:opacity-60 transition-opacity">Team</a>
-                                <a href="#faq" className="hover:opacity-60 transition-opacity">FAQ</a>
-                            </div>
-                            <div className="flex-1 flex justify-end items-center gap-6">
-                                <button 
-                                    onClick={onLoginClick}
-                                    className={`hidden md:block text-sm font-medium hover:opacity-60 transition-opacity ${
-                                        isScrolled ? 'text-nomad-black' : 'text-white'
-                                    }`}
-                                >
-                                    Investors
-                                </button>
-                                <button 
-                                    onClick={onWaitlistClick}
-                                    className={`hidden md:block px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                                        isScrolled ? 'bg-nomad-pink text-white hover:bg-nomad-magenta' : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-                                    }`}
-                                >
-                                    Join Waitlist
-                                </button>
-                                <button 
-                                    className="lg:hidden p-2"
-                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                >
-                                    {mobileMenuOpen ? <X size={24} color={isScrolled ? '#0A0A0A' : '#fff'} /> : <Menu size={24} color={isScrolled ? '#0A0A0A' : '#fff'} />}
-                                </button>
-                            </div>
+                        <div className="flex-shrink-0 flex items-center pr-6">
+                            <a href="#" className={`font-display text-lg tracking-[0.1em] font-medium lowercase transition-colors text-nomad-black`}>
+                                nomad
+                            </a>
+                        </div>
+                        <div className={`hidden lg:flex flex-1 items-center justify-center gap-8 text-sm font-medium transition-colors text-nomad-black/70 hover:text-nomad-black`}>
+                            <a href="#platform" className="hover:text-black transition-colors">Platform</a>
+                            <a href="#applications" className="hover:text-black transition-colors">Applications</a>
+                            <a href="#technology" className="hover:text-black transition-colors">Technology</a>
+                            <a href="#team" className="hover:text-black transition-colors">Team</a>
+                        </div>
+                        <div className={`flex items-center gap-5 pl-6 border-l border-black/10 ml-auto lg:ml-0`}>
+                            <a
+                                href="signin.html"
+                                className={`hidden md:block text-sm font-medium transition-colors text-nomad-black/80 hover:text-nomad-black`}
+                            >
+                                Portals
+                            </a>
+                            <button
+                                onClick={onWaitlistClick}
+                                className={`hidden md:block px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-nomad-black text-white hover:bg-nomad-pink`}
+                            >
+                                Join Waitlist
+                            </button>
+                            <button
+                                className="lg:hidden p-1 flex items-center"
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            >
+                                {mobileMenuOpen ? <X size={24} color={'#0A0A0A'} /> : <Menu size={24} color={'#0A0A0A'} />}
+                            </button>
                         </div>
                     </nav>
                     <div className={`fixed inset-0 z-40 bg-white pt-28 px-8 transition-transform duration-500 ease-in-out lg:hidden ${mobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-                        <div className="flex flex-col gap-0 text-3xl font-medium text-nomad-black">
-                            <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/10 py-5">Platform</a>
-                            <a href="#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/10 py-5">Applications</a>
-                            <a href="#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/10 py-5">Technology</a>
-                            <a href="#team" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/10 py-5">Team</a>
-                            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/10 py-5">FAQ</a>
-                            <button onClick={() => { onLoginClick(); setMobileMenuOpen(false); }} className="border-b border-black/10 py-5 text-left">Investors</button>
-                            <button onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }} className="mt-8 py-4 bg-nomad-pink text-white text-lg font-bold rounded-full">Join Waitlist</button>
+                        <div className="flex flex-col gap-0 text-3xl font-light text-nomad-black">
+                            <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Platform</a>
+                            <a href="#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Applications</a>
+                            <a href="#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Technology</a>
+                            <a href="#team" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Team</a>
+                            <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5 text-left text-nomad-black">Portals</a>
+                            <button onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }} className="mt-8 py-4 bg-nomad-black text-white text-lg font-medium rounded-full">Join Waitlist</button>
                         </div>
                     </div>
                 </>
@@ -831,7 +893,7 @@
             <div className="flex items-center gap-3 group">
                 <div className="w-5 h-5 rounded-full bg-nomad-pink flex items-center justify-center shadow-lg shadow-nomad-pink/30 group-hover:scale-110 transition-transform">
                     <svg width="10" height="10" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.3342 4.12268L6.00824 10.4486L3.13281 7.5732" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M12.3342 4.12268L6.00824 10.4486L3.13281 7.5732" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </div>
                 <span className="text-sm font-medium text-nomad-black/80">{children}</span>
@@ -841,41 +903,32 @@
         const Hero = ({ onLoginClick, onWaitlistClick }) => {
             return (
                 <div className="relative min-h-screen w-full overflow-hidden">
-                    {/* Full-bleed Hero Image */}
                     <div className="absolute inset-0 z-0">
-                        <img 
-                            src="hero.png" 
-                            alt="Nomad Neuroscience" 
-                            className="w-full h-full object-cover"
+                        <div className="absolute inset-0 bg-nomad-cream/90 mix-blend-multiply"></div>
+                        <img
+                            src="hero.png"
+                            alt="Background"
+                            className="w-full h-full object-cover opacity-30"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10"></div>
                     </div>
-                    
                     {/* Content */}
-                    <div className="relative z-10 flex flex-col justify-between min-h-screen pt-32 pb-12 px-6 md:px-16 lg:px-24">
-                        {/* Main Logo */}
-                        <div className="flex-1 flex items-center">
-                            <h1 className="font-display text-[15vw] md:text-[16vw] lg:text-[220px] font-bold text-white leading-[0.85] tracking-[-0.04em] lowercase">
-                                nomad
-                            </h1>
-                        </div>
-                        
-                        {/* Bottom Bar */}
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-                            <div>
-                                <p className="text-white/90 text-xl md:text-2xl font-light tracking-wide">
-                                    The operating system for your body
+                    <div className="relative z-10 flex flex-col justify-center min-h-screen pt-32 pb-12">
+                        <div className="max-w-[1400px] w-full px-6 md:px-16 lg:px-24">
+                            <p className="font-display text-2xl md:text-3xl font-medium tracking-wide text-nomad-black mb-6 lg:mb-10 lowercase">nomad</p>
+                            <FadeIn delay={200}>
+                                <h1 className="text-6xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black leading-[1.05] tracking-tight max-w-4xl">
+                                    The operating system for your body.
+                                </h1>
+                                <p className="text-xl md:text-2xl font-light text-nomad-black/80 max-w-2xl mt-8 mb-16">
+                                    Nomad is the first closed-loop wearable that reads, adapts, and regulates your autonomic nervous system — in real time, non-invasively.
                                 </p>
+                            </FadeIn>
+
+                            <div className="mt-14 flex items-center gap-5 flex-wrap">
+                                <span className="text-nomad-black/50 text-xl font-light mr-2">Explore</span>
+                                <a href="#platform" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">E-field</a>
+                                <a href="#applications" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">A-field</a>
                             </div>
-                            <button 
-                                onClick={onWaitlistClick}
-                                className="group flex items-center gap-3 text-white text-lg md:text-xl font-medium hover:opacity-80 transition-opacity"
-                            >
-                                Join the waitlist
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
-                                    <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -885,17 +938,16 @@
         /* --- ANIMATED COUNTER --- */
         const AnimatedCounter = ({ end, suffix = '', duration = 2000 }) => {
             const [count, setCount] = useState(0);
-            const [hasAnimated, setHasAnimated] = useState(false);
             const ref = useRef(null);
-            
+
             useEffect(() => {
+                let timer;
                 const observer = new IntersectionObserver(
                     ([entry]) => {
-                        if (entry.isIntersecting && !hasAnimated) {
-                            setHasAnimated(true);
+                        if (entry.isIntersecting) {
                             let start = 0;
                             const increment = end / (duration / 16);
-                            const timer = setInterval(() => {
+                            timer = setInterval(() => {
                                 start += increment;
                                 if (start >= end) {
                                     setCount(end);
@@ -904,122 +956,157 @@
                                     setCount(Math.floor(start));
                                 }
                             }, 16);
+                        } else {
+                            clearInterval(timer);
+                            setCount(0); // Reset when scrolled out of view
                         }
                     },
                     { threshold: 0.5 }
                 );
                 if (ref.current) observer.observe(ref.current);
-                return () => observer.disconnect();
-            }, [end, duration, hasAnimated]);
-            
+                return () => {
+                    clearInterval(timer);
+                    observer.disconnect();
+                };
+            }, [end, duration]);
+
             return <span ref={ref}>{count}{suffix}</span>;
         };
 
-        /* --- INTRO / VALUE PROP SECTION --- */
-        const IntroSection = () => {
-            return (
-                <section id="platform" className="bg-white py-32 md:py-40 px-6 md:px-16 lg:px-24">
-                    <div className="max-w-[1400px] mx-auto">
-                        <FadeIn>
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-                                <div>
-                                    <p className="text-sm font-medium text-nomad-pink uppercase tracking-[0.2em] mb-6">The Platform</p>
-                                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-nomad-black leading-[1.1]">
-                                        Precision medicine for the autonomic nervous system
-                                    </h2>
-                                </div>
-                                <div className="lg:pt-4">
-                                    <p className="text-xl md:text-2xl text-nomad-black/70 leading-relaxed mb-8">
-                                        The autonomic nervous system controls everything you don't think about — your heartbeat, digestion, stress response, sleep. When it fails, conventional medicine has no answer.
-                                    </p>
-                                    <p className="text-xl md:text-2xl text-nomad-black/70 leading-relaxed">
-                                        Nomad is building the first platform to sense, decode, and restore autonomic function with clinical precision.
-                                    </p>
-                                </div>
-                            </div>
-                        </FadeIn>
+        /* --- AUGEN-STYLE MODULAR SECTIONS --- */
+        const OverviewBlock = () => (
+            <section id="platform" className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24">
+                <div className="max-w-[1400px] mx-auto border-t border-nomad-black/10 pt-10">
+                    <div className="flex justify-between items-start mb-16">
+                        <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Overview</span>
+                        <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Breakthrough</span>
                     </div>
-                </section>
-            );
-        };
-        
-        /* --- THREE PILLARS --- */
-        const ThreePillars = () => {
-            const pillars = [
-                {
-                    number: "01",
-                    title: "Sense",
-                    description: "Wearable neurotechnology capturing high-resolution autonomic signals — heart rate variability, skin conductance, neural oscillations — in real time."
-                },
-                {
-                    number: "02", 
-                    title: "Decode",
-                    description: "Proprietary algorithms analyze your unique autonomic signature, identifying dysfunction patterns and predicting optimal intervention windows."
-                },
-                {
-                    number: "03",
-                    title: "Restore",
-                    description: "Personalized neuromodulation delivers precisely-timed therapy to restore balance and optimize your body's regulatory systems."
-                }
-            ];
-            
-            return (
-                <section className="bg-nomad-base py-32 md:py-40 px-6 md:px-16 lg:px-24">
-                    <div className="max-w-[1400px] mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-nomad-black/10">
-                            {pillars.map((pillar, idx) => (
-                                <FadeIn key={idx} delay={idx * 100}>
-                                    <div className={`py-12 md:py-16 md:px-8 first:md:pl-0 last:md:pr-0 ${idx > 0 ? 'border-t md:border-t-0 md:border-l border-nomad-black/10' : ''}`}>
-                                        <span className="text-sm font-medium text-nomad-pink uppercase tracking-[0.15em]">{pillar.number}</span>
-                                        <h3 className="text-3xl md:text-4xl font-bold text-nomad-black mt-4 mb-6">{pillar.title}</h3>
-                                        <p className="text-nomad-black/60 text-lg leading-relaxed">{pillar.description}</p>
-                                    </div>
-                                </FadeIn>
-                            ))}
+                    <FadeIn>
+                        <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.05] max-w-5xl tracking-tight">
+                            Nomad is the first to engineer non-invasive, closed-loop neuromodulation designed to enhance everyday life.
+                        </h2>
+                    </FadeIn>
+                </div>
+            </section>
+        );
+
+        const MissionGrid = () => (
+            <section className="bg-nomad-cream pb-32 md:pb-48 px-6 md:px-16 lg:px-24">
+                <div className="max-w-[1400px] mx-auto">
+                    {/* Top row */}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-16 border-t border-nomad-black/10 py-16">
+                        <div className="md:col-span-1">
+                            <span className="text-nomad-black tracking-tight font-medium text-lg">At Nomad</span><br/>
+                            <span className="text-nomad-black/60">We build what medicine hasn't</span>
+                        </div>
+                        <div className="md:col-span-1 border-l md:border-nomad-black/10 pl-0 md:pl-8 mt-8 md:mt-0 pt-8 md:pt-0">
+                            <span className="text-nomad-pink uppercase tracking-widest text-xs font-bold font-mono">0.1</span><br/>
+                            <span className="text-nomad-black mt-2 inline-block font-medium">Our Mission</span><br/>
+                            <span className="text-nomad-black/60 mt-1 inline-block leading-relaxed pr-4">Restore autonomic balance for the 376 million people medicine has left behind</span>
+                        </div>
+                        <div className="md:col-span-1 border-l md:border-nomad-black/10 pl-0 md:pl-8 mt-8 md:mt-0 pt-8 md:pt-0">
+                            <span className="text-nomad-pink uppercase tracking-widest text-xs font-bold font-mono">0.2</span><br/>
+                            <span className="text-nomad-black mt-2 inline-block font-medium">Our Vision</span><br/>
+                            <span className="text-nomad-black/60 mt-1 inline-block leading-relaxed pr-4">A world where your nervous system is monitored and supported the way your phone manages its battery</span>
+                        </div>
+                        <div className="md:col-span-1 border-l md:border-nomad-black/10 pl-0 md:pl-8 mt-8 md:mt-0 pt-8 md:pt-0">
+                            <span className="text-nomad-pink uppercase tracking-widest text-xs font-bold font-mono">0.3</span><br/>
+                            <span className="text-nomad-black mt-2 inline-block font-medium">Our Ambition</span><br/>
+                            <span className="text-nomad-black/60 mt-1 inline-block leading-relaxed pr-4">Make closed-loop neuromodulation as accessible as a pair of earbuds</span>
                         </div>
                     </div>
-                </section>
-            );
-        };
 
-        const Mission = () => {
-            return (
-                <section className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24">
-                    <div className="max-w-[1400px] mx-auto">
-                        <FadeIn>
-                            <p className="text-sm font-medium text-nomad-pink uppercase tracking-[0.2em] mb-10">Our Mission</p>
-                            <h2 className="text-4xl md:text-5xl lg:text-[64px] font-medium leading-[1.15] text-white max-w-5xl">
-                                We design therapeutic neurotechnology that restores the body from within — beginning with the autonomic nervous system.
-                            </h2>
-                        </FadeIn>
+                    {/* Bottom row */}
+                    <div className="border-t border-nomad-black/10 pt-16">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                            <div className="md:col-span-1">
+                                <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Industries</span><br/>
+                                <span className="text-nomad-black mt-1 inline-block">Healthcare & Neural technologies</span><br/><br/>
+                                <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Core Business</span><br/>
+                                <span className="text-nomad-black mt-1 inline-block">Wearable Neuromodulation</span><br/><br/>
+                                <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Domain</span><br/>
+                                <span className="text-nomad-black mt-1 inline-block">nomadneuro.com</span>
+                            </div>
+                        </div>
                     </div>
-                </section>
-            );
-        };
+                </div>
+            </section>
+        );
+
+        const FutureWearable = () => (
+             <section className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24">
+                <div className="max-w-[1400px] mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
+                        <div>
+                            <span className="text-nomad-pink tracking-widest text-xs uppercase font-medium">Our Approach</span>
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mt-6 tracking-tight">Where the future is wearable</h2>
+                        </div>
+                        <div>
+                            <FadeIn>
+                                <p className="text-xl md:text-2xl lg:text-3xl font-light text-white leading-relaxed mb-16">
+                                    The autonomic nervous system controls your heart rate, blood pressure, digestion, and stress response — yet no wearable has ever been able to regulate it in real time. Nomad changes that. Using electrical and ultrasound stimulation in a closed-loop system, we detect dysregulation as it happens and respond within milliseconds — personalized to you, validated by science.
+                                </p>
+                                <div className="border-t border-white/20 pt-8 flex gap-4">
+                                    <span className="text-nomad-pink text-2xl leading-none">*</span>
+                                    <p className="text-white/60">Committed to advancing Neuromodulation for the Intelligence Age.</p>
+                                </div>
+                            </FadeIn>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 mt-32 pt-32 border-t border-white/10">
+                        <div>
+                            <span className="text-nomad-pink tracking-widest text-xs uppercase font-medium">Our Aim</span>
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mt-6 mb-12 tracking-tight">The future lies in our hands</h2>
+                            <a href="#applications" className="px-6 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-sm font-medium">Go to Programs</a>
+                        </div>
+                        <div>
+                            <FadeIn>
+                                <p className="text-xl md:text-2xl lg:text-3xl font-light text-white leading-relaxed mb-8">
+                                    We aim to create advanced wearable devices that are seamlessly integrated with the human body, ensuring stability in their use.
+                                </p>
+                                <p className="text-xl md:text-2xl lg:text-3xl font-light text-white leading-relaxed mb-16">
+                                    We always keep the patients and end-users of our products in mind, prioritizing safety, accessibility, and clinical efficacy throughout our engineering process.
+                                </p>
+                                <div className="border-t border-white/20 pt-8 flex gap-4">
+                                    <span className="text-nomad-pink text-2xl leading-none">*</span>
+                                    <p className="text-white/60">Envisioning the future with a Pro-Patient approach.</p>
+                                </div>
+                            </FadeIn>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
 
         /* --- STATS SECTION --- */
         const Stats = () => {
             const stats = [
-                { number: 376, suffix: 'M', label: 'People affected by autonomic dysfunction globally' },
-                { number: 53, suffix: 'M', label: 'Patients with chronic autonomic conditions' },
-                { number: 0, suffix: '', label: 'Effective treatments that target the system itself' },
+                { number: 376, suffix: 'M', label: 'people live with autonomic dysfunction.' },
+                { number: 53, suffix: 'M', label: 'have a chronic autonomic condition.' },
+                { number: 0, suffix: '', label: 'treatments target the system itself.' },
             ];
-            
+
             return (
-                <section className="bg-white py-24 md:py-32 px-6 md:px-16 lg:px-24 border-t border-nomad-black/5">
+                <section className="bg-nomad-cream py-24 md:py-48 px-6 md:px-16 lg:px-24 border-t border-nomad-black/10 mt-32">
                     <div className="max-w-[1400px] mx-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-24 md:mb-32">
                             {stats.map((stat, idx) => (
                                 <FadeIn key={idx} delay={idx * 100}>
                                     <div className="text-center md:text-left">
                                         <div className="text-6xl md:text-7xl lg:text-8xl font-bold text-nomad-pink mb-4 tracking-tight">
                                             <AnimatedCounter end={stat.number} suffix={stat.suffix} />
                                         </div>
-                                        <p className="text-lg text-nomad-black/60 leading-relaxed max-w-xs mx-auto md:mx-0">{stat.label}</p>
+                                        <p className="text-xl md:text-2xl font-light text-nomad-black/80 leading-relaxed max-w-xs mx-auto md:mx-0 pr-4">{stat.label}</p>
                                     </div>
                                 </FadeIn>
                             ))}
                         </div>
+                        <FadeIn delay={400}>
+                            <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black tracking-tight text-center md:text-left">
+                                Until now.
+                            </h2>
+                        </FadeIn>
                     </div>
                 </section>
             );
@@ -1079,10 +1166,10 @@
         const PhotoGridItem = ({ name, role, bio, image }) => {
             return (
                 <div className="relative aspect-square overflow-hidden group cursor-pointer">
-                    <img 
-                        src={image} 
-                        alt={name} 
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" 
+                    <img
+                        src={image}
+                        alt={name}
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-nomad-black/90 via-nomad-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
                         <h4 className="text-white font-bold text-base mb-0.5">{name}</h4>
@@ -1108,16 +1195,16 @@
             ];
 
             return (
-                <section id="team" className="bg-white py-24 md:py-32">
+                <section id="team" className="bg-white py-32 md:py-48">
                     <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 mb-16">
                         <FadeIn>
                             <p className="text-sm font-medium text-nomad-pink uppercase tracking-[0.2em] mb-6">Team</p>
-                            <h2 className="text-4xl md:text-5xl font-bold text-nomad-black leading-[1.1] max-w-2xl">
+                            <h2 className="text-4xl md:text-5xl font-light text-nomad-black leading-[1.1] max-w-2xl">
                                 Neuroscientists, engineers, and innovators
                             </h2>
                         </FadeIn>
                     </div>
-                    
+
                     <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                         {team.map((member, idx) => (
                             <PhotoGridItem key={idx} {...member} />
@@ -1131,7 +1218,7 @@
         const UseCases = ({ onLoginClick }) => {
             const clinicalCases = [
                 {
-                    title: "POTS & Dysautonomia", 
+                    title: "POTS & Dysautonomia",
                     description: "Precision targeting of orthostatic intolerance through real-time autonomic feedback and closed-loop neuromodulation.",
                     stat: "3M+",
                     statLabel: "diagnosed patients"
@@ -1149,7 +1236,7 @@
                     statLabel: "of elderly affected"
                 }
             ];
-            
+
 
             return (
                 <section id="applications" className="bg-nomad-black text-white py-32 md:py-40 px-6 md:px-16 lg:px-24">
@@ -1163,7 +1250,7 @@
                                 </h2>
                             </div>
                         </FadeIn>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 mb-24">
                             {clinicalCases.map((item, idx) => (
                                 <FadeIn key={idx} delay={idx * 100}>
@@ -1178,7 +1265,7 @@
                                 </FadeIn>
                             ))}
                         </div>
-                        
+
 
                         {/* Defence Applications - Login Required */}
                         <FadeIn>
@@ -1189,7 +1276,7 @@
                                         <h4 className="text-2xl md:text-3xl font-bold text-white mb-2">Military Applications</h4>
                                         <p className="text-white/50"> Applications for defence and government partners.</p>
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={onLoginClick}
                                         className="flex items-center gap-3 px-6 py-3 border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors"
                                     >
@@ -1214,7 +1301,7 @@
                 { title: "FDA pathway", description: "Designed for regulatory clearance" },
                 { title: "Privacy-first", description: "Your data stays yours, always encrypted" }
             ];
-            
+
             return (
                 <section className="bg-white py-24 md:py-32 px-6 md:px-16 lg:px-24 border-t border-nomad-black/5">
                     <div className="max-w-[1400px] mx-auto">
@@ -1246,7 +1333,7 @@
             const [isInView, setIsInView] = useState(false);
             const [lineProgress, setLineProgress] = useState(0);
             const sectionRef = useRef(null);
-            
+
             const milestones = [
                 { year: "2024", title: "Research", description: "Research program initiated, foundational science established", status: "complete" },
                 { year: "2025", title: "Foundation", description: "University spinout, seed funding, core team assembly, initial prototypes", status: "complete" },
@@ -1254,22 +1341,47 @@
                 { year: "2027", title: "Launch", description: "First commercial product release", status: "upcoming" },
                 { year: "2028+", title: "Scale", description: "Class IIb / FDA clearance, global expansion, platform extensions, partnerships", status: "upcoming" }
             ];
-            
+
             useEffect(() => {
+                const handleScroll = () => {
+                    if (!sectionRef.current) return;
+                    const rect = sectionRef.current.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    const startPos = windowHeight * 0.7; // Start animating when it is 30% up the screen
+                    const endPos = windowHeight * 0.3;   // Finish when the bottom hits this point
+                    
+                    if (rect.top <= startPos && rect.bottom >= endPos) {
+                        const totalScrollableDistance = rect.height;
+                        const scrolled = startPos - rect.top;
+                        let progress = (scrolled / totalScrollableDistance) * 100;
+                        setLineProgress(Math.max(0, Math.min(100, progress)));
+                    } else if (rect.top > startPos) {
+                        setLineProgress(0);
+                    } else if (rect.bottom < endPos) {
+                        setLineProgress(100);
+                    }
+                };
+
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                handleScroll();
+
                 const observer = new IntersectionObserver(
                     ([entry]) => {
                         if (entry.isIntersecting) {
                             setIsInView(true);
-                            // Animate line to 50% (current position at 2026)
-                            setTimeout(() => setLineProgress(50), 100);
                         }
                     },
                     { threshold: 0.15 }
                 );
                 if (sectionRef.current) observer.observe(sectionRef.current);
-                return () => observer.disconnect();
+                
+                return () => {
+                    window.removeEventListener('scroll', handleScroll);
+                    observer.disconnect();
+                };
             }, []);
-            
+
             return (
                 <section ref={sectionRef} className="bg-nomad-black py-32 md:py-48 px-6 md:px-16 lg:px-24 overflow-hidden">
                     <div className="max-w-[1400px] mx-auto">
@@ -1282,7 +1394,7 @@
                                 </h2>
                             </div>
                         </FadeIn>
-                        
+
                         {/* Timeline Container */}
                         <div className="relative">
                             {/* Animated Line - The main timeline */}
@@ -1290,8 +1402,8 @@
                                 {/* Background line */}
                                 <div className="absolute inset-0 bg-white/10"></div>
                                 {/* Animated progress line */}
-                                <div 
-                                    className="absolute top-0 left-0 w-full bg-gradient-to-b from-nomad-pink via-nomad-pink to-transparent transition-all duration-[2500ms] ease-out"
+                                <div
+                                    className="absolute top-0 left-0 w-full bg-gradient-to-b from-nomad-pink via-nomad-pink to-transparent transition-all duration-100 ease-out"
                                     style={{ height: `${lineProgress}%` }}
                                 >
                                     {/* Glowing orb at the end of the line */}
@@ -1300,71 +1412,66 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             {/* Milestones */}
                             <div className="relative space-y-16 md:space-y-24">
                                 {milestones.map((milestone, idx) => {
                                     const isLeft = idx % 2 === 0;
                                     const isFuture = milestone.status === 'upcoming';
                                     const isCurrent = milestone.status === 'current';
-                                    
+
                                     return (
-                                        <div 
+                                        <div
                                             key={idx}
                                             className={`relative flex items-center ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                                             style={{ transitionDelay: `${idx * 200 + 400}ms` }}
                                         >
                                             {/* Timeline Node */}
                                             <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 z-10">
-                                                <div 
-                                                    className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                                                        isCurrent ? 'bg-nomad-pink scale-150 shadow-[0_0_20px_rgba(255,27,141,0.8)]' :
+                                                <div
+                                                    className={`w-3 h-3 rounded-full transition-all duration-500 ${isCurrent ? 'bg-nomad-pink scale-150 shadow-[0_0_20px_rgba(255,27,141,0.8)]' :
                                                         isFuture ? 'bg-white/20' : 'bg-nomad-pink'
-                                                    }`}
+                                                        }`}
                                                     style={{ transitionDelay: `${idx * 200 + 600}ms` }}
                                                 ></div>
                                             </div>
-                                            
+
                                             {/* Content Card */}
                                             <div className={`pl-8 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'}`}>
                                                 <div className={`group transition-all duration-500 ${isFuture ? 'opacity-60 hover:opacity-90' : ''}`}>
                                                     {/* Year - Large Display */}
-                                                    <div 
-                                                        className={`text-6xl md:text-7xl lg:text-8xl font-light tracking-tighter mb-4 transition-all duration-700 ${
-                                                            isCurrent ? 'text-nomad-pink' : 
-                                                            isFuture ? 'text-white/40 blur-[0.5px] group-hover:blur-0 group-hover:text-white/60' : 
-                                                            'text-white/30'
-                                                        }`}
-                                                        style={{ 
+                                                    <div
+                                                        className={`text-6xl md:text-7xl lg:text-8xl font-light tracking-tighter mb-4 transition-all duration-700 ${isCurrent ? 'text-nomad-pink' :
+                                                            isFuture ? 'text-white/40 blur-[0.5px] group-hover:blur-0 group-hover:text-white/60' :
+                                                                'text-white/30'
+                                                            }`}
+                                                        style={{
                                                             transitionDelay: `${idx * 200 + 500}ms`,
                                                             filter: isFuture ? 'blur(0.5px)' : 'none'
                                                         }}
                                                     >
                                                         {milestone.year}
                                                     </div>
-                                                    
+
                                                     {/* Title */}
-                                                    <h3 
-                                                        className={`text-xl md:text-2xl font-medium mb-3 transition-all duration-500 ${
-                                                            isCurrent ? 'text-white' : 
-                                                            isFuture ? 'text-white/50 blur-[0.3px] group-hover:blur-0 group-hover:text-white/70' : 
-                                                            'text-white/70'
-                                                        }`}
+                                                    <h3
+                                                        className={`text-xl md:text-2xl font-medium mb-3 transition-all duration-500 ${isCurrent ? 'text-white' :
+                                                            isFuture ? 'text-white/50 blur-[0.3px] group-hover:blur-0 group-hover:text-white/70' :
+                                                                'text-white/70'
+                                                            }`}
                                                         style={{ filter: isFuture ? 'blur(0.3px)' : 'none' }}
                                                     >
                                                         {milestone.title}
                                                         {isCurrent && <span className="ml-3 text-xs font-bold text-nomad-pink uppercase tracking-widest">Now</span>}
                                                     </h3>
-                                                    
+
                                                     {/* Description */}
-                                                    <p 
-                                                        className={`text-sm md:text-base leading-relaxed max-w-md transition-all duration-500 ${
-                                                            isLeft ? 'md:ml-auto' : ''
-                                                        } ${
-                                                            isCurrent ? 'text-white/60' : 
-                                                            isFuture ? 'text-white/40 blur-[0.3px] group-hover:blur-0 group-hover:text-white/50' : 
-                                                            'text-white/40'
-                                                        }`}
+                                                    <p
+                                                        className={`text-sm md:text-base leading-relaxed max-w-md transition-all duration-500 ${isLeft ? 'md:ml-auto' : ''
+                                                            } ${isCurrent ? 'text-white/60' :
+                                                                isFuture ? 'text-white/40 blur-[0.3px] group-hover:blur-0 group-hover:text-white/50' :
+                                                                    'text-white/40'
+                                                            }`}
                                                         style={{ filter: isFuture ? 'blur(0.3px)' : 'none' }}
                                                     >
                                                         {milestone.description}
@@ -1413,13 +1520,13 @@
                                 <p className="text-xl md:text-2xl text-white/80 mb-10 leading-relaxed max-w-xl">
                                     Join the waitlist and be among the first to experience the future of autonomic health.
                                 </p>
-                                <button 
+                                <button
                                     onClick={onWaitlistClick}
                                     className="group inline-flex items-center gap-3 bg-white text-nomad-pink px-8 py-4 rounded-full text-lg font-bold hover:bg-white/90 transition-colors"
                                 >
                                     Join the waitlist
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
-                                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </button>
                             </div>
@@ -1433,22 +1540,22 @@
             const [footerEmail, setFooterEmail] = useState('');
             const [footerSubmitting, setFooterSubmitting] = useState(false);
             const [footerSuccess, setFooterSuccess] = useState(false);
-            
+
             const handleFooterSubmit = async (e) => {
                 e.preventDefault();
                 setFooterSubmitting(true);
-                
+
                 try {
                     const formData = new FormData();
                     formData.append('form-name', 'waitlist');
                     formData.append('email', footerEmail);
-                    
+
                     const response = await fetch('/', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: new URLSearchParams(formData).toString()
                     });
-                    
+
                     if (response.ok) {
                         setFooterSuccess(true);
                         setFooterEmail('');
@@ -1460,7 +1567,7 @@
                     setFooterSubmitting(false);
                 }
             };
-            
+
             return (
                 <footer className="bg-nomad-black text-white py-24 px-6 md:px-16 lg:px-24">
                     <div className="max-w-[1400px] mx-auto">
@@ -1468,53 +1575,44 @@
                         <div className="grid grid-cols-2 md:grid-cols-6 gap-10 md:gap-8 mb-20 pb-20 border-b border-white/10">
                             <div className="col-span-2">
                                 <div className="font-display text-2xl font-medium lowercase tracking-wide mb-6">nomad</div>
-                                <p className="text-white/50 leading-relaxed max-w-xs">
-                                    The operating system for your body. Precision neurotechnology for autonomic health.
+                                <p className="text-white/50 leading-relaxed max-w-xs mb-6 text-xl pb-2">
+                                    The operating system for your body.
+                                </p>
+                                <p className="text-white/30 text-xs uppercase tracking-widest leading-relaxed max-w-xs border-t border-white/10 pt-4">
+                                    * NOMAD nodes closed loop neuromodulation in the electrical field and the acoustic (ultrasound) field all non-invasive.
                                 </p>
                             </div>
-                            
+
                             <div>
-                                <h4 className="font-bold mb-6 text-xs uppercase tracking-[0.15em] text-white/30">Product</h4>
+                                <h4 className="font-bold mb-6 text-xs uppercase tracking-[0.15em] text-white/30">1.0 Pages</h4>
                                 <ul className="space-y-3 text-white/60 text-sm">
-                                    <li><a href="#platform" className="hover:text-white transition-colors">Platform</a></li>
-                                    <li><a href="#applications" className="hover:text-white transition-colors">Applications</a></li>
-                                    <li><a href="#technology" className="hover:text-white transition-colors">Technology</a></li>
-                                    <li><a href="#" className="hover:text-white transition-colors">Research</a></li>
+                                    <li><a href="#platform" className="hover:text-white transition-colors">E-field</a></li>
+                                    <li><a href="#applications" className="hover:text-white transition-colors">A-field</a></li>
+                                    <li><a href="#" className="hover:text-white transition-colors">Programs</a></li>
+                                    <li><a href="#" className="hover:text-white transition-colors">Updates</a></li>
                                 </ul>
                             </div>
-                            
+
                             <div>
-                                <h4 className="font-bold mb-6 text-xs uppercase tracking-[0.15em] text-white/30">Company</h4>
+                                <h4 className="font-bold mb-6 text-xs uppercase tracking-[0.15em] text-white/30">2.0 Follow</h4>
                                 <ul className="space-y-3 text-white/60 text-sm">
-                                    <li><a href="#team" className="hover:text-white transition-colors">Team</a></li>
-                                    <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                                    <li><a href="#" className="hover:text-white transition-colors">Press</a></li>
-                                    <li><a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors">Contact</a></li>
+                                    <li><a href="#" className="hover:text-white transition-colors">LinkedIn</a></li>
+                                    <li><a href="#" className="hover:text-white transition-colors">X</a></li>
                                 </ul>
                             </div>
-                            
-                            <div>
-                                <h4 className="font-bold mb-6 text-xs uppercase tracking-[0.15em] text-white/30">Resources</h4>
-                                <ul className="space-y-3 text-white/60 text-sm">
-                                    <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                                    <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                                    <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-                                    <li><a href="#" className="hover:text-white transition-colors">Support</a></li>
-                                </ul>
-                            </div>
-                            
-                            <div>
+
+                            <div className="col-span-2">
                                 <h4 className="font-bold mb-6 text-xs uppercase tracking-[0.15em] text-white/30">Newsletter</h4>
-                                <form onSubmit={handleFooterSubmit} className="space-y-3">
-                                    <input 
-                                        type="email" 
-                                        placeholder="Email address" 
+                                <form onSubmit={handleFooterSubmit} className="space-y-3 max-w-xs">
+                                    <input
+                                        type="email"
+                                        placeholder="Email address"
                                         value={footerEmail}
                                         onChange={(e) => setFooterEmail(e.target.value)}
                                         required
                                         className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-nomad-pink transition-colors text-white placeholder:text-white/30"
                                     />
-                                    <button 
+                                    <button
                                         type="submit"
                                         disabled={footerSubmitting}
                                         className="w-full bg-nomad-pink text-white rounded-lg px-4 py-3 text-sm font-medium hover:bg-nomad-magenta transition-colors disabled:opacity-70"
@@ -1524,14 +1622,12 @@
                                 </form>
                             </div>
                         </div>
-                        
+
                         {/* Bottom Section */}
                         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30">
                             <div>© 2025 Nomad Neuroscience Ltd. All rights reserved.</div>
                             <div className="flex gap-8">
                                 <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                                <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-                                <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
                             </div>
                         </div>
                     </div>
@@ -1539,29 +1635,171 @@
             );
         };
 
+        /* --- NEW MODULAR SECTIONS --- */
+        const NumberedSection = ({ number, title, description, badge, linkText }) => (
+            <div className="border-t border-nomad-black/10 py-16 flex flex-col md:flex-row justify-between items-start gap-12 group">
+                <div className="flex gap-8 lg:w-1/2">
+                    <span className="text-nomad-black text-2xl md:text-3xl font-light transition-transform duration-300 group-hover:translate-x-2">{number}</span>
+                    <div>
+                        <h3 className="text-3xl md:text-5xl font-light text-nomad-black leading-tight mb-6 tracking-tight">{title}</h3>
+                        <p className="text-xl text-nomad-black/60 leading-relaxed max-w-sm">{description}</p>
+                    </div>
+                </div>
+                <div className="flex flex-col items-start md:items-end justify-between h-full lg:w-1/2 gap-12">
+                   <div className="px-5 py-2 rounded-full border border-black/10 text-xs tracking-widest uppercase font-medium">{badge}</div>
+                   {linkText && (
+                       <button className="flex items-center gap-3 text-nomad-pink hover:text-black transition-colors font-medium">
+                            {linkText}
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
+                                <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                       </button>
+                   )}
+                </div>
+            </div>
+        );
+
+        const ScienceAndTeam = () => {
+            const team = [
+                { name: "Santiago", role: "CEO", bio: "", image: "Santi.jpg" },
+                { name: "Oliver", role: "Head Scientist", bio: "", image: "Ollie.png" },
+                { name: "Callum", role: "Lead Hardware", bio: "", image: "callum.png" },
+                { name: "Marcelo", role: "Lead Systems", bio: "", image: "Marcelo.png" },
+                { name: "Ben Newton", role: "Technology Advisor", bio: "", image: "Ben_newton.png" },
+                { name: "Guy Winter", role: "Defence Advisor", bio: "", image: "Guy_Winter.png" },
+                { name: "Anders Borg", role: "Fundraising Advisor", bio: "", image: "Anders_borg.png" },
+                { name: "Prof. Lerman", role: "Clinical Advisor", bio: "", image: "Imanuel_Lerman.png" },
+                { name: "Dr Ali Hawks", role: "Clinical Advisor", bio: "", image: "Ali-050.png" },
+                { name: "Prof. Alty", role: "Electrical Advisor", bio: "", image: "Steve_Alty.png" },
+                { name: "Patrik Nilsson", role: "Supply Chain", bio: "", image: "Patrik_Nilsson.png" },
+                { name: "Ben Black", role: "Non-Exec Director", bio: "", image: "ben_black.png" }
+            ];
+
+            return (
+                <section className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24">
+                    <div className="max-w-[1400px] mx-auto">
+                        <NumberedSection
+                            number="1.0"
+                            title="Scientific Evidence"
+                            description="Wearables and insights, science-driven."
+                            badge="Learn How"
+                            linkText="Explore E-field"
+                        />
+                        <div className="mt-24" id="team">
+                            <NumberedSection
+                                number="2.0"
+                                title="Driven by People"
+                                description="We believe technology is only as powerful as the people behind it. Discover the team that makes it possible."
+                                badge="Power Unified"
+                                linkText=""
+                            />
+                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 mt-16 border-t border-l border-nomad-black/10">
+                                {team.map((member, idx) => (
+                                    <div key={idx} className="border-r border-b border-nomad-black/10">
+                                        <PhotoGridItem {...member} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const GetInTouch = () => (
+             <section className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24">
+                <div className="max-w-[1400px] mx-auto">
+                     <NumberedSection
+                        number="3.0"
+                        title="Get in Touch"
+                        description="Questions, ideas, or just a hello — we're here. Reach out and let's build something remarkable together."
+                        badge="Say Hello"
+                        linkText="Contact Us"
+                    />
+                </div>
+            </section>
+        );
+
+        /* --- LOADING SCREEN --- */
+        const LoadingScreen = ({ onComplete }) => {
+            const [phase, setPhase] = useState(0); // 0: 'n' only, 1: reveal 'omad', 2: split transition
+
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+
+                const revealTimer = setTimeout(() => {
+                    setPhase(1);
+                }, 800);
+
+                const splitTimer = setTimeout(() => {
+                    setPhase(2);
+                }, 2000);
+
+                const completeTimer = setTimeout(() => {
+                    document.body.style.overflow = 'auto';
+                    onComplete();
+                }, 2800);
+
+                return () => {
+                    clearTimeout(revealTimer);
+                    clearTimeout(splitTimer);
+                    clearTimeout(completeTimer);
+                    document.body.style.overflow = 'auto';
+                };
+            }, [onComplete]);
+
+            return (
+                <div className="fixed inset-0 z-[150] pointer-events-none flex flex-col">
+                    {/* Top sliding panel */}
+                    <div 
+                        className={`absolute top-0 left-0 w-full h-[50vh] bg-nomad-cream transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-nomad-black/5 ${phase === 2 ? '-translate-y-full' : 'translate-y-0'}`} 
+                    />
+                    
+                    {/* Bottom sliding panel */}
+                    <div 
+                        className={`absolute bottom-0 left-0 w-full h-[50vh] bg-nomad-cream transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-t border-nomad-black/5 ${phase === 2 ? 'translate-y-full' : 'translate-y-0'}`} 
+                    />
+
+                    {/* Central Wordmark Animation */}
+                    <div 
+                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${phase === 2 ? 'opacity-0' : 'opacity-100'}`}
+                    >
+                        <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black tracking-tight font-display lowercase overflow-hidden">
+                            <span>n</span>
+                            <div 
+                                className={`transition-all duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex ${phase >= 1 ? 'max-w-[300px] opacity-100' : 'max-w-0 opacity-0'}`}
+                            >
+                                <span>omad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
+            const [loading, setLoading] = useState(true);
             const [loginOpen, setLoginOpen] = useState(false);
             const [waitlistOpen, setWaitlistOpen] = useState(false);
-            
+
             return (
-                <div className="font-sans text-nomad-black bg-white antialiased selection:bg-nomad-pink selection:text-white">
-                    <Navbar onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
+                <>
+                    {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+                    <div className={`font-sans text-nomad-black bg-nomad-cream antialiased selection:bg-nomad-pink selection:text-white transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+                        <Navbar onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
                     <Hero onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
-                    <IntroSection />
-                    <ThreePillars />
-                    <Mission />
+                    <OverviewBlock />
+                    <MissionGrid />
+                    <FutureWearable />
                     <Stats />
-                    <UseCases onLoginClick={() => setLoginOpen(true)} />
-                    <Platform />
-                    <Features />
+                    <ScienceAndTeam />
                     <Roadmap />
-                    <Team />
-                    <Press />
-                    <CTASection onWaitlistClick={() => setWaitlistOpen(true)} />
+                    <GetInTouch />
                     <Footer />
                     <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
                     <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
                 </div>
+                </>
             );
         };
 
@@ -1569,4 +1807,5 @@
         root.render(<App />);
     </script>
 </body>
+
 </html>

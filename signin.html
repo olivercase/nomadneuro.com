@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomad - Partner Portal Sign In</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Unica77 LL Font Family - Local Files */
+        @font-face {
+            font-family: "Unica77 LL";
+            src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Thin.otf") format("opentype");
+            font-weight: 100;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Unica77 LL";
+            src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Regular.otf") format("opentype");
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Unica77 LL";
+            src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Medium.otf") format("opentype");
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Unica77 LL";
+            src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Bold.otf") format("opentype");
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Aktiv Grotesk Font Family */
+        @font-face {
+            font-family: 'Aktiv Grotesk';
+            src: url('fonts/aktiv-grotesk/AktivGrotesk-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+    <!-- Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nomad: {
+                            black: '#0A0A0A',
+                            dark: '#1C1B1A',
+                            base: '#FAFAFA',
+                            cream: '#F5F5F0',
+                            white: '#FFFFFF',
+                            pink: '#FF1B8D',
+                            magenta: '#E91E8C',
+                            coral: '#FF6B6B',
+                            peach: '#FFB4A2',
+                            accent: '#7D7671'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Unica77 LL', 'Aktiv Grotesk', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+                        serif: ['Newsreader', 'Georgia', 'serif'],
+                        display: ['Unica77 LL', 'Aktiv Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'slow-zoom': 'slowZoom 20s infinite alternate ease-in-out',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'gradient-shift': 'gradientShift 8s ease infinite',
+                        'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        slowZoom: {
+                            '0%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1.15)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        gradientShift: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        pulseSoft: {
+                            '0%, 100%': { opacity: '0.4' },
+                            '50%': { opacity: '0.7' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #0A0A0A;
+            color: white;
+        }
+
+        .italic,
+        i,
+        em {
+            font-family: 'Newsreader', Georgia, serif;
+            font-style: italic;
+        }
+
+        .nomad-gradient {
+            background: linear-gradient(135deg, #FF1B8D 0%, #FF6B6B 25%, #FFB4A2 50%, #FF6B6B 75%, #FF1B8D 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #FF1B8D;
+            background: rgba(255, 255, 255, 0.05);
+            outline: none;
+            box-shadow: 0 0 20px rgba(255, 27, 141, 0.1);
+        }
+
+        .btn-nomad {
+            background: linear-gradient(135deg, #FF1B8D 0%, #E91E8C 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-nomad:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 10px 30px rgba(255, 27, 141, 0.3);
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center">
+
+    <!-- Background Layer -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-nomad-black/60 z-10"></div>
+        <img src="backdrop.png" alt=""
+            class="w-full h-full object-cover animate-slow-zoom opacity-40 grayscale contrast-125">
+
+        <!-- Ambient Glows -->
+        <div
+            class="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-nomad-pink/20 rounded-full blur-[150px] animate-pulse-soft">
+        </div>
+        <div class="absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-nomad-coral/10 rounded-full blur-[150px] animate-pulse-soft"
+            style="animation-delay: -1.5s"></div>
+    </div>
+
+    <div id="root" class="relative z-10 w-full max-w-lg px-6"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const SigninForm = () => {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setLoading(true);
+                setTimeout(() => setLoading(false), 2000);
+            };
+
+            return (
+                <div className="animate-fade-in-up">
+                    {/* Brand */}
+                    <div className="text-center mb-12">
+                        <a href="index.html" className="inline-block mb-3">
+                            <span className="font-display text-4xl tracking-[0.15em] font-medium lowercase nomad-gradient">nomad</span>
+                        </a>
+                        <h2 className="text-white/40 text-xs font-bold tracking-[0.3em] uppercase mb-8">Partner Portal</h2>
+                        <h1 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-2">Sign in to <i>Nomad</i></h1>
+                        <p className="text-white/50 text-base font-light">Access the body's operating system.</p>
+                    </div>
+
+                    {/* Form Container */}
+                    <div className="glass-container p-10 md:p-12 rounded-[40px]">
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <label className="block text-white/40 text-[10px] uppercase tracking-widest font-black mb-3 ml-1">Identity / Email</label>
+                                <input
+                                    type="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter your registered email"
+                                    className="input-field w-full px-6 py-4 rounded-2xl text-white placeholder:text-white/10 font-light"
+                                />
+                            </div>
+                            <div>
+                                <div className="flex justify-between items-center mb-3 ml-1">
+                                    <label className="block text-white/40 text-[10px] uppercase tracking-widest font-black">Secure Passkey</label>
+                                    <a href="#" className="text-nomad-pink text-[10px] uppercase tracking-widest font-black hover:opacity-70 transition-opacity">Reset</a>
+                                </div>
+                                <input
+                                    type="password"
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="input-field w-full px-6 py-4 rounded-2xl text-white placeholder:text-white/10 font-light"
+                                />
+                            </div>
+
+                            <div className="flex items-center gap-3 py-2">
+                                <label className="relative flex items-center cursor-pointer">
+                                    <input type="checkbox" className="sr-only peer" />
+                                    <div className="w-10 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-nomad-pink"></div>
+                                    <span className="ml-3 text-white/40 text-[10px] uppercase tracking-widest font-black">Keep me synchronized</span>
+                                </label>
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="btn-nomad w-full py-5 rounded-2xl text-white font-bold text-sm uppercase tracking-[0.2em] relative overflow-hidden group"
+                            >
+                                <span className={loading ? 'opacity-0' : 'opacity-100 group-hover:scale-105 transition-transform inline-block'}>
+                                    Authenticate
+                                </span>
+                                {loading && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    </div>
+                                )}
+                            </button>
+                        </form>
+
+                        <div className="mt-8 pt-8 border-t border-white/5 text-center">
+                            <p className="text-white/30 text-xs mb-4 uppercase tracking-[0.1em] font-medium">No credentials?</p>
+                            <a
+                                href="index.html#waitlist"
+                                className="inline-flex items-center gap-2 text-white hover:text-nomad-pink transition-colors group"
+                            >
+                                <span className="text-sm font-medium">Request an account</span>
+                                <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="mt-12 text-center">
+                        <p className="text-white/10 text-[10px] uppercase tracking-[0.2em] font-bold">
+                            &copy; 2026 Nomad Neuroscience. All rights secured.
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<SigninForm />);
+    </script>
+</body>
+
+</html>
