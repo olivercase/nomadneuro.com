@@ -802,6 +802,48 @@
             );
         };
 
+        const PartnerLogos = () => {
+            const logos = [
+                { src: 'UCL.png', alt: 'UCL logo' },
+                { src: 'rhul.png', alt: 'RHUL logo' }
+            ];
+            
+            // Repeat logos to ensure continuous scrolling
+            const repeatedLogos = [...logos, ...logos, ...logos, ...logos, ...logos, ...logos];
+
+            return (
+                <div className="w-full overflow-hidden bg-nomad-cream py-16 border-t border-nomad-black/5">
+                    <div className="max-w-[1400px] mx-auto px-6 mb-8 text-center">
+                        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-nomad-black/20">Research & Academic Partners</span>
+                    </div>
+                    <div className="whitespace-nowrap flex animate-marquee grayscale opacity-30 hover:opacity-60 transition-opacity duration-700">
+                        <div className="flex">
+                            {repeatedLogos.map((logo, i) => (
+                                <div key={i} className="inline-flex items-center justify-center mx-12 md:mx-20">
+                                    <img 
+                                        src={logo.src} 
+                                        alt={logo.alt} 
+                                        className="h-12 md:h-16 w-auto object-contain"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex">
+                            {repeatedLogos.map((logo, i) => (
+                                <div key={`repeat-${i}`} className="inline-flex items-center justify-center mx-12 md:mx-20">
+                                    <img 
+                                        src={logo.src} 
+                                        alt={logo.alt} 
+                                        className="h-12 md:h-16 w-auto object-contain"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         /* --- LOGIN MODAL --- */
         const LoginModal = ({ isOpen, onClose }) => {
             const [email, setEmail] = useState('');
@@ -2053,6 +2095,7 @@
                     <Stats />
                     <ScienceAndTeam />
                     <Roadmap />
+                    <PartnerLogos />
                     <GetInTouch />
                     <Footer />
                     <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
