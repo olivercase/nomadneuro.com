@@ -4,8 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nomad is the first closed-loop wearable that reads, adapts, and regulates your autonomic nervous system.">
+    <meta name="theme-color" content="#F5F3ED">
     <title>Nomad Neuroscience - The Operating System for Your Body</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="preload" as="image" href="hero.png">
 
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -16,6 +21,9 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -495,6 +503,51 @@
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
+
+        /* Lenis base styles */
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-smooth iframe {
+            pointer-events: none;
+        }
+
+        /* Text Reveal */
+        .word-mask {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
+            padding-bottom: 0.1em; /* Prevent descender clipping entirely */
+            margin-right: 0.25em; /* approximate word spacing */
+        }
+        .word-inner {
+            display: inline-block;
+            transform: translateY(110%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+        .word-inner.revealed {
+            transform: translateY(0);
+        }
+
+        /* Curved Reveal */
+        .curved-mask {
+            clip-path: ellipse(110% 110% at 50% 100%);
+            transition: clip-path 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: clip-path;
+        }
+        .curved-mask.revealed {
+            clip-path: ellipse(150% 150% at 50% 50%);
+        }
     </style>
 </head>
 
@@ -591,6 +644,160 @@
                     style={{ transitionDelay: `${delay}ms` }}
                 >
                     {children}
+                </div>
+            );
+        };
+
+        const useParallax = (speed = 0.5) => {
+            const ref = useRef(null);
+            
+            useEffect(() => {
+                const handleScroll = () => {
+                    if (ref.current) {
+                        const scrolled = window.scrollY;
+                        ref.current.style.transform = `translate3d(0, ${scrolled * speed}px, 0)`;
+                    }
+                };
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, [speed]);
+            
+            return ref;
+        };
+
+        const TextReveal = ({ children, className = "", delay = 0 }) => {
+            const containerRef = useRef(null);
+            const [isVisible, setIsVisible] = useState(false);
+
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setIsVisible(true);
+                            observer.disconnect();
+                        }
+                    },
+                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                );
+
+                if (containerRef.current) observer.observe(containerRef.current);
+                return () => observer.disconnect();
+            }, []);
+
+            const words = typeof children === 'string' ? children.split(/(?=\S)/).reduce((acc, current) => {
+               // Ensure spaces are properly preserved by splitting on whitespace but keeping words intact
+               const last = acc[acc.length - 1];
+               if (last && last.endsWith(' ') && !current.startsWith(' ')) {
+                   acc[acc.length - 1] = last + current;
+               } else {
+                   // actually just split by space is easiest, and we re-add margin
+                   // The CSS has margin-right: 0.25em
+               }
+               return acc;
+            }, []) : [];
+            
+            // Simpler split by space
+            const wordsList = typeof children === 'string' ? children.split(' ') : [];
+
+            return (
+                <span ref={containerRef} className={className}>
+                    {typeof children === 'string' ? wordsList.map((word, i) => (
+                        <span key={i} className="word-mask">
+                            <span 
+                                className={`word-inner ${isVisible ? 'revealed' : ''}`}
+                                style={{ 
+                                    transitionDelay: `${delay + i * 40}ms`
+                                }}
+                            >
+                                {word}
+                            </span>
+                        </span>
+                    )) : (
+                        <span className="word-mask inline-block w-full">
+                            <span className={`word-inner w-full ${isVisible ? 'revealed' : ''}`} style={{ transitionDelay: `${delay}ms`}}>
+                                {children}
+                            </span>
+                        </span>
+                    )}
+                </span>
+            );
+        };
+
+        const Magnetic = ({ children, className = "" }) => {
+            const ref = useRef(null);
+            const [position, setPosition] = useState({ x: 0, y: 0 });
+
+            useEffect(() => {
+                const element = ref.current;
+                if (!element || window.matchMedia("(pointer: coarse)").matches) return;
+
+                const handleMouseMove = (e) => {
+                    const { clientX, clientY } = e;
+                    const { left, top, width, height } = element.getBoundingClientRect();
+                    const x = (clientX - (left + width / 2)) * 0.3;
+                    const y = (clientY - (top + height / 2)) * 0.3;
+                    setPosition({ x, y });
+                };
+
+                const handleMouseLeave = () => {
+                    setPosition({ x: 0, y: 0 });
+                };
+
+                element.addEventListener("mousemove", handleMouseMove);
+                element.addEventListener("mouseleave", handleMouseLeave);
+
+                return () => {
+                    element.removeEventListener("mousemove", handleMouseMove);
+                    element.removeEventListener("mouseleave", handleMouseLeave);
+                };
+            }, []);
+
+            return (
+                <div 
+                    ref={ref} 
+                    className={`inline-block transition-transform duration-300 ease-out will-change-transform ${className}`} 
+                    style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0)` }}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const CurvedReveal = ({ children, className = "" }) => {
+            const ref = useRef(null);
+            const [isVisible, setIsVisible] = useState(false);
+
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setIsVisible(true);
+                            observer.disconnect();
+                        }
+                    },
+                    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+                );
+
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, []);
+
+            return (
+                <div ref={ref} className={`curved-mask w-full h-full ${isVisible ? 'revealed' : ''} ${className}`}>
+                    {children}
+                </div>
+            );
+        };
+
+        const MarqueeText = ({ text }) => {
+            return (
+                <div className="w-full overflow-hidden bg-nomad-cream py-10 border-t border-b border-nomad-black/5 fade-mask">
+                    <div className="whitespace-nowrap flex w-[200%] animate-marquee">
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
+                    </div>
                 </div>
             );
         };
@@ -854,18 +1061,22 @@
                             <a href="#team" className="hover:text-black transition-colors">Team</a>
                         </div>
                         <div className={`flex items-center gap-5 pl-6 border-l border-black/10 ml-auto lg:ml-0`}>
-                            <a
-                                href="signin.html"
-                                className={`hidden md:block text-sm font-medium transition-colors text-nomad-black/80 hover:text-nomad-black`}
-                            >
-                                Portals
-                            </a>
-                            <button
-                                onClick={onWaitlistClick}
-                                className={`hidden md:block px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-nomad-black text-white hover:bg-nomad-pink`}
-                            >
-                                Join Waitlist
-                            </button>
+                            <Magnetic>
+                                <a
+                                    href="signin.html"
+                                    className={`hidden md:block text-sm font-medium transition-colors text-nomad-black/80 hover:text-nomad-black`}
+                                >
+                                    Portals
+                                </a>
+                            </Magnetic>
+                            <Magnetic>
+                                <button
+                                    onClick={onWaitlistClick}
+                                    className={`hidden md:block px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-nomad-black text-white hover:bg-nomad-pink`}
+                                >
+                                    Join Waitlist
+                                </button>
+                            </Magnetic>
                             <button
                                 className="lg:hidden p-1 flex items-center"
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -901,24 +1112,27 @@
         );
 
         const Hero = ({ onLoginClick, onWaitlistClick }) => {
+            const parallaxRef = useParallax(0.35);
+
             return (
                 <div className="relative min-h-screen w-full overflow-hidden">
-                    <div className="absolute inset-0 z-0">
-                        <div className="absolute inset-0 bg-nomad-cream/90 mix-blend-multiply"></div>
+                    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                        <div className="absolute inset-0 bg-nomad-cream/90 mix-blend-multiply z-10"></div>
                         <img
+                            ref={parallaxRef}
                             src="hero.png"
                             alt="Background"
-                            className="w-full h-full object-cover opacity-30"
+                            className="absolute -top-[15%] left-0 w-full h-[130%] object-cover opacity-30 will-change-transform"
                         />
                     </div>
                     {/* Content */}
                     <div className="relative z-10 flex flex-col justify-center min-h-screen pt-32 pb-12">
                         <div className="max-w-[1400px] w-full px-6 md:px-16 lg:px-24">
                             <p className="font-display text-2xl md:text-3xl font-medium tracking-wide text-nomad-black mb-6 lg:mb-10 lowercase">nomad</p>
-                            <FadeIn delay={200}>
-                                <h1 className="text-6xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black leading-[1.05] tracking-tight max-w-4xl">
-                                    The operating system for your body.
-                                </h1>
+                            <h1 className="text-6xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black leading-[1.05] tracking-tight max-w-4xl">
+                                <TextReveal delay={200}>The operating system for your body.</TextReveal>
+                            </h1>
+                            <FadeIn delay={600}>
                                 <p className="text-xl md:text-2xl font-light text-nomad-black/80 max-w-2xl mt-8 mb-16">
                                     Nomad is the first closed-loop wearable that reads, adapts, and regulates your autonomic nervous system — in real time, non-invasively.
                                 </p>
@@ -926,8 +1140,8 @@
 
                             <div className="mt-14 flex items-center gap-5 flex-wrap">
                                 <span className="text-nomad-black/50 text-xl font-light mr-2">Explore</span>
-                                <a href="#platform" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">E-field</a>
-                                <a href="#applications" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">A-field</a>
+                                <Magnetic><a href="#platform" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">E-field</a></Magnetic>
+                                <Magnetic><a href="#applications" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">A-field</a></Magnetic>
                             </div>
                         </div>
                     </div>
@@ -981,11 +1195,9 @@
                         <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Overview</span>
                         <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Breakthrough</span>
                     </div>
-                    <FadeIn>
-                        <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.05] max-w-5xl tracking-tight">
-                            Nomad is the first to engineer non-invasive, closed-loop neuromodulation designed to enhance everyday life.
-                        </h2>
-                    </FadeIn>
+                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.05] max-w-5xl tracking-tight">
+                        <TextReveal>Nomad is the first to engineer non-invasive, closed-loop neuromodulation designed to enhance everyday life.</TextReveal>
+                    </h2>
                 </div>
             </section>
         );
@@ -1058,7 +1270,9 @@
                         <div>
                             <span className="text-nomad-pink tracking-widest text-xs uppercase font-medium">Our Aim</span>
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mt-6 mb-12 tracking-tight">The future lies in our hands</h2>
-                            <a href="#applications" className="px-6 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-sm font-medium">Go to Programs</a>
+                            <Magnetic>
+                                <a href="#applications" className="px-6 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-sm font-medium">Go to Programs</a>
+                            </Magnetic>
                         </div>
                         <div>
                             <FadeIn>
@@ -1102,11 +1316,9 @@
                                 </FadeIn>
                             ))}
                         </div>
-                        <FadeIn delay={400}>
-                            <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black tracking-tight text-center md:text-left">
-                                Until now.
-                            </h2>
-                        </FadeIn>
+                        <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black tracking-tight text-center md:text-left mt-12">
+                            <TextReveal delay={200}>Until now.</TextReveal>
+                        </h2>
                     </div>
                 </section>
             );
@@ -1166,11 +1378,15 @@
         const PhotoGridItem = ({ name, role, bio, image }) => {
             return (
                 <div className="relative aspect-square overflow-hidden group cursor-pointer">
-                    <img
-                        src={image}
-                        alt={name}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
-                    />
+                    <CurvedReveal>
+                        <img
+                            src={image}
+                            alt={name}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                        />
+                    </CurvedReveal>
                     <div className="absolute inset-0 bg-gradient-to-t from-nomad-black/90 via-nomad-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
                         <h4 className="text-white font-bold text-base mb-0.5">{name}</h4>
                         <p className="text-nomad-pink text-xs uppercase tracking-wider font-medium">{role}</p>
@@ -1276,13 +1492,15 @@
                                         <h4 className="text-2xl md:text-3xl font-bold text-white mb-2">Military Applications</h4>
                                         <p className="text-white/50"> Applications for defence and government partners.</p>
                                     </div>
-                                    <button
-                                        onClick={onLoginClick}
-                                        className="flex items-center gap-3 px-6 py-3 border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors"
-                                    >
-                                        <Lock size={18} />
-                                        <span>Partner Login</span>
-                                    </button>
+                                    <Magnetic>
+                                        <button
+                                            onClick={onLoginClick}
+                                            className="flex items-center gap-3 px-6 py-3 border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors"
+                                        >
+                                            <Lock size={18} />
+                                            <span>Partner Login</span>
+                                        </button>
+                                    </Magnetic>
                                 </div>
                             </div>
                         </FadeIn>
@@ -1520,15 +1738,17 @@
                                 <p className="text-xl md:text-2xl text-white/80 mb-10 leading-relaxed max-w-xl">
                                     Join the waitlist and be among the first to experience the future of autonomic health.
                                 </p>
-                                <button
-                                    onClick={onWaitlistClick}
-                                    className="group inline-flex items-center gap-3 bg-white text-nomad-pink px-8 py-4 rounded-full text-lg font-bold hover:bg-white/90 transition-colors"
-                                >
-                                    Join the waitlist
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
-                                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
+                                <Magnetic>
+                                    <button
+                                        onClick={onWaitlistClick}
+                                        className="group inline-flex items-center gap-3 bg-white text-nomad-pink px-8 py-4 rounded-full text-lg font-bold hover:bg-white/90 transition-colors"
+                                    >
+                                        Join the waitlist
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
+                                            <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
+                                </Magnetic>
                             </div>
                         </FadeIn>
                     </div>
@@ -1752,19 +1972,19 @@
                 <div className="fixed inset-0 z-[150] pointer-events-none flex flex-col">
                     {/* Top sliding panel */}
                     <div 
-                        className={`absolute top-0 left-0 w-full h-[50vh] bg-nomad-cream transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-nomad-black/5 ${phase === 2 ? '-translate-y-full' : 'translate-y-0'}`} 
+                        className={`absolute top-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-white/5 ${phase === 2 ? '-translate-y-full' : 'translate-y-0'}`} 
                     />
                     
                     {/* Bottom sliding panel */}
                     <div 
-                        className={`absolute bottom-0 left-0 w-full h-[50vh] bg-nomad-cream transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-t border-nomad-black/5 ${phase === 2 ? 'translate-y-full' : 'translate-y-0'}`} 
+                        className={`absolute bottom-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-t border-white/5 ${phase === 2 ? 'translate-y-full' : 'translate-y-0'}`} 
                     />
 
                     {/* Central Wordmark Animation */}
                     <div 
                         className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${phase === 2 ? 'opacity-0' : 'opacity-100'}`}
                     >
-                        <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black tracking-tight font-display lowercase overflow-hidden">
+                        <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-tight font-display lowercase overflow-hidden">
                             <span>n</span>
                             <div 
                                 className={`transition-all duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex ${phase >= 1 ? 'max-w-[300px] opacity-100' : 'max-w-0 opacity-0'}`}
@@ -1782,6 +2002,33 @@
             const [loginOpen, setLoginOpen] = useState(false);
             const [waitlistOpen, setWaitlistOpen] = useState(false);
 
+            useEffect(() => {
+                if (window.Lenis) {
+                    const lenis = new window.Lenis({
+                        duration: 1.2,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        direction: 'vertical',
+                        gestureDirection: 'vertical',
+                        smooth: true,
+                        mouseMultiplier: 1,
+                        smoothTouch: false,
+                        touchMultiplier: 2,
+                        infinite: false,
+                    });
+
+                    function raf(time) {
+                        lenis.raf(time);
+                        requestAnimationFrame(raf);
+                    }
+
+                    requestAnimationFrame(raf);
+                    
+                    return () => {
+                        lenis.destroy();
+                    }
+                }
+            }, []);
+
             return (
                 <>
                     {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
@@ -1794,6 +2041,7 @@
                     <Stats />
                     <ScienceAndTeam />
                     <Roadmap />
+                    <MarqueeText text="THE OPERATING SYSTEM FOR YOUR BODY • " />
                     <GetInTouch />
                     <Footer />
                     <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />

@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Access the Nomad Partner Portal. The operating system for your body.">
+    <meta name="theme-color" content="#F5F3ED">
     <title>Nomad - Partner Portal Sign In</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
@@ -16,6 +18,9 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +35,13 @@
             font-family: "Unica77 LL";
             src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Thin.otf") format("opentype");
             font-weight: 100;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Unica77 LL";
+            src: url("fonts/Unica77 LL Cyrillic (RUS by damnxav)/Unica77LLCyr-Light.otf") format("opentype");
+            font-weight: 300;
             font-style: normal;
         }
 
@@ -57,6 +69,12 @@
         /* Aktiv Grotesk Font Family */
         @font-face {
             font-family: 'Aktiv Grotesk';
+            src: url('fonts/aktiv-grotesk/AktivGrotesk-Thin.otf') format('opentype');
+            font-weight: 200;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Aktiv Grotesk';
             src: url('fonts/aktiv-grotesk/AktivGrotesk-Regular.otf') format('opentype');
             font-weight: 400;
             font-style: normal;
@@ -72,7 +90,7 @@
                         nomad: {
                             black: '#0A0A0A',
                             dark: '#1C1B1A',
-                            base: '#FAFAFA',
+                            base: '#F4F4F1',
                             cream: '#F5F5F0',
                             white: '#FFFFFF',
                             pink: '#FF1B8D',
@@ -86,119 +104,128 @@
                         sans: ['Unica77 LL', 'Aktiv Grotesk', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
                         serif: ['Newsreader', 'Georgia', 'serif'],
                         display: ['Unica77 LL', 'Aktiv Grotesk', 'sans-serif'],
-                    },
-                    animation: {
-                        'slow-zoom': 'slowZoom 20s infinite alternate ease-in-out',
-                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
-                        'gradient-shift': 'gradientShift 8s ease infinite',
-                        'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        slowZoom: {
-                            '0%': { transform: 'scale(1.05)' },
-                            '100%': { transform: 'scale(1.15)' },
-                        },
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        gradientShift: {
-                            '0%, 100%': { backgroundPosition: '0% 50%' },
-                            '50%': { backgroundPosition: '100% 50%' },
-                        },
-                        pulseSoft: {
-                            '0%, 100%': { opacity: '0.4' },
-                            '50%': { opacity: '0.7' },
-                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        html,
-        body {
-            height: 100%;
-            overflow: hidden;
-        }
-
         body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-color: #0A0A0A;
-            color: white;
+            background-color: #F5F5F0;
         }
 
-        .italic,
-        i,
-        em {
+        .italic, i, em {
             font-family: 'Newsreader', Georgia, serif;
             font-style: italic;
         }
 
-        .nomad-gradient {
-            background: linear-gradient(135deg, #FF1B8D 0%, #FF6B6B 25%, #FFB4A2 50%, #FF6B6B 75%, #FF1B8D 100%);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 8s ease infinite;
+        /* Lenis Smooth Scroll */
+        html.lenis {
+            height: auto;
         }
-
-        .glass-container {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        .lenis.lenis-smooth {
+            scroll-behavior: auto;
         }
-
-        .input-field {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
         }
-
-        .input-field:focus {
-            border-color: #FF1B8D;
-            background: rgba(255, 255, 255, 0.05);
-            outline: none;
-            box-shadow: 0 0 20px rgba(255, 27, 141, 0.1);
-        }
-
-        .btn-nomad {
-            background: linear-gradient(135deg, #FF1B8D 0%, #E91E8C 100%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-nomad:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-            box-shadow: 0 10px 30px rgba(255, 27, 141, 0.3);
+        .lenis.lenis-stopped {
+            overflow: hidden;
         }
     </style>
 </head>
 
-<body class="flex items-center justify-center">
-
-    <!-- Background Layer -->
-    <div class="fixed inset-0 z-0">
-        <div class="absolute inset-0 bg-nomad-black/60 z-10"></div>
-        <img src="backdrop.png" alt=""
-            class="w-full h-full object-cover animate-slow-zoom opacity-40 grayscale contrast-125">
-
-        <!-- Ambient Glows -->
-        <div
-            class="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-nomad-pink/20 rounded-full blur-[150px] animate-pulse-soft">
-        </div>
-        <div class="absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-nomad-coral/10 rounded-full blur-[150px] animate-pulse-soft"
-            style="animation-delay: -1.5s"></div>
-    </div>
-
-    <div id="root" class="relative z-10 w-full max-w-lg px-6"></div>
+<body class="bg-nomad-cream text-nomad-black selection:bg-nomad-pink selection:text-white">
+    <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect, useRef } = React;
+
+        /* --- COMPONENTS FROM INDEX --- */
+        const FadeIn = ({ children, delay = 0 }) => {
+            const [isVisible, setIsVisible] = useState(false);
+            const ref = useRef(null);
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) setIsVisible(true);
+                    },
+                    { threshold: 0.1 }
+                );
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, []);
+            return (
+                <div
+                    ref={ref}
+                    className={`transition-all duration-[1200ms] ease-out transform ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-8 blur-[8px]'}`}
+                    style={{ transitionDelay: `${delay}ms` }}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const Magnetic = ({ children, strength = 0.35 }) => {
+            const ref = useRef(null);
+            useEffect(() => {
+                const element = ref.current;
+                if (!element || window.matchMedia("(pointer: coarse)").matches) return;
+                const handleMouseMove = (e) => {
+                    const rect = element.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const deltaX = (e.clientX - centerX) * strength;
+                    const deltaY = (e.clientY - centerY) * strength;
+                    element.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+                };
+                const handleMouseLeave = () => {
+                    element.style.transform = `translate3d(0, 0, 0)`;
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                element.addEventListener('mouseleave', handleMouseLeave);
+                return () => {
+                    window.removeEventListener('mousemove', handleMouseMove);
+                    element.removeEventListener('mouseleave', handleMouseLeave);
+                };
+            }, [strength]);
+            return <div ref={ref} className="transition-transform duration-300 ease-out">{children}</div>;
+        };
+
+        const LoadingScreen = ({ onComplete }) => {
+            const [phase, setPhase] = useState(0); 
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+                const revealTimer = setTimeout(() => setPhase(1), 800);
+                const splitTimer = setTimeout(() => setPhase(2), 2000);
+                const completeTimer = setTimeout(() => {
+                    document.body.style.overflow = 'auto';
+                    onComplete();
+                }, 2800);
+                return () => {
+                    clearTimeout(revealTimer);
+                    clearTimeout(splitTimer);
+                    clearTimeout(completeTimer);
+                    document.body.style.overflow = 'auto';
+                };
+            }, [onComplete]);
+            return (
+                <div className="fixed inset-0 z-[150] pointer-events-none flex flex-col">
+                    <div className={`absolute top-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-white/5 ${phase === 2 ? '-translate-y-full' : 'translate-y-0'}`} />
+                    <div className={`absolute bottom-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-t border-white/5 ${phase === 2 ? 'translate-y-full' : 'translate-y-0'}`} />
+                    <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${phase === 2 ? 'opacity-0' : 'opacity-100'}`}>
+                        <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-tight font-display lowercase overflow-hidden">
+                            <span>n</span>
+                            <div className={`transition-all duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex ${phase >= 1 ? 'max-w-[300px] opacity-100' : 'max-w-0 opacity-0'}`}>
+                                <span>omad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
 
         const SigninForm = () => {
             const [email, setEmail] = useState('');
@@ -212,96 +239,132 @@
             };
 
             return (
-                <div className="animate-fade-in-up">
-                    {/* Brand */}
-                    <div className="text-center mb-12">
-                        <a href="index.html" className="inline-block mb-3">
-                            <span className="font-display text-4xl tracking-[0.15em] font-medium lowercase nomad-gradient">nomad</span>
-                        </a>
-                        <h2 className="text-white/40 text-xs font-bold tracking-[0.3em] uppercase mb-8">Partner Portal</h2>
-                        <h1 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-2">Sign in to <i>Nomad</i></h1>
-                        <p className="text-white/50 text-base font-light">Access the body's operating system.</p>
-                    </div>
-
-                    {/* Form Container */}
-                    <div className="glass-container p-10 md:p-12 rounded-[40px]">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <label className="block text-white/40 text-[10px] uppercase tracking-widest font-black mb-3 ml-1">Identity / Email</label>
-                                <input
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Enter your registered email"
-                                    className="input-field w-full px-6 py-4 rounded-2xl text-white placeholder:text-white/10 font-light"
-                                />
-                            </div>
-                            <div>
-                                <div className="flex justify-between items-center mb-3 ml-1">
-                                    <label className="block text-white/40 text-[10px] uppercase tracking-widest font-black">Secure Passkey</label>
-                                    <a href="#" className="text-nomad-pink text-[10px] uppercase tracking-widest font-black hover:opacity-70 transition-opacity">Reset</a>
-                                </div>
-                                <input
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    className="input-field w-full px-6 py-4 rounded-2xl text-white placeholder:text-white/10 font-light"
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-3 py-2">
-                                <label className="relative flex items-center cursor-pointer">
-                                    <input type="checkbox" className="sr-only peer" />
-                                    <div className="w-10 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-nomad-pink"></div>
-                                    <span className="ml-3 text-white/40 text-[10px] uppercase tracking-widest font-black">Keep me synchronized</span>
-                                </label>
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="btn-nomad w-full py-5 rounded-2xl text-white font-bold text-sm uppercase tracking-[0.2em] relative overflow-hidden group"
-                            >
-                                <span className={loading ? 'opacity-0' : 'opacity-100 group-hover:scale-105 transition-transform inline-block'}>
-                                    Authenticate
-                                </span>
-                                {loading && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                    </div>
-                                )}
-                            </button>
-                        </form>
-
-                        <div className="mt-8 pt-8 border-t border-white/5 text-center">
-                            <p className="text-white/30 text-xs mb-4 uppercase tracking-[0.1em] font-medium">No credentials?</p>
-                            <a
-                                href="index.html#waitlist"
-                                className="inline-flex items-center gap-2 text-white hover:text-nomad-pink transition-colors group"
-                            >
-                                <span className="text-sm font-medium">Request an account</span>
-                                <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
+                <div className="min-h-screen flex flex-col items-center justify-center px-6 py-20">
+                    <FadeIn>
+                        <div className="text-center mb-16">
+                            <a href="index.html" className="inline-block mb-8">
+                                <span className="font-display text-4xl md:text-5xl font-medium tracking-wide text-nomad-black lowercase">nomad</span>
                             </a>
+                            <div className="flex flex-col items-center gap-4">
+                                <span className="px-5 py-1.5 rounded-full border border-nomad-black/10 text-[10px] uppercase tracking-[0.3em] font-medium text-nomad-black/40">Partner Portal</span>
+                                <h1 className="text-5xl md:text-6xl font-light tracking-tight text-nomad-black">
+                                    Authenticate <i>Identity</i>
+                                </h1>
+                            </div>
                         </div>
-                    </div>
+                    </FadeIn>
 
-                    {/* Footer */}
-                    <div className="mt-12 text-center">
-                        <p className="text-white/10 text-[10px] uppercase tracking-[0.2em] font-bold">
-                            &copy; 2026 Nomad Neuroscience. All rights secured.
+                    <FadeIn delay={200}>
+                        <div className="w-full max-w-md">
+                            <form onSubmit={handleSubmit} className="space-y-8">
+                                <div className="space-y-4">
+                                    <div className="relative group">
+                                        <label className="absolute -top-3 left-6 px-2 bg-nomad-cream text-[10px] uppercase tracking-widest font-bold text-nomad-black/30 transition-colors group-focus-within:text-nomad-pink">
+                                            Identity / Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="w-full bg-transparent border border-nomad-black/10 rounded-2xl px-6 py-4 text-nomad-black focus:outline-none focus:border-nomad-pink transition-colors font-light placeholder:text-nomad-black/10"
+                                            placeholder="your@access.com"
+                                        />
+                                    </div>
+                                    <div className="relative group">
+                                        <label className="absolute -top-3 left-6 px-2 bg-nomad-cream text-[10px] uppercase tracking-widest font-bold text-nomad-black/30 transition-colors group-focus-within:text-nomad-pink">
+                                            Secure Passkey
+                                        </label>
+                                        <input
+                                            type="password"
+                                            required
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="w-full bg-transparent border border-nomad-black/10 rounded-2xl px-6 py-4 text-nomad-black focus:outline-none focus:border-nomad-pink transition-colors font-light placeholder:text-nomad-black/10"
+                                            placeholder="••••••••"
+                                        />
+                                        <button type="button" className="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] uppercase tracking-widest font-bold text-nomad-pink hover:opacity-70 transition-opacity">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between px-2">
+                                    <label className="flex items-center gap-3 cursor-pointer group">
+                                        <div className="relative w-10 h-6 bg-nomad-black/5 rounded-full transition-colors group-hover:bg-nomad-black/10">
+                                            <input type="checkbox" className="sr-only peer" />
+                                            <div className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-4 peer-checked:bg-nomad-pink" />
+                                        </div>
+                                        <span className="text-[10px] uppercase tracking-widest font-bold text-nomad-black/30">Keep synchronized</span>
+                                    </label>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full bg-nomad-black text-white rounded-2xl py-5 text-sm font-bold uppercase tracking-[0.2em] hover:bg-nomad-pink transition-all active:scale-[0.98] disabled:opacity-70 flex items-center justify-center relative overflow-hidden group"
+                                >
+                                    <span className={loading ? 'opacity-0' : 'opacity-100 group-hover:translate-x-1 transition-transform'}>
+                                        Authorize Access
+                                    </span>
+                                    {loading && (
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        </div>
+                                    )}
+                                </button>
+                            </form>
+
+                            <div className="mt-12 text-center">
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-nomad-black/20 mb-6 italic">No credentials?</p>
+                                <a href="index.html" className="inline-flex items-center gap-2 group">
+                                    <span className="text-sm font-medium text-nomad-black hover:text-nomad-pink transition-colors">Return to platform</span>
+                                    <svg className="w-4 h-4 text-nomad-pink transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </FadeIn>
+
+                    <div className="mt-auto pt-20">
+                        <p className="text-[10px] uppercase tracking-[0.3em] font-medium text-nomad-black/10">
+                            &copy; 2026 Nomad Neuroscience Ltd. All rights secured.
                         </p>
                     </div>
                 </div>
             );
         };
 
+        const App = () => {
+            const [loading, setLoading] = useState(true);
+
+            useEffect(() => {
+                const lenis = new window.Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smooth: true,
+                });
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+                return () => lenis.destroy();
+            }, []);
+
+            return (
+                <>
+                    {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+                    <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+                        <SigninForm />
+                    </div>
+                </>
+            );
+        };
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<SigninForm />);
+        root.render(<App />);
     </script>
 </body>
 
