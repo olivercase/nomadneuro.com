@@ -803,35 +803,20 @@
         };
 
         const PartnerLogos = () => {
-            const logos = [
-                { src: 'UCL.png', alt: 'UCL logo', type: 'image' },
-                { src: 'rhul.png', alt: 'RHUL logo', type: 'image' },
-                { name: 'USDC', type: 'text' },
-                { name: 'QMU London', type: 'text' }
+            const partners = [
+                "University College London (UCL)",
+                "Royal Holloway, University of London",
+                "USDC",
+                "QMU London"
             ];
             
-            const renderLogo = (logo, i) => {
-                if (logo.type === 'image') {
-                    return (
-                        <img 
-                            src={logo.src} 
-                            alt={logo.alt} 
-                            className="h-8 md:h-12 w-auto object-contain grayscale opacity-60 hover:opacity-100 transition-all duration-500"
-                        />
-                    );
-                }
-                return (
-                    <span className="text-xl md:text-2xl font-display font-medium tracking-tighter text-nomad-black/40 hover:text-nomad-black/80 transition-all duration-500">
-                        {logo.name}
-                    </span>
-                );
-            };
-
-            const LogoTrack = ({ repeatedLogos, className = "" }) => (
+            const PartnerTrack = ({ className = "" }) => (
                 <div className={`flex items-center gap-16 md:gap-32 pr-16 md:pr-32 ${className}`}>
-                    {repeatedLogos.map((logo, i) => (
+                    {partners.map((partner, i) => (
                         <div key={i} className="inline-flex items-center justify-center">
-                            {renderLogo(logo, i)}
+                            <span className="text-xl md:text-2xl font-display font-medium tracking-tighter text-nomad-black/40 hover:text-nomad-black/80 transition-all duration-500 whitespace-nowrap">
+                                {partner}
+                            </span>
                         </div>
                     ))}
                 </div>
@@ -844,10 +829,10 @@
                     </div>
                     <div className="relative flex">
                         <div className="whitespace-nowrap flex animate-marquee w-max">
-                            <LogoTrack repeatedLogos={logos} />
-                            <LogoTrack repeatedLogos={logos} />
-                            <LogoTrack repeatedLogos={logos} />
-                            <LogoTrack repeatedLogos={logos} />
+                            <PartnerTrack />
+                            <PartnerTrack />
+                            <PartnerTrack />
+                            <PartnerTrack />
                         </div>
                     </div>
                 </div>
