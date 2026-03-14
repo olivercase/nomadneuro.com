@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Nomad Neuroscience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --nomad-pink: #FF3366;
+            --nomad-magenta: #E6005C;
+            --nomad-black: #0A0A0A;
+            --nomad-cream: #FDFCFB;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--nomad-cream);
+            color: var(--nomad-black);
+        }
+
+        .font-display { font-family: 'Outfit', sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = FramerMotion;
+
+        const Navbar = () => (
+            <nav className="fixed top-0 left-0 w-full z-50 bg-nomad-cream/80 backdrop-blur-md border-b border-black/5 px-6 md:px-16 py-6">
+                <div className="max-w-[1400px] mx-auto flex justify-between items-center">
+                    <a href="index.html" className="font-display text-2xl font-medium tracking-tight hover:opacity-70 transition-opacity">nomad</a>
+                    <a href="index.html" className="text-sm font-medium hover:text-nomad-pink transition-colors">Back to Home</a>
+                </div>
+            </nav>
+        );
+
+        const Footer = () => (
+            <footer className="bg-nomad-black text-white py-24 px-6 md:px-16 lg:px-24">
+                <div className="max-w-[1400px] mx-auto">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30">
+                        <div>© 2025 Nomad Neuroscience Ltd. All rights reserved.</div>
+                        <div className="flex gap-8">
+                            <a href="index.html" className="hover:text-white transition-colors">Home</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        );
+
+        const Content = () => (
+            <div className="pt-40 pb-24 px-6 md:px-16 lg:px-24 max-w-4xl mx-auto">
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <p className="text-sm font-medium text-nomad-pink uppercase tracking-[0.2em] mb-6">Legal</p>
+                    <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-16 font-display">Privacy Policy</h1>
+                    
+                    <div className="space-y-12 text-nomad-black/70 leading-relaxed text-lg">
+                        <section>
+                            <h2 className="text-2xl font-medium text-nomad-black mb-4 font-display">1. Overview</h2>
+                            <p>Nomad Neuroscience Ltd ("we", "our", or "us") is committed to protecting and respecting your privacy. This policy explains how we collect, use, and safeguard your personal data when you visit our website and use our services, in accordance with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.</p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-medium text-nomad-black mb-4 font-display">2. Data We Collect</h2>
+                            <p>We may collect and process the following data about you:</p>
+                            <ul className="list-disc pl-6 mt-4 space-y-2">
+                                <li><strong>Identity Data:</strong> Name and contact details when you join our waitlist or create an account.</li>
+                                <li><strong>Technical Data:</strong> IP address, browser type, time zone setting, and operating system when you visit our site.</li>
+                                <li><strong>Usage Data:</strong> Information about how you use our website and services.</li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-medium text-nomad-black mb-4 font-display">3. How We Use Your Data</h2>
+                            <p>We use your information to:</p>
+                            <ul className="list-disc pl-6 mt-4 space-y-2">
+                                <li>Provide and manage our services.</li>
+                                <li>Communicate updates regarding our platform and waitlist.</li>
+                                <li>Improve our website and user experience.</li>
+                                <li>Comply with legal and regulatory obligations.</li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-medium text-nomad-black mb-4 font-display">4. Legal Basis for Processing</h2>
+                            <p>Under UK GDPR, we rely on the following legal bases:</p>
+                            <ul className="list-disc pl-6 mt-4 space-y-2">
+                                <li><strong>Consent:</strong> Where you have provided clear consent (e.g., signing up for the waitlist).</li>
+                                <li><strong>Legitimate Interests:</strong> For the effective operation of our business and website.</li>
+                                <li><strong>Legal Obligation:</strong> Where processing is necessary for compliance with the law.</li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-medium text-nomad-black mb-4 font-display">5. Data Retention</h2>
+                            <p>We hold your personal data only for as long as necessary to fulfil the purposes we collected it for, including for the purposes of satisfying any legal, accounting, or reporting requirements.</p>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-medium text-nomad-black mb-4 font-display">6. Your Rights</h2>
+                            <p>Under UK data protection law, you have rights including:</p>
+                            <ul className="list-disc pl-6 mt-4 space-y-2">
+                                <li><strong>Your right of access</strong> - You have the right to ask us for copies of your personal information.</li>
+                                <li><strong>Your right to rectification</strong> - You have the right to ask us to rectify information you think is inaccurate.</li>
+                                <li><strong>Your right to erasure</strong> - You have the right to ask us to erase your personal information in certain circumstances.</li>
+                                <li><strong>Your right to restriction of processing</strong> - You have the right to ask us to restrict the processing of your information.</li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h2 className="text-2xl font-medium text-nomad-black mb-4 font-display">7. Contact Us</h2>
+                            <p>If you have any questions about this privacy policy or our privacy practices, please contact us at:</p>
+                            <p className="mt-4 font-medium">Nomad Neuroscience Ltd</p>
+                            <p>London, United Kingdom</p>
+                        </section>
+                    </div>
+                </motion.div>
+            </div>
+        );
+
+        const App = () => (
+            <div className="min-h-screen">
+                <Navbar />
+                <Content />
+                <Footer />
+            </div>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
