@@ -11,6 +11,45 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nomad: {
+                            black: '#0A0A0A',
+                            dark: '#1C1B1A',
+                            base: '#FAFAFA',
+                            cream: '#F5F5F0',
+                            white: '#FFFFFF',
+                            pink: '#FF1B8D',
+                            magenta: '#E91E8C',
+                            coral: '#FF6B6B',
+                            peach: '#FFB4A2',
+                            accent: '#7D7671'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Unica77 LL', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+                        serif: ['Newsreader', 'Georgia', 'serif'],
+                        display: ['Unica77 LL', 'sans-serif'],
+                    },
+                    animation: {
+                        'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
+                    },
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '20%, 60%': { transform: 'translateX(-5px)' },
+                            '40%, 80%': { transform: 'translateX(5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         @font-face {
             font-family: "Unica77 LL";
@@ -30,42 +69,232 @@
 
         body {
             font-family: "Unica77 LL", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             background-color: #F5F5F0;
             color: #0A0A0A;
+        }
+
+        .italic, i, em {
+            font-family: 'Newsreader', Georgia, serif;
+            font-style: italic;
         }
 
         .font-display { font-family: "Unica77 LL", sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-nomad-cream text-nomad-black selection:bg-nomad-pink selection:text-white">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
 
-        const Navbar = () => (
-            <nav className="fixed top-0 left-0 w-full z-50 bg-[#F5F5F0]/80 backdrop-blur-md border-b border-black/5 px-6 md:px-16 py-6">
-                <div className="max-w-[1400px] mx-auto flex justify-between items-center">
-                    <a href="index.html" className="font-display text-2xl font-medium tracking-tight hover:opacity-70 transition-opacity lowercase">nomad</a>
-                    <a href="index.html" className="text-xs uppercase tracking-widest font-bold text-[#FF1B8D] hover:opacity-70 transition-opacity">Back to Home</a>
-                </div>
-            </nav>
+        /* --- ICONS --- */
+        const IconWrapper = ({ children, size = 24, color = "currentColor", className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
+        const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></IconWrapper>;
+        const X = (props) => <IconWrapper {...props}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></IconWrapper>;
 
-        const Footer = () => (
-            <footer className="bg-[#0A0A0A] text-white py-24 px-6 md:px-16 lg:px-24">
-                <div className="max-w-[1400px] mx-auto text-center border-t border-white/10 pt-10">
-                    <p className="text-[10px] uppercase tracking-[0.3em] font-medium text-white/30">
-                        &copy; 2026 NOMAD NEUROSCIENCE LTD. All rights reserved.
-                    </p>
+        /* --- UTILITIES --- */
+        const useScrollPosition = () => {
+            const [scrollPosition, setScrollPosition] = useState(0);
+            useEffect(() => {
+                const updatePosition = () => setScrollPosition(window.scrollY);
+                window.addEventListener('scroll', updatePosition);
+                return () => window.removeEventListener('scroll', updatePosition);
+            }, []);
+            return scrollPosition;
+        };
+
+        const Magnetic = ({ children, className = "" }) => {
+            const ref = useRef(null);
+            const [position, setPosition] = useState({ x: 0, y: 0 });
+
+            useEffect(() => {
+                const element = ref.current;
+                if (!element || window.matchMedia("(pointer: coarse)").matches) return;
+
+                const handleMouseMove = (e) => {
+                    const { clientX, clientY } = e;
+                    const { left, top, width, height } = element.getBoundingClientRect();
+                    const x = (clientX - (left + width / 2)) * 0.3;
+                    const y = (clientY - (top + height / 2)) * 0.3;
+                    setPosition({ x, y });
+                };
+
+                const handleMouseLeave = () => {
+                    setPosition({ x: 0, y: 0 });
+                };
+
+                element.addEventListener("mousemove", handleMouseMove);
+                element.addEventListener("mouseleave", handleMouseLeave);
+
+                return () => {
+                    element.removeEventListener("mousemove", handleMouseMove);
+                    element.removeEventListener("mouseleave", handleMouseLeave);
+                };
+            }, []);
+
+            return (
+                <div 
+                    ref={ref} 
+                    className={`inline-block transition-transform duration-300 ease-out will-change-transform ${className}`} 
+                    style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0)` }}
+                >
+                    {children}
                 </div>
-            </footer>
-        );
+            );
+        };
+
+        const LoadingScreen = ({ onComplete }) => {
+            const [phase, setPhase] = useState(0); 
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+                const revealTimer = setTimeout(() => setPhase(1), 800);
+                const splitTimer = setTimeout(() => setPhase(2), 2000);
+                const completeTimer = setTimeout(() => {
+                    document.body.style.overflow = 'auto';
+                    onComplete();
+                }, 2800);
+                return () => {
+                    clearTimeout(revealTimer);
+                    clearTimeout(splitTimer);
+                    clearTimeout(completeTimer);
+                    document.body.style.overflow = 'auto';
+                };
+            }, [onComplete]);
+            return (
+                <div className="fixed inset-0 z-[150] pointer-events-none flex flex-col">
+                    <div className={`absolute top-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-white/5 ${phase === 2 ? '-translate-y-full' : 'translate-y-0'}`} />
+                    <div className={`absolute bottom-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[800ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-t border-white/5 ${phase === 2 ? 'translate-y-full' : 'translate-y-0'}`} />
+                    <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${phase === 2 ? 'opacity-0' : 'opacity-100'}`}>
+                        <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-tight font-display lowercase overflow-hidden">
+                            <span>n</span>
+                            <div className={`transition-all duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex ${phase >= 1 ? 'max-w-[300px] opacity-100' : 'max-w-0 opacity-0'}`}>
+                                <span>omad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Navbar = ({ onWaitlistClick }) => {
+            const scrollPos = useScrollPosition();
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            return (
+                <>
+                    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 rounded-full border bg-white/80 border-black/10 shadow-lg backdrop-blur-2xl flex items-center justify-between px-6 py-2.5 w-[92%] md:w-auto md:min-w-[700px] lg:min-w-[900px]">
+                        <div className="flex-shrink-0 flex items-center pr-6">
+                            <a href="index.html" className="font-display text-lg tracking-[0.1em] font-medium lowercase transition-colors text-nomad-black">nomad</a>
+                        </div>
+                        <div className="hidden lg:flex flex-1 items-center justify-center gap-8 text-sm font-medium text-nomad-black/70">
+                            <a href="index.html#platform" className="hover:text-black transition-colors">Platform</a>
+                            <a href="index.html#applications" className="hover:text-black transition-colors">Applications</a>
+                            <a href="index.html#technology" className="hover:text-black transition-colors">Technology</a>
+                            <a href="index.html#team" className="hover:text-black transition-colors">Team</a>
+                        </div>
+                        <div className="flex items-center gap-5 pl-6 border-l border-black/10 ml-auto lg:ml-0">
+                            <Magnetic>
+                                <a href="signin.html" className="hidden md:block text-sm font-medium transition-colors text-nomad-black/80 hover:text-nomad-black">Portals</a>
+                            </Magnetic>
+                            <Magnetic>
+                                <button onClick={onWaitlistClick} className="hidden md:block px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-nomad-black text-white hover:bg-nomad-pink">Join Waitlist</button>
+                            </Magnetic>
+                            <button className="lg:hidden p-1 flex items-center" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                                {mobileMenuOpen ? <X size={24} color={'#0A0A0A'} /> : <Menu size={24} color={'#0A0A0A'} />}
+                            </button>
+                        </div>
+                    </nav>
+                    <div className={`fixed inset-0 z-40 bg-white pt-28 px-8 transition-transform duration-500 ease-in-out lg:hidden ${mobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+                        <div className="flex flex-col gap-0 text-3xl font-light text-nomad-black">
+                            <a href="index.html#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Platform</a>
+                            <a href="index.html#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Applications</a>
+                            <a href="index.html#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Technology</a>
+                            <a href="index.html#team" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Team</a>
+                            <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5 text-left text-nomad-black">Portals</a>
+                            <button onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }} className="mt-8 py-4 bg-nomad-black text-white text-lg font-medium rounded-full">Join Waitlist</button>
+                        </div>
+                    </div>
+                </>
+            );
+        };
+
+        const WaitlistModal = ({ isOpen, onClose }) => {
+            const [fullName, setFullName] = useState('');
+            const [email, setEmail] = useState('');
+            const [userType, setUserType] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+            const [success, setSuccess] = useState(false);
+            const [error, setError] = useState('');
+
+            const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            const isFormValid = fullName.trim().length > 0 && validateEmail(email) && userType.trim().length > 0;
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setError('');
+                if (!isFormValid) { setError('Please complete all fields correctly.'); return; }
+                setIsLoading(true);
+                try {
+                    const formData = new FormData();
+                    formData.append('form-name', 'waitlist');
+                    formData.append('fullName', fullName);
+                    formData.append('email', email);
+                    formData.append('userType', userType);
+                    const response = await fetch('/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(formData).toString()
+                    });
+                    if (response.ok) { setSuccess(true); setFullName(''); setEmail(''); setUserType(''); }
+                    else { throw new Error('Failed to submit'); }
+                } catch (err) { setError('Something went wrong. Please try again.'); }
+                finally { setIsLoading(false); }
+            };
+
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-black/60 backdrop-blur-xl" onClick={(e) => e.target === e.currentTarget && onClose()}>
+                    <div className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10">
+                        <button onClick={onClose} className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"><X size={24} /></button>
+                        {success ? (
+                            <div className="text-center py-8">
+                                <div className="w-16 h-16 bg-nomad-pink/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <svg className="w-8 h-8 text-nomad-pink" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                </div>
+                                <h3 className="text-3xl font-black mb-3 text-nomad-black">Success</h3>
+                                <p className="text-nomad-black/60 mb-6 font-light">We'll be in touch soon.</p>
+                                <button onClick={onClose} className="px-8 py-3 bg-nomad-pink text-white rounded-full font-bold hover:bg-nomad-magenta transition-colors">Done</button>
+                            </div>
+                        ) : (
+                            <>
+                                <h3 className="text-3xl font-black mb-2 text-nomad-black font-display">Get Early Access</h3>
+                                <p className="text-nomad-black/50 mb-8 text-sm uppercase tracking-widest font-bold">Join the Nomad revolution.</p>
+                                <form onSubmit={handleSubmit} noValidate>
+                                    <input type="text" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink text-nomad-black placeholder:text-nomad-black/40" />
+                                    <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink text-nomad-black placeholder:text-nomad-black/40" />
+                                    <select value={userType} onChange={(e) => setUserType(e.target.value)} className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-6 focus:outline-none focus:border-nomad-pink text-nomad-black appearance-none cursor-pointer">
+                                        <option value="" disabled>Select category</option>
+                                        <option value="patient">Patient</option>
+                                        <option value="investor">Potential Investor</option>
+                                        <option value="government">Government / NGO</option>
+                                    </select>
+                                    <button type="submit" disabled={isLoading} className="w-full py-4 bg-nomad-black text-white rounded-xl font-bold uppercase tracking-widest hover:bg-nomad-pink transition-colors disabled:opacity-70">{isLoading ? 'Processing...' : 'Secure Access'}</button>
+                                </form>
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        };
 
         const Content = () => (
-            <div className="pt-40 pb-24 px-6 md:px-16 lg:px-24 max-w-4xl mx-auto">
+            <div className="pt-48 pb-24 px-6 md:px-16 lg:px-24 max-w-4xl mx-auto">
                 <div className="animate-fade-in">
-                    <p className="text-xs font-bold text-[#FF1B8D] uppercase tracking-[0.3em] mb-6">Legal</p>
+                    <p className="text-xs font-bold text-[#FF1B8D] uppercase tracking-[0.3em] mb-6">Legal Framework</p>
                     <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-16 font-display">Privacy Policy</h1>
                     
                     <div className="space-y-12 text-[#0A0A0A]/70 leading-relaxed text-lg font-light">
@@ -86,44 +315,17 @@
 
                         <section>
                             <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">3. How We Use Your Data</h2>
-                            <p>We use your information to:</p>
-                            <ul className="list-disc pl-6 mt-4 space-y-2">
-                                <li>Provide and manage our services.</li>
-                                <li>Communicate updates regarding our platform and waitlist.</li>
-                                <li>Improve our website and user experience.</li>
-                                <li>Comply with legal and regulatory obligations.</li>
-                            </ul>
+                            <p>We use your information to provide and manage our services, communicate updates, improve our user experience, and comply with legal obligations.</p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">4. Legal Basis</h2>
-                            <p>Under UK GDPR, we rely on the following legal bases:</p>
-                            <ul className="list-disc pl-6 mt-4 space-y-2">
-                                <li><strong>Consent:</strong> Where you have provided clear consent (e.g., signing up for the waitlist).</li>
-                                <li><strong>Legitimate Interests:</strong> For the effective operation of our business and website.</li>
-                                <li><strong>Legal Obligation:</strong> Where processing is necessary for compliance with the law.</li>
-                            </ul>
+                            <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">4. Your Rights</h2>
+                            <p>Under UK data protection law, you have the right of access, rectification, erasure, and restriction of processing regarding your personal information.</p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">5. Data Retention</h2>
-                            <p>We hold your personal data only for as long as necessary to fulfil the purposes we collected it for, including for the purposes of satisfying any legal, accounting, or reporting requirements.</p>
-                        </section>
-
-                        <section>
-                            <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">6. Your Rights</h2>
-                            <p>Under UK data protection law, you have rights including:</p>
-                            <ul className="list-disc pl-6 mt-4 space-y-2">
-                                <li><strong>Your right of access</strong> - You have the right to ask us for copies of your personal information.</li>
-                                <li><strong>Your right to rectification</strong> - You have the right to ask us to rectify information you think is inaccurate.</li>
-                                <li><strong>Your right to erasure</strong> - You have the right to ask us to erase your personal information in certain circumstances.</li>
-                                <li><strong>Your right to restriction of processing</strong> - You have the right to ask us to restrict the processing of your information.</li>
-                            </ul>
-                        </section>
-
-                        <section>
-                            <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">7. Contact Us</h2>
-                            <p>If you have any questions about this privacy policy or our privacy practices, please contact us at:</p>
+                            <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">5. Contact Us</h2>
+                            <p>If you have any questions about this privacy policy, please contact us at:</p>
                             <div className="mt-4 font-bold uppercase tracking-widest text-[#0A0A0A] space-y-1">
                                 <p>NOMAD NEUROSCIENCE LTD</p>
                                 <p className="text-sm font-light lowercase tracking-normal">Company № 16558472</p>
@@ -139,13 +341,32 @@
             </div>
         );
 
-        const App = () => (
-            <div className="min-h-screen">
-                <Navbar />
-                <Content />
-                <Footer />
-            </div>
+        const Footer = () => (
+            <footer className="bg-[#0A0A0A] text-white py-24 px-6 md:px-16 lg:px-24">
+                <div className="max-w-[1400px] mx-auto text-center border-t border-white/10 pt-10">
+                    <p className="text-[10px] uppercase tracking-[0.3em] font-medium text-white/30">
+                        &copy; 2026 NOMAD NEUROSCIENCE LTD. All rights reserved.
+                    </p>
+                </div>
+            </footer>
         );
+
+        const App = () => {
+            const [loading, setLoading] = useState(true);
+            const [waitlistOpen, setWaitlistOpen] = useState(false);
+
+            return (
+                <>
+                    {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+                    <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+                        <Navbar onWaitlistClick={() => setWaitlistOpen(true)} />
+                        <Content />
+                        <Footer />
+                        <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
+                    </div>
+                </>
+            );
+        };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
