@@ -497,6 +497,10 @@
         .animate-marquee {
             animation: marquee 7s linear infinite;
         }
+        
+        .animate-slow-marquee {
+            animation: marquee 8.75s linear infinite;
+        }
 
         /* Fade mask for marquee */
         .fade-mask {
@@ -593,31 +597,59 @@
             return scrollPosition;
         };
 
-        const Button = ({ children, variant = 'primary', className = '', onClick, href, size = 'default' }) => {
-            const baseStyle = "relative rounded-full font-medium tracking-wide transition-all duration-300 overflow-hidden group active:scale-[0.98]";
+        const Button = ({ children, variant = 'primary', className = '', onClick, href, size = 'default', hoverImage }) => {
+            const [isHovered, setIsHovered] = useState(false);
+            
+            const baseStyle = "relative rounded-full font-medium tracking-wide transition-all duration-300 overflow-hidden active:scale-[0.98] bg-center bg-cover border border-transparent";
             const sizes = {
                 small: "px-6 py-2.5 text-xs",
                 default: "px-8 py-3.5 text-sm",
                 large: "px-10 py-4 text-base"
             };
+
+            // Mapping variants to default textures if no specific image is provided
+            const defaultTextures = {
+                primary: 'button_back.png',
+                secondary: 'button_back_2.png',
+                outline: 'button_back_2.png',
+                dark: 'button_back_3.png',
+                ghost: 'button_back_3.png'
+            };
+
+            const activeTexture = hoverImage || defaultTextures[variant];
+
             const variants = {
-                primary: "bg-nomad-pink text-white hover:bg-nomad-magenta shadow-lg hover:shadow-xl hover:shadow-nomad-pink/25 pink-glow-sm",
-                secondary: "bg-white text-nomad-black border border-black/10 hover:border-nomad-pink hover:text-nomad-pink",
+                primary: "bg-nomad-pink text-white shadow-lg hover:shadow-xl hover:shadow-nomad-pink/25 pink-glow-sm",
+                secondary: "bg-white text-nomad-black border-black/10 hover:text-white",
                 dark: "bg-nomad-black text-white hover:bg-nomad-dark",
-                outline: "bg-transparent text-white border-2 border-white hover:bg-white hover:text-nomad-black",
+                outline: "bg-transparent text-white border-white hover:text-white hover:border-transparent",
                 ghost: "bg-transparent text-nomad-black hover:bg-black/5"
+            };
+
+            const styles = isHovered ? {
+                backgroundImage: `url('${activeTexture}')`,
+                borderColor: 'transparent',
+                color: (variant === 'secondary' || variant === 'ghost') ? 'white' : undefined
+            } : {};
+
+            const commonProps = {
+                className: `${baseStyle} ${sizes[size]} ${variants[variant]} ${className} inline-flex items-center justify-center gap-2`,
+                style: styles,
+                onMouseEnter: () => setIsHovered(true),
+                onMouseLeave: () => setIsHovered(false),
+                onClick
             };
 
             if (href) {
                 return (
-                    <a href={href} className={`${baseStyle} ${sizes[size]} ${variants[variant]} ${className} inline-flex items-center justify-center gap-2`}>
+                    <a href={href} {...commonProps}>
                         {children}
                     </a>
                 );
             }
 
             return (
-                <button onClick={onClick} className={`${baseStyle} ${sizes[size]} ${variants[variant]} ${className} inline-flex items-center justify-center gap-2`}>
+                <button {...commonProps}>
                     {children}
                 </button>
             );
@@ -835,7 +867,7 @@
                         </FadeIn>
                     </div>
                     <div className="relative flex">
-                        <div className="whitespace-nowrap flex animate-marquee w-max">
+                        <div className="whitespace-nowrap flex animate-slow-marquee w-max">
                             <PartnerTrack />
                             <PartnerTrack />
                             <PartnerTrack />
@@ -904,13 +936,14 @@
                                 required
                                 className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-6 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40"
                             />
-                            <button
+                            <Button
                                 type="submit"
+                                variant="primary"
                                 disabled={isLoading}
-                                className="w-full py-4 bg-nomad-pink text-white rounded-xl font-bold hover:bg-nomad-magenta transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                                className="w-full !rounded-xl !py-4 font-bold"
                             >
                                 {isLoading ? 'Verifying...' : 'Authenticate'}
-                            </button>
+                            </Button>
                         </form>
 
                         {error && (
@@ -1005,12 +1038,13 @@
                                 </div>
                                 <h3 className="text-3xl font-black mb-3 text-nomad-black">You're In!</h3>
                                 <p className="text-nomad-black/60 mb-6">We'll be in touch soon with updates on Nomad.</p>
-                                <button
+                                <Button
                                     onClick={handleClose}
-                                    className="px-8 py-3 bg-nomad-pink text-white rounded-full font-bold hover:bg-nomad-magenta transition-colors"
+                                    variant="primary"
+                                    className="!px-8 !py-3 font-bold"
                                 >
                                     Done
-                                </button>
+                                </Button>
                             </div>
                         ) : (
                             <>
@@ -1054,15 +1088,16 @@
                                         <option value="investor">Potential Investor</option>
                                         <option value="government">Government</option>
                                     </select>
-                                    <button
+                                    <Button
                                         type="submit"
+                                        variant="primary"
                                         disabled={isLoading || !isFormValid}
                                         title={!isFormValid ? 'Please complete all fields' : 'Get Early Access'}
                                         aria-disabled={isLoading || !isFormValid}
-                                        className="w-full py-4 bg-nomad-pink text-white rounded-xl font-bold hover:bg-nomad-magenta transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                                        className="w-full !py-4 font-bold !rounded-xl"
                                     >
                                         {isLoading ? 'Joining...' : 'Get Early Access'}
-                                    </button>
+                                    </Button>
 
                                     {!isFormValid && (
                                         <p className="mt-3 text-xs text-red-500 text-center">Please complete all fields correctly before submitting.</p>
@@ -1106,20 +1141,23 @@
                         </div>
                         <div className={`flex items-center gap-5 pl-6 border-l border-black/10 ml-auto lg:ml-0`}>
                             <Magnetic>
-                                <a
+                                <Button
                                     href="signin.html"
-                                    className={`hidden md:block text-sm font-medium transition-colors text-nomad-black/80 hover:text-nomad-black`}
+                                    variant="ghost"
+                                    size="small"
+                                    className="text-nomad-black/80"
                                 >
                                     Portals
-                                </a>
+                                </Button>
                             </Magnetic>
                             <Magnetic>
-                                <button
+                                <Button
                                     onClick={onWaitlistClick}
-                                    className={`hidden md:block px-5 py-2.5 rounded-full text-sm font-medium transition-all bg-nomad-black text-white hover:bg-nomad-pink`}
+                                    variant="dark"
+                                    size="small"
                                 >
                                     Join Waitlist
-                                </button>
+                                </Button>
                             </Magnetic>
                             <button
                                 className="lg:hidden p-1 flex items-center"
@@ -1187,8 +1225,28 @@
 
                             <div className="mt-14 flex items-center gap-5 flex-wrap">
                                 <span className="text-nomad-black/50 text-xl font-light mr-2">Explore</span>
-                                <Magnetic><a href="#platform" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">E-field</a></Magnetic>
-                                <Magnetic><a href="#applications" className="px-7 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-lg font-medium">A-field</a></Magnetic>
+                                <Magnetic>
+                                    <Button 
+                                        href="#platform" 
+                                        variant="outline"
+                                        size="large"
+                                        className="text-nomad-pink border-nomad-pink"
+                                        hoverImage="button_back.png"
+                                    >
+                                        E-field
+                                    </Button>
+                                </Magnetic>
+                                <Magnetic>
+                                    <Button 
+                                        href="#applications" 
+                                        variant="outline"
+                                        size="large"
+                                        className="text-nomad-pink border-nomad-pink"
+                                        hoverImage="button_back_2.png"
+                                    >
+                                        A-field
+                                    </Button>
+                                </Magnetic>
                             </div>
                         </div>
                     </div>
@@ -1318,7 +1376,7 @@
                             <span className="text-nomad-pink tracking-widest text-xs uppercase font-medium">Our Aim</span>
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mt-6 mb-12 tracking-tight">The future lies in <i>our hands</i></h2>
                             <Magnetic>
-                                <a href="#applications" className="px-6 py-2.5 rounded-full border border-nomad-pink text-nomad-pink hover:bg-nomad-pink hover:text-white transition-colors text-sm font-medium">Go to Programs</a>
+                                <Button href="#applications" variant="outline" size="small" className="text-nomad-pink border-nomad-pink">Go to Programs</Button>
                             </Magnetic>
                         </div>
                         <div>
@@ -1547,13 +1605,14 @@
                                         <p className="text-white/50"> Applications for defence and government partners.</p>
                                     </div>
                                     <Magnetic>
-                                        <button
+                                        <Button
                                             onClick={onLoginClick}
-                                            className="flex items-center gap-3 px-6 py-3 border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors"
+                                            variant="outline"
+                                            className="border-white/20 text-white"
                                         >
                                             <Lock size={18} />
                                             <span>Partner Login</span>
-                                        </button>
+                                        </Button>
                                     </Magnetic>
                                 </div>
                             </div>
@@ -1593,6 +1652,140 @@
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+                        </FadeIn>
+                    </div>
+                </section>
+            );
+        };
+
+        /* --- RESEARCH TIMELINE SECTION (ElevenLabs Style) --- */
+        const ResearchTimeline = () => {
+            const [activeIndex, setActiveIndex] = useState(0);
+            
+            const researchItems = [
+                {
+                    title: "Review of closed loop VNS published by OC and others",
+                    description: "XXX",
+                    date: "MARCH 2026",
+                    link: "https://onlinelibrary.wiley.com/doi/10.1002/cph4.70109"
+                },
+                { title: "XXX", description: "XXX", date: "XXX" },
+                { title: "XXX", description: "XXX", date: "XXX" },
+                { title: "XXX", description: "XXX", date: "XXX" },
+                { title: "XXX", description: "XXX", date: "XXX" },
+                { title: "XXX", description: "XXX", date: "XXX" },
+                { title: "XXX", description: "XXX", date: "XXX" },
+                { title: "XXX", description: "XXX", date: "XXX" }
+            ];
+
+            const next = () => setActiveIndex((prev) => Math.min(prev + 1, researchItems.length - 1));
+            const prev = () => setActiveIndex((prev) => Math.max(prev - 1, 0));
+
+            return (
+                <section className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-black/5">
+                    <div className="max-w-[1400px] mx-auto">
+                        <FadeIn>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24">
+                                <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.1] tracking-tight">
+                                    Research that redefines human biological interaction
+                                </h2>
+                                <p className="text-lg md:text-xl text-nomad-black/60 leading-relaxed font-light">
+                                    Our vision is to make supporting the nervous system seamless. We are building foundational models of autonomic regulation, beginning with the first non-invasive closed-loop wearable and now extending far beyond the peripheral nervous system.
+                                </p>
+                            </div>
+                        </FadeIn>
+
+                        <FadeIn delay={200}>
+                            <div className="relative bg-white/50 backdrop-blur-sm rounded-[3rem] p-8 md:p-20 shadow-sm border border-black/5 min-h-[450px] flex flex-col items-center justify-center overflow-hidden">
+                                
+                                {/* Timeline Navigation */}
+                                <div className="w-full max-w-4xl grid grid-cols-[auto_1fr_auto] items-center gap-4 md:gap-12 relative z-10">
+                                    
+                                    {/* Prev Button */}
+                                    <Magnetic>
+                                        <Button 
+                                            onClick={prev}
+                                            disabled={activeIndex === 0}
+                                            variant="ghost"
+                                            className="w-10 h-10 md:w-14 md:h-14 bg-white border border-black/5 shadow-sm disabled:opacity-20 transition-all group active:scale-95 !p-0"
+                                            aria-label="Previous milestone"
+                                            hoverImage="button_back_3.png"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" className="group-hover:-translate-x-0.5 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                                        </Button>
+                                    </Magnetic>
+
+                                    {/* Timeline Track Area */}
+                                    <div className="relative h-32 flex items-center px-4">
+                                        {/* Background Ticks Container */}
+                                        <div className="absolute inset-x-0 h-[10px] flex justify-between pointer-events-none opacity-[0.08]" 
+                                             style={{ 
+                                                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9'%3E%3Crect width='0.5' height='9' fill='black' /%3E%3C/svg%3E")`,
+                                                 backgroundSize: '9px 9px',
+                                                 backgroundPosition: 'center'
+                                             }} 
+                                        />
+                                        
+                                        {/* Milestone Points */}
+                                        <div className="relative w-full h-full flex items-center">
+                                            {researchItems.map((item, idx) => {
+                                                const isActive = activeIndex === idx;
+                                                const leftPos = (idx / (researchItems.length - 1)) * 100;
+
+                                                return (
+                                                    <div 
+                                                        key={idx}
+                                                        onClick={() => setActiveIndex(idx)}
+                                                        className="absolute top-1/2 -translate-y-1/2 cursor-pointer group z-20"
+                                                        style={{ left: `${leftPos}%`, transform: 'translate(-50%, -50%)' }}
+                                                    >
+                                                        {/* Tick */}
+                                                        <div className={`w-[1px] h-4 bg-black transition-all duration-500 ease-out ${isActive ? 'h-10 w-[2px] bg-nomad-pink' : 'opacity-20 group-hover:opacity-100 group-hover:h-6'}`} />
+                                                        
+                                                        {/* Indicator Ring (The Scrubber) */}
+                                                        <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-36 border border-black/10 rounded-full transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isActive ? 'opacity-100 scale-100 ring-4 ring-nomad-pink/5' : 'opacity-0 scale-75'}`} />
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {/* Next Button */}
+                                    <Magnetic>
+                                        <Button 
+                                            onClick={next}
+                                            disabled={activeIndex === researchItems.length - 1}
+                                            variant="ghost"
+                                            className="w-10 h-10 md:w-14 md:h-14 bg-white border border-black/5 shadow-sm disabled:opacity-20 transition-all group active:scale-95 !p-0"
+                                            aria-label="Next milestone"
+                                            hoverImage="button_back_3.png"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" className="group-hover:translate-x-0.5 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                        </Button>
+                                    </Magnetic>
+                                </div>
+
+                                {/* Content Display */}
+                                <div className="relative w-full max-w-2xl mt-16 h-40">
+                                    {researchItems.map((item, idx) => (
+                                        <div 
+                                            key={idx}
+                                            className={`absolute inset-0 flex flex-col items-center text-center transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${activeIndex === idx ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}
+                                        >
+                                            <h3 className="text-xl md:text-3xl font-light mb-4 tracking-tight">
+                                                {item.link ? (
+                                                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="hover:text-nomad-pink transition-colors">
+                                                        {item.title}
+                                                    </a>
+                                                ) : item.title}
+                                            </h3>
+                                            <p className="text-nomad-black/50 text-base md:text-lg font-light max-w-md mx-auto mb-4">{item.description}</p>
+                                            <span className="text-xs font-bold uppercase tracking-[0.25em] text-nomad-black/30 bg-black/5 px-4 py-1.5 rounded-full">{item.date}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
                             </div>
                         </FadeIn>
                     </div>
@@ -1793,15 +1986,17 @@
                                     Join the waitlist and be among the first to experience the future of autonomic health.
                                 </p>
                                 <Magnetic>
-                                    <button
+                                    <Button
                                         onClick={onWaitlistClick}
-                                        className="group inline-flex items-center gap-3 bg-white text-nomad-pink px-8 py-4 rounded-full text-lg font-bold hover:bg-white/90 transition-colors"
+                                        variant="secondary"
+                                        size="large"
+                                        className="!bg-white !text-nomad-pink hover:!text-white border-transparent font-bold !px-8 !py-4"
                                     >
                                         Join the waitlist
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
                                             <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
-                                    </button>
+                                    </Button>
                                 </Magnetic>
                                 <p className="mt-8 text-sm text-white/70 leading-relaxed max-w-xl italic">
                                     Joining our early adopter list means you'll be first to hear about our clinical programme and, if approved, commercial availability. This is not a purchase or a guarantee of product access.
@@ -1888,13 +2083,15 @@
                                         required
                                         className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-nomad-pink transition-colors text-white placeholder:text-white/30"
                                     />
-                                    <button
+                                    <Button
                                         type="submit"
+                                        variant="primary"
                                         disabled={footerSubmitting}
-                                        className="w-full bg-nomad-pink text-white rounded-lg px-4 py-3 text-sm font-medium hover:bg-nomad-magenta transition-colors disabled:opacity-70"
+                                        className="w-full !rounded-lg"
+                                        hoverImage="button_back.png"
                                     >
                                         {footerSuccess ? 'Subscribed!' : footerSubmitting ? 'Subscribing...' : 'Subscribe'}
-                                    </button>
+                                    </Button>
                                 </form>
                             </div>
                         </div>
@@ -1940,12 +2137,12 @@
                 <div className="flex flex-col items-start md:items-end justify-between h-full lg:w-1/2 gap-12">
                    <div className="px-5 py-2 rounded-full border border-black/10 text-xs tracking-widest uppercase font-medium">{badge}</div>
                    {linkText && (
-                       <button className="flex items-center gap-3 text-nomad-pink hover:text-black transition-colors font-medium">
+                       <Button variant="ghost" className="text-nomad-pink hover:text-white transition-colors font-medium !p-0">
                             {linkText}
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform ml-2">
                                 <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
-                       </button>
+                       </Button>
                    )}
                 </div>
             </div>
@@ -2114,6 +2311,7 @@
                     <FutureWearable />
                     <Stats />
                     <ScienceAndTeam />
+                    <ResearchTimeline />
                     <Roadmap />
                     <PartnerLogos />
                     <GetInTouch />
