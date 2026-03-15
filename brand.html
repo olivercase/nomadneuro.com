@@ -32,6 +32,7 @@
                         sans: ['PP Neue Montreal', 'IBM Plex Sans', 'Helvetica Neue', 'Arial', 'sans-serif'],
                         serif: ['Newsreader', 'Georgia', 'serif'],
                         display: ['PP Neue Montreal', 'IBM Plex Sans', 'sans-serif'],
+                        tech: ['IBM Plex Sans', 'ui-monospace', 'monospace'],
                     }
                 }
             }
@@ -421,16 +422,34 @@
                     </div>
 
                     {/* FOOTER */}
-                    <footer className="py-24 px-6 md:px-12 lg:px-24 bg-nomad-black text-white/40">
-                        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
-                            <span className="font-display text-lg tracking-[0.2em] font-medium lowercase text-white">nomad</span>
-                            <div className="flex flex-wrap justify-center gap-12 text-[10px] uppercase tracking-[0.3em] font-medium">
-                                <a href="index.html" className="hover:text-white transition-colors">Platform</a>
-                                <a href="brand.html" className="hover:text-white transition-colors">Brand</a>
-                                <a href="privacy.html" className="hover:text-white transition-colors">Privacy</a>
-                                <a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors">Contact</a>
+                    <footer className="py-24 px-6 md:px-12 lg:px-24 bg-nomad-black text-white/40 font-tech">
+                        <div className="max-w-[1400px] mx-auto space-y-16">
+                            <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+                                <span className="font-display text-lg tracking-[0.2em] font-medium lowercase text-white">nomad</span>
+                                <div className="flex flex-wrap gap-12 text-[10px] uppercase tracking-[0.3em] font-medium">
+                                    <a href="index.html" className="hover:text-white transition-colors">Platform</a>
+                                    <a href="brand.html" className="hover:text-white transition-colors">Brand</a>
+                                    <a href="privacy.html" className="hover:text-white transition-colors">Privacy</a>
+                                    <a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors">Contact</a>
+                                </div>
                             </div>
-                            <span className="text-[10px] uppercase tracking-widest">&copy; 2026 Nomad Neuroscience Ltd</span>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 pt-12 border-t border-white/5">
+                                <div className="space-y-4">
+                                    <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/20">Regulatory Status</h4>
+                                    <p className="text-[10px] leading-relaxed uppercase tracking-widest text-white/30">
+                                        Nomad is an investigational device, exclusively for clinical investigation. It has not yet been reviewed or approved by the MHRA or other regulatory authorities and is not available for commercial sale or medical use.
+                                    </p>
+                                </div>
+                                <div className="md:col-span-1 lg:col-span-2 space-y-4">
+                                    <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/20">Corporate & Legal</h4>
+                                    <div className="flex flex-col gap-2 text-[10px] uppercase tracking-widest">
+                                        <span>&copy; 2026 Nomad Neuroscience Ltd. All rights reserved.</span>
+                                        <span>Registered in England and Wales • Company № 16558472</span>
+                                        <span>Registered Office: 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </footer>
                 </main>
