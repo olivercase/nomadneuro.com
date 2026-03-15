@@ -912,25 +912,52 @@
         /* --- SECTIONS --- */
         const Navbar = ({ onWaitlistClick }) => {
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [isDark, setIsDark] = useState(false);
+
+            useEffect(() => {
+                const checkTheme = () => {
+                    // Check top-center of navbar area
+                    const navbarElement = document.querySelector('.navbar-container');
+                    if (!navbarElement) return;
+                    
+                    const rect = navbarElement.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    // Use a slightly larger sample area to avoid edge cases
+                    const elements = document.elementsFromPoint(centerX, centerY);
+                    const darkSection = elements.find(el => el.closest('[data-theme="dark"]'));
+                    setIsDark(!!darkSection);
+                };
+
+                window.addEventListener('scroll', checkTheme);
+                window.addEventListener('resize', checkTheme);
+                checkTheme(); // Initial check
+
+                return () => {
+                    window.removeEventListener('scroll', checkTheme);
+                    window.removeEventListener('resize', checkTheme);
+                };
+            }, []);
             
             return (
                 <>
-                    <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
+                    <div className="navbar-container fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
                         {/* Main Nav Row */}
                         <div className="flex items-center gap-2.5 w-full max-w-[800px]">
                             {/* Logo Circle */}
                             <Magnetic>
                                 <a 
                                     href="index.html" 
-                                    className="group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/53 backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center"
+                                    className={`group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
                                 >
-                                    <span className="font-serif italic text-2xl md:text-3xl text-nomad-pink mt-[-2px] group-hover:text-white transition-colors duration-500">n</span>
+                                    <span className={`font-serif italic text-2xl md:text-3xl mt-[-2px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-pink group-hover:text-white'}`}>n</span>
                                 </a>
                             </Magnetic>
 
                             {/* Nav Pill */}
-                            <nav className="flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] bg-white/53 backdrop-blur-md flex items-center justify-between px-6 md:px-10">
-                                <div className="hidden md:flex flex-1 items-center justify-between pr-4 gap-8 text-[15px] font-light text-black/80">
+                            <nav className={`flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md flex items-center justify-between px-6 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10' : 'bg-white/53'}`}>
+                                <div className={`hidden md:flex flex-1 items-center justify-between pr-4 gap-8 text-[15px] font-light transition-colors duration-500 ${isDark ? 'text-white' : 'text-black/80'}`}>
                                     <a href="#platform" className="hover:opacity-50 transition-opacity">Platform</a>
                                     <a href="#applications" className="hover:opacity-50 transition-opacity">Applications</a>
                                     <a href="#technology" className="hover:opacity-50 transition-opacity">Technology</a>
@@ -938,12 +965,12 @@
                                     <a href="signin.html" className="hover:opacity-50 transition-opacity">Portals</a>
                                 </div>
                                 
-                                <div className="flex items-center gap-4 md:hidden">
+                                <div className={`flex items-center gap-4 md:hidden ${isDark ? 'text-white' : 'text-black'}`}>
                                     <span className="text-[14px] font-medium">Menu</span>
                                 </div>
 
                                 <button
-                                    className="p-1 flex items-center ml-auto"
+                                    className={`p-1 flex items-center ml-auto transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
                                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                                 >
                                     {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -955,7 +982,7 @@
                         <div className="hidden md:flex items-center justify-center">
                             <button 
                                 onClick={onWaitlistClick}
-                                className="h-10 px-6 rounded-full bg-white/53 backdrop-blur-md flex items-center gap-3 text-[13px] text-black/40 hover:text-black transition-colors group border border-black/5"
+                                className={`h-10 px-6 rounded-full backdrop-blur-md flex items-center gap-3 text-[13px] transition-all duration-500 group border border-black/5 ${isDark ? 'bg-white/10 text-white/60 hover:text-white' : 'bg-white/53 text-black/40 hover:text-black'}`}
                             >
                                 <span className="font-light">Join the waitlist for every update</span>
                                 <div className="w-5 h-5 rounded-full border border-blue-500/30 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">
@@ -1155,7 +1182,7 @@
         );
 
         const FutureWearable = () => (
-             <section className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24">
+             <section data-theme="dark" className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24">
                 <div className="max-w-[1400px] mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
                         <div>
@@ -1371,7 +1398,7 @@
 
 
             return (
-                <section id="applications" className="bg-nomad-black text-white py-32 md:py-40 px-6 md:px-16 lg:px-24">
+                <section id="applications" data-theme="dark" className="bg-nomad-black text-white py-32 md:py-40 px-6 md:px-16 lg:px-24">
                     <div className="max-w-[1400px] mx-auto">
                         {/* Clinical Applications */}
                         <FadeIn>
@@ -1652,7 +1679,7 @@
             }, []);
 
             return (
-                <section ref={sectionRef} className="bg-nomad-black py-32 md:py-48 px-6 md:px-16 lg:px-24 overflow-hidden">
+                <section ref={sectionRef} data-theme="dark" className="bg-nomad-black py-32 md:py-48 px-6 md:px-16 lg:px-24 overflow-hidden">
                     <div className="max-w-[1400px] mx-auto">
                         {/* Header */}
                         <FadeIn>
@@ -1845,7 +1872,7 @@
             };
 
             return (
-                <footer className="bg-nomad-black text-white py-24 px-6 md:px-16 lg:px-24">
+                <footer data-theme="dark" className="bg-nomad-black text-white py-24 px-6 md:px-16 lg:px-24">
                     <div className="max-w-[1400px] mx-auto">
                         {/* Top Section */}
                         <div className="grid grid-cols-2 md:grid-cols-6 gap-10 md:gap-8 mb-20 pb-20 border-b border-white/10">

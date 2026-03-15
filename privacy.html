@@ -173,24 +173,49 @@
 
         const Navbar = ({ onWaitlistClick }) => {
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-            
+            const [isDark, setIsDark] = useState(false);
+
+            useEffect(() => {
+                const checkTheme = () => {
+                    const navbarElement = document.querySelector('.navbar-container');
+                    if (!navbarElement) return;
+                    
+                    const rect = navbarElement.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    const elements = document.elementsFromPoint(centerX, centerY);
+                    const darkSection = elements.find(el => el.closest('[data-theme="dark"]'));
+                    setIsDark(!!darkSection);
+                };
+
+                window.addEventListener('scroll', checkTheme);
+                window.addEventListener('resize', checkTheme);
+                checkTheme();
+
+                return () => {
+                    window.removeEventListener('scroll', checkTheme);
+                    window.removeEventListener('resize', checkTheme);
+                };
+            }, []);
+
             return (
                 <>
-                    <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
+                    <div className="navbar-container fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
                         <div className="flex items-center gap-2.5 w-full max-w-[750px]">
                             {/* Logo Circle */}
                             <Magnetic>
                                 <a 
                                     href="index.html" 
-                                    className="group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/53 backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center"
+                                    className={`group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
                                 >
-                                    <span className="font-serif italic text-2xl md:text-3xl text-nomad-pink mt-[-2px] group-hover:text-white transition-colors duration-500">n</span>
+                                    <span className={`font-serif italic text-2xl md:text-3xl mt-[-2px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-pink group-hover:text-white'}`}>n</span>
                                 </a>
                             </Magnetic>
 
                             {/* Nav Pill */}
-                            <nav className="flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] bg-white/53 backdrop-blur-md flex items-center justify-between px-6 md:px-10">
-                                <div className="hidden md:flex flex-1 items-center justify-around gap-6 text-[14px] font-light text-black/80">
+                            <nav className={`flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md flex items-center justify-between px-6 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10' : 'bg-white/53'}`}>
+                                <div className={`hidden md:flex flex-1 items-center justify-around gap-6 text-[14px] font-light transition-colors duration-500 ${isDark ? 'text-white' : 'text-black/80'}`}>
                                     <a href="index.html#platform" className="hover:opacity-50 transition-opacity">Platform</a>
                                     <a href="index.html#applications" className="hover:opacity-50 transition-opacity">Applications</a>
                                     <a href="index.html#technology" className="hover:opacity-50 transition-opacity">Technology</a>
@@ -198,7 +223,7 @@
                                 </div>
 
                                 <button
-                                    className="md:hidden p-1 flex items-center ml-auto"
+                                    className={`md:hidden p-1 flex items-center ml-auto transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
                                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                                 >
                                     {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -356,7 +381,7 @@
         );
 
         const Footer = () => (
-            <footer className="bg-nomad-black text-white/40 py-24 px-6 md:px-16 lg:px-24 font-tech">
+            <footer data-theme="dark" className="bg-nomad-black text-white/40 py-24 px-6 md:px-16 lg:px-24 font-tech">
                 <div className="max-w-[1400px] mx-auto">
                     <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
                         <span className="font-display text-lg tracking-[0.2em] font-medium lowercase text-white">nomad</span>
