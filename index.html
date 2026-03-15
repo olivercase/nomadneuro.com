@@ -910,62 +910,75 @@
         };
 
         /* --- SECTIONS --- */
-        const Navbar = ({ onLoginClick, onWaitlistClick }) => {
-            const scrollPos = useScrollPosition();
-            const isScrolled = scrollPos > 50;
+        const Navbar = ({ onWaitlistClick }) => {
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            
             return (
                 <>
-                    <nav
-                        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 rounded-full border bg-white/80 border-black/10 shadow-lg backdrop-blur-2xl flex items-center justify-between px-6 py-2.5 w-[92%] md:w-auto md:min-w-[700px] lg:min-w-[900px]`}
-                    >
-                        <div className="flex-shrink-0 flex items-center pr-6">
-                            <a href="#" className={`font-display text-lg tracking-[0.1em] font-medium lowercase transition-colors text-nomad-black`}>
-                                nomad
-                            </a>
-                        </div>
-                        <div className={`hidden lg:flex flex-1 items-center justify-center gap-8 text-sm font-medium transition-colors text-nomad-black/70 hover:text-nomad-black`}>
-                            <a href="#platform" className="hover:text-black transition-colors">Platform</a>
-                            <a href="#applications" className="hover:text-black transition-colors">Applications</a>
-                            <a href="#technology" className="hover:text-black transition-colors">Technology</a>
-                            <a href="#team" className="hover:text-black transition-colors">Team</a>
-                        </div>
-                        <div className={`flex items-center gap-5 pl-6 border-l border-black/10 ml-auto lg:ml-0`}>
+                    <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
+                        {/* Main Nav Row */}
+                        <div className="flex items-center gap-2.5 w-full max-w-[800px]">
+                            {/* Logo Circle */}
                             <Magnetic>
-                                <Button
-                                    href="signin.html"
-                                    variant="ghost"
-                                    size="small"
-                                    className="text-nomad-black/80"
+                                <a 
+                                    href="index.html" 
+                                    className="group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/53 backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center"
                                 >
-                                    Portals
-                                </Button>
+                                    <span className="font-serif italic text-2xl md:text-3xl text-nomad-pink mt-[-2px] group-hover:text-white transition-colors duration-500">n</span>
+                                </a>
                             </Magnetic>
-                            <Magnetic>
-                                <Button
-                                    onClick={onWaitlistClick}
-                                    variant="dark"
-                                    size="small"
+
+                            {/* Nav Pill */}
+                            <nav className="flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] bg-white/53 backdrop-blur-md flex items-center justify-between px-6 md:px-10">
+                                <div className="hidden md:flex flex-1 items-center justify-between pr-4 gap-8 text-[15px] font-light text-black/80">
+                                    <a href="#platform" className="hover:opacity-50 transition-opacity">Platform</a>
+                                    <a href="#applications" className="hover:opacity-50 transition-opacity">Applications</a>
+                                    <a href="#technology" className="hover:opacity-50 transition-opacity">Technology</a>
+                                    <a href="#team" className="hover:opacity-50 transition-opacity">Team</a>
+                                    <a href="signin.html" className="hover:opacity-50 transition-opacity">Portals</a>
+                                </div>
+                                
+                                <div className="flex items-center gap-4 md:hidden">
+                                    <span className="text-[14px] font-medium">Menu</span>
+                                </div>
+
+                                <button
+                                    className="p-1 flex items-center ml-auto"
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                                 >
-                                    Join Waitlist
-                                </Button>
-                            </Magnetic>
-                            <button
-                                className="lg:hidden p-1 flex items-center"
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                                </button>
+                            </nav>
+                        </div>
+
+                        {/* Secondary Sub-Pill */}
+                        <div className="hidden md:flex items-center justify-center">
+                            <button 
+                                onClick={onWaitlistClick}
+                                className="h-10 px-6 rounded-full bg-white/53 backdrop-blur-md flex items-center gap-3 text-[13px] text-black/40 hover:text-black transition-colors group border border-black/5"
                             >
-                                {mobileMenuOpen ? <X size={24} color={'#0A0A0A'} /> : <Menu size={24} color={'#0A0A0A'} />}
+                                <span className="font-light">Join the waitlist for every update</span>
+                                <div className="w-5 h-5 rounded-full border border-blue-500/30 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                                </div>
                             </button>
                         </div>
-                    </nav>
-                    <div className={`fixed inset-0 z-40 bg-white pt-28 px-8 transition-transform duration-500 ease-in-out lg:hidden ${mobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-                        <div className="flex flex-col gap-0 text-3xl font-light text-nomad-black">
-                            <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Platform</a>
-                            <a href="#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Applications</a>
-                            <a href="#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Technology</a>
-                            <a href="#team" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5">Team</a>
-                            <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 py-5 text-left text-nomad-black">Portals</a>
-                            <button onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }} className="mt-8 py-4 bg-nomad-black text-white text-lg font-medium rounded-full">Join Waitlist</button>
+                    </div>
+
+                    {/* Mobile Menu Overlay */}
+                    <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                        <div className="flex flex-col gap-6 text-4xl font-light text-nomad-black">
+                            <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Platform</a>
+                            <a href="#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Applications</a>
+                            <a href="#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Technology</a>
+                            <a href="#team" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Team</a>
+                            <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl pt-4 text-nomad-black/50">Partner Portals</a>
+                            <button 
+                                onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }} 
+                                className="mt-6 py-5 bg-nomad-black text-white text-xl font-bold rounded-2xl uppercase tracking-widest"
+                            >
+                                Secure Access
+                            </button>
                         </div>
                     </div>
                 </>

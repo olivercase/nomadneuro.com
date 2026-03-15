@@ -174,17 +174,89 @@
             return (yiq >= 128) ? 'black' : 'white';
         };
 
-        /* --- COMPONENTS --- */
-
-        const Navbar = () => (
-            <nav className="fixed top-0 left-0 w-full z-50 px-6 md:px-12 py-8 flex justify-between items-center mix-blend-difference text-white">
-                <a href="index.html" className="font-display text-xl tracking-[0.2em] font-medium lowercase">nomad</a>
-                <div className="flex gap-8 items-center text-xs uppercase tracking-[0.2em] font-medium opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
-                    <span>Explore</span>
-                    <div className="w-6 h-[1px] bg-white"></div>
-                </div>
-            </nav>
+        /* --- UTILS --- */
+        const IconWrapper = ({ children, size = 24, color = "currentColor", className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
         );
+        const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></IconWrapper>;
+        const X = (props) => <IconWrapper {...props}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></IconWrapper>;
+
+        const Magnetic = ({ children, className = "" }) => {
+            const ref = useRef(null);
+            const [position, setPosition] = useState({ x: 0, y: 0 });
+            useEffect(() => {
+                const element = ref.current;
+                if (!element || window.matchMedia("(pointer: coarse)").matches) return;
+                const handleMouseMove = (e) => {
+                    const { clientX, clientY } = e;
+                    const { left, top, width, height } = element.getBoundingClientRect();
+                    const x = (clientX - (left + width / 2)) * 0.3;
+                    const y = (clientY - (top + height / 2)) * 0.3;
+                    setPosition({ x, y });
+                };
+                const handleMouseLeave = () => setPosition({ x: 0, y: 0 });
+                element.addEventListener("mousemove", handleMouseMove);
+                element.addEventListener("mouseleave", handleMouseLeave);
+                return () => {
+                    element.removeEventListener("mousemove", handleMouseMove);
+                    element.removeEventListener("mouseleave", handleMouseLeave);
+                };
+            }, []);
+            return (
+                <div 
+                    ref={ref} 
+                    className={`inline-block transition-transform duration-300 ease-out will-change-transform ${className}`} 
+                    style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0)` }}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const Navbar = () => {
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            return (
+                <>
+                    <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
+                        <div className="flex items-center gap-2.5 w-full max-w-[700px]">
+                            <Magnetic>
+                                <a 
+                                    href="index.html" 
+                                    className="group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/53 backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center"
+                                >
+                                    <span className="font-serif italic text-2xl md:text-3xl text-nomad-pink mt-[-2px] group-hover:text-white transition-colors duration-500">n</span>
+                                </a>
+                            </Magnetic>
+
+                            <nav className="flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] bg-white/53 backdrop-blur-md flex items-center justify-between px-6 md:px-10">
+                                <div className="hidden md:flex flex-1 items-center justify-around gap-6 text-[14px] font-light text-black/80">
+                                    <a href="index.html" className="hover:opacity-50 transition-opacity">Platform</a>
+                                    <a href="brand.html" className="opacity-40">Brand</a>
+                                    <a href="privacy.html" className="hover:opacity-50 transition-opacity">Privacy</a>
+                                </div>
+                                
+                                <button
+                                    className="md:hidden p-1 flex items-center ml-auto"
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                >
+                                    {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                                </button>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                        <div className="flex flex-col gap-6 text-4xl font-light text-nomad-black">
+                            <a href="index.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Platform</a>
+                            <a href="brand.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Brand Profile</a>
+                            <a href="privacy.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Privacy Policy</a>
+                            <a href="mailto:hello@nomadneuro.com" className="text-2xl pt-4 text-nomad-pink">Get in touch</a>
+                        </div>
+                    </div>
+                </>
+            );
+        };
+
 
         const SectionHeader = ({ number, title, description }) => (
             <div className="flex flex-col md:flex-row gap-8 mb-16 pt-24 border-t border-black/5">
