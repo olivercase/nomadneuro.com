@@ -1,0 +1,9 @@
+{
+  "name": "nomadneuro-website",
+  "version": "1.0.0",
+  "description": "Nomad Neuroscience website",
+  "main": "index.html",
+  "devDependencies": {
+    "netlify-plugin-sitemap": "^0.8.1"
+  }
+}
