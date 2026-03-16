@@ -223,9 +223,11 @@
                                 </div>
 
                                 <button
-                                    className={`md:hidden p-1 flex items-center ml-auto transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
+                                    className={`flex items-center gap-3 ml-auto px-2 py-2 -mr-2 transition-all active:scale-95 ${isDark ? 'text-white' : 'text-black'}`}
                                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    aria-label="Toggle menu"
                                 >
+                                    <span className="text-[14px] font-medium md:hidden">Menu</span>
                                     {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                                 </button>
                             </nav>
