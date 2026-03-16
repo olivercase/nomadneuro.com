@@ -247,7 +247,7 @@
                         <div className="flex items-center gap-2.5 w-full max-w-[700px]">
                             <Magnetic>
                                 <a 
-                                    href="index.html" 
+                                    href="/" 
                                     className={`group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
                                 >
                                     <span className={`font-serif italic text-2xl md:text-3xl mt-[-2px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-pink group-hover:text-white'}`}>n</span>
@@ -256,9 +256,9 @@
 
                             <nav className={`flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md flex items-center justify-between px-6 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10' : 'bg-white/53'}`}>
                                 <div className={`hidden md:flex flex-1 items-center justify-around gap-6 text-[14px] font-light transition-colors duration-500 ${isDark ? 'text-white' : 'text-black/80'}`}>
-                                    <a href="index.html" className="hover:opacity-50 transition-opacity">Platform</a>
-                                    <a href="brand.html" className="opacity-40">Brand</a>
-                                    <a href="privacy.html" className="hover:opacity-50 transition-opacity">Privacy</a>
+                                    <a href="/" className="hover:opacity-50 transition-opacity">Platform</a>
+                                    <a href="brand" className="opacity-40">Brand</a>
+                                    <a href="privacy" className="hover:opacity-50 transition-opacity">Privacy</a>
                                 </div>
                                 
                                 <button
@@ -273,9 +273,9 @@
 
                     <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <div className="flex flex-col gap-6 text-4xl font-light text-nomad-black">
-                            <a href="index.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Platform</a>
-                            <a href="brand.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Brand Profile</a>
-                            <a href="privacy.html" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Privacy Policy</a>
+                            <a href="/" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Platform</a>
+                            <a href="brand" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Brand Profile</a>
+                            <a href="privacy" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Privacy Policy</a>
                             <a href="mailto:hello@nomadneuro.com" className="text-2xl pt-4 text-nomad-pink">Get in touch</a>
                         </div>
                     </div>
@@ -527,9 +527,9 @@
                             <div className="flex flex-col md:flex-row justify-between items-start gap-12">
                                 <span className="font-display text-lg tracking-[0.2em] font-medium lowercase text-white">nomad</span>
                                 <div className="flex flex-wrap gap-12 text-[10px] uppercase tracking-[0.3em] font-medium">
-                                    <a href="index.html" className="hover:text-white transition-colors">Platform</a>
-                                    <a href="brand.html" className="hover:text-white transition-colors">Brand</a>
-                                    <a href="privacy.html" className="hover:text-white transition-colors">Privacy</a>
+                                    <a href="/" className="hover:text-white transition-colors">Platform</a>
+                                    <a href="brand" className="hover:text-white transition-colors">Brand</a>
+                                    <a href="privacy" className="hover:text-white transition-colors">Privacy</a>
                                     <a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors">Contact</a>
                                 </div>
                             </div>
