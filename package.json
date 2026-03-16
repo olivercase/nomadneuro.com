@@ -4,6 +4,6 @@
   "description": "Nomad Neuroscience website",
   "main": "index.html",
   "devDependencies": {
-    "netlify-plugin-sitemap": "^0.8.1"
+    "@netlify/plugin-sitemap": "^0.8.1"
   }
 }

@@ -2,7 +2,7 @@
   publish = "."
 
 [[plugins]]
-  package = "netlify-plugin-sitemap"
+  package = "@netlify/plugin-sitemap"
   [plugins.inputs]
     baseUrl = "https://nomadneuro.com"
     exclude = [
