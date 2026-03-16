@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /signin
+
+Sitemap: https://nomadneuro.com/sitemap.xml
