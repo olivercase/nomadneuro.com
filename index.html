@@ -1694,11 +1694,36 @@
             const sectionRef = useRef(null);
 
             const milestones = [
-                { year: "2024", title: "Research", description: "Research program initiated, foundational science established", status: "complete" },
-                { year: "2025", title: "Foundation", description: "University spinout, seed funding, core team assembly, initial prototypes", status: "complete" },
-                { year: "2026", title: "Validation", description: "Early adopter program, miniaturisation, UKCA / CE marking pathway, large-scale clinical trials", status: "current" },
-                { year: "2027", title: "Launch", description: "First commercial product release", status: "upcoming" },
-                { year: "2028+", title: "Scale", description: "EU Class IIb approval · FDA 510(k) or PMA pathway (subject to classification), global expansion, platform extensions, partnerships", status: "upcoming" }
+                { 
+                    year: "2024", 
+                    title: "The Science", 
+                    description: "We didn't start with a product. We started with a question: is there enough published evidence to build a non-invasive, closed-loop system for autonomic regulation? The answer was yes — barely — and that was enough to begin.", 
+                    status: "complete" 
+                },
+                { 
+                    year: "2025", 
+                    title: "The Foundation", 
+                    description: "University spinout from our research base. Seed funding. A small, deliberate team assembled around people who have spent their careers in neuromodulation, autonomic physiology, and wearable engineering. First prototypes. First proof-of-concept data.", 
+                    status: "complete" 
+                },
+                { 
+                    year: "2026", 
+                    title: "Validation (This is where we are)", 
+                    description: "We are in clinical investigation. That means we are in the rigorous, unglamorous, necessary phase of proving that what we believe works, actually works, in real people, under controlled conditions.\n\nWe are pursuing UKCA and CE marking. We are miniaturising the hardware. We are not cutting corners.\n\n*If you're reading this hoping to buy or use Nomad today — we understand. We're moving as fast as the science allows.*", 
+                    status: "current" 
+                },
+                { 
+                    year: "2027", 
+                    title: "First Product", 
+                    description: "Commercial release of the first Nomad device. A wearable. Non-invasive. Cleared for use.", 
+                    status: "upcoming" 
+                },
+                { 
+                    year: "2028 and beyond", 
+                    title: "Scale", 
+                    description: "EU Class IIb. FDA pathway. Global. Platform extensions we're not ready to describe yet, because we'd rather show you than promise you.", 
+                    status: "upcoming" 
+                }
             ];
 
             useEffect(() => {
@@ -1749,7 +1774,7 @@
                             <div className="mb-24 md:mb-32">
                                 <p className="text-sm font-medium text-nomad-pink uppercase tracking-[0.3em] mb-6">Roadmap</p>
                                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-[1.05] tracking-tight">
-                                    Our path to market
+                                    Where we are. Honestly.
                                 </h2>
                             </div>
                         </FadeIn>
@@ -1826,7 +1851,7 @@
 
                                                     {/* Description */}
                                                     <p
-                                                        className={`text-sm md:text-base leading-relaxed max-w-md transition-all duration-500 ${isLeft ? 'md:ml-auto' : ''
+                                                        className={`text-sm md:text-base leading-relaxed max-w-md transition-all duration-500 whitespace-pre-line ${isLeft ? 'md:ml-auto' : ''
                                                             } ${isCurrent ? 'text-white/60' :
                                                                 isFuture ? 'text-white/40 blur-[0.3px] group-hover:blur-0 group-hover:text-white/50' :
                                                                     'text-white/40'
