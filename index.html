@@ -1061,47 +1061,20 @@
                             className="absolute -top-[15%] left-0 w-full h-[130%] object-cover opacity-30 will-change-transform"
                         />
                     </div>
-                    {/* Content */}
-                    <div className="relative z-10 flex flex-col justify-center min-h-screen pt-32 pb-12">
-                        <div className="max-w-[1400px] w-full px-6 md:px-16 lg:px-24">
+                    {/* Content */}                    <div className="relative z-10 flex flex-col justify-center items-center text-center min-h-screen pt-32 pb-12">
+                        <div className="max-w-[1400px] w-full px-6 md:px-16 lg:px-24 flex flex-col items-center">
                             <p className="font-display text-2xl md:text-3xl font-medium tracking-wide text-nomad-black mb-6 lg:mb-10 lowercase">nomad</p>
-                            <h1 className="text-6xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black leading-[1.05] tracking-tight max-w-4xl">
-                                <TextReveal delay={200}>The operating system for your <i>body</i>.</TextReveal>
+                            <h1 className="text-5xl md:text-7xl lg:text-[6rem] font-light text-nomad-black leading-[1.05] tracking-tight max-w-5xl italic">
+                                <TextReveal delay={200}>Your brain and body are programmable.</TextReveal>
                             </h1>
-                            <FadeIn delay={600}>
-                                <p className="text-xl md:text-2xl font-light text-nomad-black/80 max-w-2xl mt-8">
-                                    Nomad is the first closed-loop wearable designed to read and respond to signals from your autonomic nervous system — non-invasively, in real time.
+                            <FadeIn delay={800}>
+                                <p className="text-2xl md:text-3xl lg:text-4xl font-light text-nomad-black/80 mt-10 md:mt-16 italic">
+                                    Let nomad be the interface.
                                 </p>
-                                <p className="text-sm font-medium text-nomad-pink tracking-tight mt-4 mb-16">
+                                <p className="text-sm font-medium text-nomad-pink tracking-tight mt-16 md:mt-24">
                                     <strong>Currently in clinical investigation.</strong> Not available for commercial or medical use.
                                 </p>
                             </FadeIn>
-
-                            <div className="mt-14 flex items-center gap-5 flex-wrap">
-                                <span className="text-nomad-black/50 text-xl font-light mr-2">Explore</span>
-                                <Magnetic>
-                                    <Button 
-                                        href="#platform" 
-                                        variant="outline"
-                                        size="large"
-                                        className="text-nomad-pink border-nomad-pink"
-                                        hoverImage="button_back.png"
-                                    >
-                                        E-field
-                                    </Button>
-                                </Magnetic>
-                                <Magnetic>
-                                    <Button 
-                                        href="#applications" 
-                                        variant="outline"
-                                        size="large"
-                                        className="text-nomad-pink border-nomad-pink"
-                                        hoverImage="button_back_2.png"
-                                    >
-                                        A-field
-                                    </Button>
-                                </Magnetic>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1151,7 +1124,17 @@
             <section id="platform" className="bg-nomad-cream pt-0 pb-32 md:pt-0 md:pb-48 px-6 md:px-16 lg:px-24">
                 <div className="max-w-[1400px] mx-auto border-t border-nomad-black/10 pt-10">
                     <div className="flex justify-between items-start mb-16">
-                        <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Overview</span>
+                        <div className="flex items-center gap-6">
+                            <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Explore</span>
+                            <div className="flex items-center gap-4">
+                                <Magnetic>
+                                    <Button href="#platform" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="button_back.png">E-field</Button>
+                                </Magnetic>
+                                <Magnetic>
+                                    <Button href="#applications" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="button_back_2.png">A-field</Button>
+                                </Magnetic>
+                            </div>
+                        </div>
                         <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Breakthrough</span>
                     </div>
                     <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.05] max-w-5xl tracking-tight">
