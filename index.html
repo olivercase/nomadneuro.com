@@ -1011,8 +1011,8 @@
                         </div>
                     </div>
 
-                    {/* Mobile Menu Overlay */}
-                    <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                    {/* Full Menu Overlay */}
+                    <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <div className="flex flex-col gap-6 text-4xl font-light text-nomad-black">
                             <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-2">Platform</a>
                             <a href="#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-2">Applications</a>
