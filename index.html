@@ -1106,39 +1106,46 @@
         };
 
         /* --- ANIMATED COUNTER --- */
-        const AnimatedCounter = ({ end, suffix = '', prefix = '', duration = 2000 }) => {
+        const AnimatedCounter = ({ end, suffix = '', prefix = '', duration = 1200, delay = 0 }) => {
             const [count, setCount] = useState(0);
             const ref = useRef(null);
 
             useEffect(() => {
                 let timer;
+                let delayTimer;
+
                 const observer = new IntersectionObserver(
                     ([entry]) => {
                         if (entry.isIntersecting) {
-                            let start = 0;
-                            const increment = end / (duration / 16);
-                            timer = setInterval(() => {
-                                start += increment;
-                                if (start >= end) {
-                                    setCount(end);
-                                    clearInterval(timer);
-                                } else {
-                                    setCount(Math.floor(start));
-                                }
-                            }, 16);
+                            // Wait for the assigned delay before starting the counter
+                            delayTimer = setTimeout(() => {
+                                let start = 0;
+                                const increment = end / (duration / 16);
+                                timer = setInterval(() => {
+                                    start += increment;
+                                    if (start >= end) {
+                                        setCount(end);
+                                        clearInterval(timer);
+                                    } else {
+                                        setCount(Math.floor(start));
+                                    }
+                                }, 16);
+                            }, delay);
                         } else {
+                            clearTimeout(delayTimer);
                             clearInterval(timer);
                             setCount(0); // Reset when scrolled out of view
                         }
                     },
-                    { threshold: 0.5 }
+                    { threshold: 0.1 }
                 );
                 if (ref.current) observer.observe(ref.current);
                 return () => {
+                    clearTimeout(delayTimer);
                     clearInterval(timer);
                     observer.disconnect();
                 };
-            }, [end, duration]);
+            }, [end, duration, delay]);
 
             return <span ref={ref}>{prefix}{count}{suffix}</span>;
         };
@@ -1282,7 +1289,13 @@
                                 <FadeIn key={idx} delay={idx * 100}>
                                     <div className="text-center md:text-left">
                                         <div className="text-6xl md:text-7xl lg:text-8xl font-bold text-nomad-pink mb-4 tracking-tight flex items-start justify-center md:justify-start">
-                                            <AnimatedCounter end={stat.number} suffix={stat.suffix} prefix={stat.prefix} />
+                                            <AnimatedCounter 
+                                                end={stat.number} 
+                                                suffix={stat.suffix} 
+                                                prefix={stat.prefix} 
+                                                delay={idx * 1000} 
+                                                duration={1200}
+                                            />
                                             {stat.number === 376 && (
                                                 <a href="#references" className="text-sm md:text-base lg:text-lg align-super mt-2 ml-1 opacity-50 hover:opacity-100 transition-opacity font-medium text-nomad-black">
                                                     [1]
