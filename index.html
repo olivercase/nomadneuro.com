@@ -1095,7 +1095,7 @@
         };
 
         /* --- ANIMATED COUNTER --- */
-        const AnimatedCounter = ({ end, suffix = '', duration = 2000 }) => {
+        const AnimatedCounter = ({ end, suffix = '', prefix = '', duration = 2000 }) => {
             const [count, setCount] = useState(0);
             const ref = useRef(null);
 
@@ -1129,7 +1129,7 @@
                 };
             }, [end, duration]);
 
-            return <span ref={ref}>{count}{suffix}</span>;
+            return <span ref={ref}>{prefix}{count}{suffix}</span>;
         };
 
         /* --- AUGEN-STYLE MODULAR SECTIONS --- */
@@ -1258,9 +1258,9 @@
         /* --- STATS SECTION --- */
         const Stats = () => {
             const stats = [
-                { number: 376, suffix: 'M', label: 'people live with autonomic dysfunction.' },
-                { number: 53, suffix: 'M', label: 'have a chronic autonomic condition.' },
-                { number: 0, suffix: '', label: 'treatments target the system itself.' },
+                { number: 376, suffix: 'M', prefix: '', label: 'People whose autonomic nervous system is working against them' },
+                { number: 0, suffix: '', prefix: '~', label: 'Non-invasive, closed-loop treatments available to them today' },
+                { number: 1, suffix: '', prefix: '', label: 'Device designed to change that' },
             ];
 
             return (
@@ -1271,9 +1271,9 @@
                                 <FadeIn key={idx} delay={idx * 100}>
                                     <div className="text-center md:text-left">
                                         <div className="text-6xl md:text-7xl lg:text-8xl font-bold text-nomad-pink mb-4 tracking-tight flex items-start justify-center md:justify-start">
-                                            <AnimatedCounter end={stat.number} suffix={stat.suffix} />
+                                            <AnimatedCounter end={stat.number} suffix={stat.suffix} prefix={stat.prefix} />
                                             {stat.number === 376 && (
-                                                <a href="#references" className="text-sm md:text-base lg:text-lg align-super mt-2 ml-1 opacity-50 hover:opacity-100 transition-opacity font-medium">
+                                                <a href="#references" className="text-sm md:text-base lg:text-lg align-super mt-2 ml-1 opacity-50 hover:opacity-100 transition-opacity font-medium text-nomad-black">
                                                     [1]
                                                 </a>
                                             )}
@@ -1284,7 +1284,7 @@
                             ))}
                         </div>
                         <h2 className="text-5xl md:text-7xl lg:text-[5.5rem] font-light text-nomad-black tracking-tight text-center md:text-left mt-12">
-                            <TextReveal delay={200}>Until <i>now</i>.</TextReveal>
+                                <TextReveal delay={200}>Until now, the loop was <i>never closed</i>.</TextReveal>
                         </h2>
                     </div>
                 </section>
