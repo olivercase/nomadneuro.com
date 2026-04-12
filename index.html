@@ -979,22 +979,19 @@
 
                             {/* Nav Pill */}
                             <nav className={`flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md flex items-center justify-between px-6 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10' : 'bg-white/53'}`}>
-                                <div className={`hidden md:flex flex-1 items-center justify-around gap-6 text-[13px] lg:text-[14px] font-light transition-colors duration-500 ${isDark ? 'text-white' : 'text-black/80'}`}>
-                                    <a href="#platform" className="hover:opacity-50 transition-opacity">Platform</a>
-                                    <a href="#applications" className="hover:opacity-50 transition-opacity">Applications</a>
-                                    <a href="#technology" className="hover:opacity-50 transition-opacity">Technology</a>
-                                    <a href="investors.html" className="hover:opacity-50 transition-opacity">Investors</a>
-                                    <a href="careers.html" className="hover:opacity-50 transition-opacity">Careers</a>
-                                    <a href="#team" className="hover:opacity-50 transition-opacity">Team</a>
-                                    <a href="signin.html" className="hover:opacity-50 transition-opacity">Portals</a>
+                                <div className={`hidden md:flex flex-1 items-center justify-around gap-8 text-[14px] font-medium transition-colors duration-500 ${isDark ? 'text-white' : 'text-black/80'}`}>
+                                    <a href="#platform" className="hover:text-nomad-pink transition-colors">Platform</a>
+                                    <a href="#applications" className="hover:text-nomad-pink transition-colors">Applications</a>
+                                    <a href="#technology" className="hover:text-nomad-pink transition-colors">Technology</a>
+                                    <div className="w-px h-4 bg-black/10 mx-2"></div>
+                                    <a href="signin.html" className="hover:text-nomad-pink transition-colors">Partner Portal</a>
                                 </div>
                                 
                                 <button
-                                    className={`flex items-center gap-3 ml-auto px-2 py-2 -mr-2 transition-all active:scale-95 md:hidden ${isDark ? 'text-white' : 'text-black'}`}
+                                    className={`flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 ml-4 ${isDark ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/5'}`}
                                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                                     aria-label="Toggle menu"
                                 >
-                                    <span className="text-[14px] font-medium md:hidden">Menu</span>
                                     {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                                 </button>
                             </nav>
@@ -1017,13 +1014,15 @@
                     {/* Mobile Menu Overlay */}
                     <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                         <div className="flex flex-col gap-6 text-4xl font-light text-nomad-black">
-                            <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Platform</a>
-                            <a href="#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Applications</a>
-                            <a href="#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Technology</a>
-                            <a href="#team" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-6">Team</a>
-                            <a href="careers.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl pt-4 text-nomad-black/50 hover:text-nomad-pink transition-colors">Careers</a>
-                            <a href="investors.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl pt-4 text-nomad-black/50 hover:text-nomad-pink transition-colors">Investors</a>
-                            <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl pt-4 text-nomad-black/50 hover:text-nomad-pink transition-colors">Partner Portals</a>
+                            <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-2">Platform</a>
+                            <a href="#applications" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-2">Applications</a>
+                            <a href="#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-2">Technology</a>
+                            <div className="pt-8 flex flex-col gap-4">
+                                <a href="#team" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Team</a>
+                                <a href="careers.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Careers</a>
+                                <a href="investors.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Investors</a>
+                                <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Portals</a>
+                            </div>
                             <button 
                                 onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }} 
                                 className="mt-6 py-5 bg-nomad-black text-white text-xl font-bold rounded-2xl uppercase tracking-widest"
