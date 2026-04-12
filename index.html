@@ -24,19 +24,66 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "MedicalWebPage",
-      "name": "Nomad Neuroscience",
-      "description": "The first closed-loop wearable designed to read and respond to signals from the autonomic nervous system.",
-      "url": "https://nomadneuro.com/",
-      "mainEntity": {
-        "@type": "MedicalDevice",
-        "name": "Nomad",
-        "manufacturer": {
-          "@type": "Organization",
-          "name": "Nomad Neuroscience Ltd"
+      "@graph": [
+        {
+          "@type": "MedicalWebPage",
+          "@id": "https://nomadneuro.com/#webpage",
+          "url": "https://nomadneuro.com/",
+          "name": "Nomad Neuroscience | The Operating System for Your Body",
+          "description": "The first closed-loop wearable designed to read and respond to signals from the autonomic nervous system.",
+          "about": { "@id": "https://nomadneuro.com/#device" }
         },
-        "status": "In clinical investigation"
-      }
+        {
+          "@type": "MedicalDevice",
+          "@id": "https://nomadneuro.com/#device",
+          "name": "Nomad",
+          "manufacturer": { "@id": "https://nomadneuro.com/#organization" },
+          "status": "In clinical investigation",
+          "medicalSpecialty": ["Autonomic Neuroscience", "Bioelectronics"],
+          "indication": [
+            {
+              "@type": "MedicalIndication",
+              "name": "Autonomic Dysfunction"
+            },
+            {
+              "@type": "MedicalIndication",
+              "name": "Dysautonomia"
+            }
+          ],
+          "description": "Non-invasive, closed-loop neuromodulation for autonomic regulation."
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://nomadneuro.com/#organization",
+          "name": "Nomad Neuroscience Ltd",
+          "url": "https://nomadneuro.com/",
+          "logo": "https://nomadneuro.com/logo.png",
+          "founder": [
+            {
+              "@type": "Person",
+              "name": "Santiago Denari",
+              "jobTitle": "Chief Executive Officer"
+            },
+            {
+              "@type": "Person",
+              "name": "Oliver Case",
+              "jobTitle": "Chief Science Officer"
+            }
+          ],
+          "member": [
+            {
+              "@type": "Person",
+              "name": "Prof. Imanuel Lerman",
+              "jobTitle": "Clinical Team Lead"
+            },
+            {
+              "@type": "Person",
+              "name": "Prof. Steve Alty",
+              "jobTitle": "Engineering Advisor"
+            }
+          ]
+        }
+      ]
     }
     </script>
 
