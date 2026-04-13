@@ -1359,7 +1359,7 @@
                                                 end={stat.number} 
                                                 suffix={stat.suffix} 
                                                 prefix={stat.prefix} 
-                                                delay={idx * 1000} 
+                                                delay={idx === 2 ? 1100 : idx * 600} 
                                                 duration={1200}
                                             />
                                             {stat.number === 376 && (
