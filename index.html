@@ -719,10 +719,10 @@
             return (
                 <div className="w-full overflow-hidden bg-nomad-cream py-10 border-t border-b border-nomad-black/5 fade-mask">
                     <div className="whitespace-nowrap flex w-[200%] animate-marquee">
-                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
-                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
-                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
-                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8" dangerouslySetInnerHTML={{ __html: text }}></span>
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8" dangerouslySetInnerHTML={{ __html: text }}></span>
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8" dangerouslySetInnerHTML={{ __html: text }}></span>
+                        <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8" dangerouslySetInnerHTML={{ __html: text }}></span>
                     </div>
                 </div>
             );
@@ -858,12 +858,12 @@
             const [email, setEmail] = useState('');
             const [userType, setUserType] = useState('');
             const [isLoading, setIsLoading] = useState(false);
-            const [success, setSuccess] = useState(false);
+            const [consent, setConsent] = useState(false);
             const [error, setError] = useState('');
 
             // simple email validation for UX (server/netlify will still validate)
             const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-            const isFormValid = fullName.trim().length > 0 && validateEmail(email) && userType.trim().length > 0;
+            const isFormValid = fullName.trim().length > 0 && validateEmail(email) && userType.trim().length > 0 && consent;
 
             const handleSubmit = async (e) => {
                 e.preventDefault();
@@ -893,6 +893,7 @@
                         setFullName('');
                         setEmail('');
                         setUserType('');
+                        setConsent(false);
                     } else {
                         throw new Error('Failed to submit');
                     }
@@ -909,6 +910,7 @@
                 setFullName('');
                 setEmail('');
                 setUserType('');
+                setConsent(false);
                 onClose();
             };
 
@@ -986,11 +988,25 @@
                                         <option value="investor">Potential Investor</option>
                                         <option value="government">Government</option>
                                     </select>
+                                    <div className="flex items-start gap-3 mb-6">
+                                        <input
+                                            type="checkbox"
+                                            id="waitlist-consent"
+                                            checked={consent}
+                                            onChange={(e) => setConsent(e.target.checked)}
+                                            className="mt-1 w-4 h-4 rounded border-nomad-pink/20 text-nomad-pink focus:ring-nomad-pink"
+                                            required
+                                        />
+                                        <label htmlFor="waitlist-consent" className="text-xs text-nomad-black/60 leading-tight">
+                                            I agree to receive communications from Nomad and have read the <a href="privacy.html" className="text-nomad-pink hover:underline">Privacy Policy</a>.
+                                        </label>
+                                    </div>
+
                                     <Button
                                         type="submit"
                                         variant="primary"
                                         disabled={isLoading || !isFormValid}
-                                        title={!isFormValid ? 'Please complete all fields' : 'Get Early Access'}
+                                        title={!isFormValid ? 'Please complete all fields and agree to the terms' : 'Get Early Access'}
                                         aria-disabled={isLoading || !isFormValid}
                                         className="w-full !py-4 font-bold !rounded-xl"
                                     >
@@ -998,7 +1014,7 @@
                                     </Button>
 
                                     {!isFormValid && (
-                                        <p className="mt-3 text-xs text-red-500 text-center">Please complete all fields correctly before submitting.</p>
+                                        <p className="mt-3 text-xs text-red-500 text-center">Please complete all fields and tick the consent box correctly.</p>
                                     )}
                                 </form>
 
@@ -1150,11 +1166,11 @@
                         <div className="max-w-[1400px] w-full px-6 md:px-16 lg:px-24 flex flex-col items-center">
                             <p className="font-display text-2xl md:text-3xl font-medium tracking-wide text-white mb-6 lg:mb-10 lowercase">nomad</p>
                             <h1 className="text-5xl md:text-7xl lg:text-[6rem] font-light text-white leading-[1.05] tracking-tight max-w-5xl">
-                                <TextReveal delay={200}>Your brain and body are <i>programmable</i>.</TextReveal>
+                                <TextReveal delay={200}>Your brain and body are programmable.</TextReveal>
                             </h1>
                             <FadeIn delay={800}>
                                 <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white/90 mt-10 md:mt-16">
-                                    Let nomad be the <i>interface</i>.
+                                    We are building the interface.
                                 </p>
                             </FadeIn>
 
@@ -1164,12 +1180,11 @@
                                         There is a system running inside you <i>right now</i>. It controls your <i>heartbeat</i> without being asked. It decides when you're in <i>danger</i>. It tells your gut to move, your pupils to dilate, your blood pressure to hold. It has been doing this since <i>before you were born</i>, beneath every thought you've ever had.
                                     </p>
                                 </FadeIn>
-                                <FadeIn delay={2200} direction="up" distance={20}>
                                     <p className="text-xl md:text-2xl font-light text-white/80 leading-relaxed">
-                                        For most people, it hums along <i>unnoticed</i>. For 376 million, it <i>doesn't</i>.
+                                        For most people, it hums along <i>unnoticed</i>. For 376 million, it doesn't.
                                     </p>
                                     <p className="text-2xl md:text-3xl font-light text-white mt-8">
-                                        Nomad was <i>built</i> for them.
+                                        Nomad is engineered for them.
                                     </p>
                                 </FadeIn>
                                 <FadeIn delay={3200} direction="up" distance={10}>
@@ -1250,7 +1265,7 @@
                         <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Breakthrough</span>
                     </div>
                     <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.1] max-w-4xl tracking-tight mb-12">
-                        <TextReveal>The first device that <i>listens back.</i> [2]</TextReveal>
+                        <TextReveal>The first device that <i>listens back.</i> <sup>[2]</sup></TextReveal>
                     </h2>
                     <div className="max-w-2xl text-xl md:text-2xl font-light text-nomad-black/60 leading-relaxed">
                         <FadeIn delay={400}>
@@ -1387,7 +1402,7 @@
                                             />
                                             {stat.number === 376 && (
                                                 <a href="#references" className="text-sm md:text-base lg:text-lg align-super mt-2 ml-1 opacity-50 hover:opacity-100 transition-opacity font-medium text-nomad-black">
-                                                    [1]
+                                                    <sup>[1]</sup>
                                                 </a>
                                             )}
                                         </div>
@@ -2033,6 +2048,7 @@
             const [footerEmail, setFooterEmail] = useState('');
             const [footerSubmitting, setFooterSubmitting] = useState(false);
             const [footerSuccess, setFooterSuccess] = useState(false);
+            const [footerConsent, setFooterConsent] = useState(false);
 
             const handleFooterSubmit = async (e) => {
                 e.preventDefault();
@@ -2052,6 +2068,7 @@
                     if (response.ok) {
                         setFooterSuccess(true);
                         setFooterEmail('');
+                        setFooterConsent(false);
                         setTimeout(() => setFooterSuccess(false), 3000);
                     }
                 } catch (err) {
@@ -2108,10 +2125,23 @@
                                         required
                                         className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-nomad-pink transition-colors text-white placeholder:text-white/30 font-tech"
                                     />
+                                    <div className="flex items-start gap-2 py-2">
+                                        <input
+                                            type="checkbox"
+                                            id="footer-consent"
+                                            checked={footerConsent}
+                                            onChange={(e) => setFooterConsent(e.target.checked)}
+                                            className="mt-1 w-3 h-3 rounded border-white/20 bg-white/5 text-nomad-pink focus:ring-nomad-pink"
+                                            required
+                                        />
+                                        <label htmlFor="footer-consent" className="text-[10px] text-white/40 leading-tight">
+                                            I agree to receive updates. Our lawful basis for processing is your consent. <a href="privacy.html" className="text-white/60 hover:text-white underline">Privacy Policy</a>.
+                                        </label>
+                                    </div>
                                     <Button
                                         type="submit"
                                         variant="primary"
-                                        disabled={footerSubmitting}
+                                        disabled={footerSubmitting || !footerConsent}
                                         className="w-full !rounded-lg"
                                         hoverImage="button_back.png"
                                     >
@@ -2154,13 +2184,13 @@
                                             Estimates derived from aggregated global prevalence data across primary dysautonomia (Dysautonomia International, 2023: &gt;70M), cardiovascular autonomic neuropathy in diabetes (Spallone et al., Front. Neurosci., 2019; IDF Diabetes Atlas 2021: ~107M), post-COVID autonomic dysfunction (Stiles et al., 2022; Frontera et al., 2025 meta-analysis: &gt;100M), and autonomic impairment in heart failure and hypertension. Total addressable population estimated at &gt;376M.
                                         </p>
                                         <p className="text-[9px] leading-relaxed text-white/20 uppercase tracking-widest pt-2 border-t border-white/5">
-                                            As of [15.03.2026], no commercially available or CE/UKCA-approved wearable device integrates real-time ANS biomarker sensing with automated closed-loop neuromodulation [2].
+                                            As of [15.03.2026], no commercially available or CE/UKCA-approved wearable device integrates real-time ANS biomarker sensing with automated closed-loop neuromodulation <sup>[2]</sup>.
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div className="flex gap-8 text-[10px] uppercase tracking-[0.3em] font-medium text-white/40">
-                                <a href="privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+                                <a href="privacy.html" className="hover:text-white transition-colors">Privacy Policy</a>
                             </div>
                         </div>
                     </div>
@@ -2377,7 +2407,7 @@
                     <div className={`font-sans text-nomad-black bg-nomad-cream antialiased selection:bg-nomad-pink selection:text-white transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
                         <Navbar onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
                         <Hero onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
-                        <MarqueeText text="SENSING IN REAL TIME • RESPONDING IN MILLISECONDS • NON-INVASIVE • NO SURGERY • NO IMPLANT • PERSONALIZED TO YOUR NERVOUS SYSTEM • THE FIRST OF ITS KIND [2] • " />
+                        <MarqueeText text="SENSING IN REAL TIME • RESPONDING IN MILLISECONDS • NON-INVASIVE • NO SURGERY • NO IMPLANT • PERSONALIZED TO YOUR NERVOUS SYSTEM • THE FIRST OF ITS KIND <sup>[2]</sup> • " />
                         <OverviewBlock />
                         <FutureWearable />
                         <Stats />
