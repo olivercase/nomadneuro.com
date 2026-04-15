@@ -1032,8 +1032,54 @@
             );
         };
 
+        /* --- INVESTOR LEGAL OVERLAY --- */
+        const InvestorLegalModal = ({ isOpen, onClose, onCertify }) => {
+            if (!isOpen) return null;
+
+            return (
+                <div
+                    className="fixed inset-0 z-[110] flex items-center justify-center bg-nomad-black/98 backdrop-blur-3xl animate-fade-in"
+                    onClick={(e) => e.target === e.currentTarget && onClose()}
+                >
+                    <div className="max-w-2xl w-full px-8 py-16 text-center">
+                        <div className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center mx-auto mb-10 text-white/40">
+                            <Lock size={20} />
+                        </div>
+                        
+                        <h3 className="text-[10px] uppercase tracking-[0.4em] text-nomad-pink mb-8 font-tech">Legal Restriction</h3>
+                        
+                        <p className="text-xl md:text-2xl font-light text-white leading-relaxed mb-12 font-sans tracking-wide">
+                            Nomad Neuroscience Ltd is a private company. Access to investor relations and financial roadmaps is legally restricted to certified High Net Worth Individuals and Sophisticated Investors under the UK Financial Services and Markets Act 2000.
+                        </p>
+                        
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-6 mt-16">
+                            <Button 
+                                onClick={() => { onCertify(); onClose(); }}
+                                variant="primary" 
+                                className="!py-4 !px-10 font-bold !rounded-xl w-full md:w-auto"
+                            >
+                                I certify my status
+                            </Button>
+                            <button 
+                                onClick={onClose}
+                                className="text-white/40 hover:text-white transition-colors text-xs uppercase tracking-widest font-tech py-4"
+                            >
+                                [ Close ]
+                            </button>
+                        </div>
+                        
+                        <div className="mt-20 pt-10 border-t border-white/5">
+                            <p className="text-[9px] uppercase tracking-widest text-white/20 leading-loose max-w-lg mx-auto">
+                                This site does not constitute a financial promotion or an offer to sell or the solicitation of an offer to buy any securities in any jurisdiction.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         /* --- SECTIONS --- */
-        const Navbar = ({ onWaitlistClick }) => {
+        const Navbar = ({ onWaitlistClick, onInvestorClick }) => {
             const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
             const [isDark, setIsDark] = useState(false);
 
@@ -1121,7 +1167,12 @@
                             <div className="pt-8 flex flex-col gap-4">
                                 <a href="#team" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Team</a>
                                 <a href="careers.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Careers</a>
-                                <a href="investors.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Investors</a>
+                                <button 
+                                    onClick={() => { onInvestorClick(); setMobileMenuOpen(false); }} 
+                                    className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors text-left"
+                                >
+                                    Investors
+                                </button>
                                 <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Portals</a>
                             </div>
                             <button
@@ -2044,7 +2095,7 @@
             );
         };
 
-        const Footer = () => {
+        const Footer = ({ onInvestorClick }) => {
             const [footerEmail, setFooterEmail] = useState('');
             const [footerSubmitting, setFooterSubmitting] = useState(false);
             const [footerSuccess, setFooterSuccess] = useState(false);
@@ -2102,7 +2153,14 @@
                                     <li><a href="#platform" className="hover:text-white transition-colors">E-field</a></li>
                                     <li><a href="#applications" className="hover:text-white transition-colors">A-field</a></li>
                                     <li><a href="careers.html" className="hover:text-white transition-colors">Careers</a></li>
-                                    <li><a href="investors.html" className="hover:text-white transition-colors">Investors</a></li>
+                                    <li>
+                                        <button 
+                                            onClick={onInvestorClick} 
+                                            className="hover:text-white transition-colors uppercase tracking-wider text-left"
+                                        >
+                                            Investors
+                                        </button>
+                                    </li>
                                     <li><a href="signin.html" className="hover:text-white transition-colors">Portals</a></li>
                                 </ul>
                             </div>
@@ -2373,6 +2431,7 @@
             const [loading, setLoading] = useState(true);
             const [loginOpen, setLoginOpen] = useState(false);
             const [waitlistOpen, setWaitlistOpen] = useState(false);
+            const [investorLegalOpen, setInvestorLegalOpen] = useState(false);
 
             useEffect(() => {
                 if (window.Lenis) {
@@ -2405,7 +2464,11 @@
                 <>
                     {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
                     <div className={`font-sans text-nomad-black bg-nomad-cream antialiased selection:bg-nomad-pink selection:text-white transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-                        <Navbar onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
+                        <Navbar 
+                            onLoginClick={() => setLoginOpen(true)} 
+                            onWaitlistClick={() => setWaitlistOpen(true)} 
+                            onInvestorClick={() => setInvestorLegalOpen(true)} 
+                        />
                         <Hero onLoginClick={() => setLoginOpen(true)} onWaitlistClick={() => setWaitlistOpen(true)} />
                         <MarqueeText text="ENGINEERED FOR MILLISECOND RESPONSE • DESIGNED FOR REAL-TIME SENSING • NON-INVASIVE • NO SURGERY • NO IMPLANT • PERSONALIZED TO YOUR NERVOUS SYSTEM • THE FIRST OF ITS KIND <sup>[2]</sup> • " />
                         <OverviewBlock />
@@ -2417,9 +2480,14 @@
                         <Roadmap />
                         <PartnerLogos />
                         <GetInTouch />
-                        <Footer />
+                        <Footer onInvestorClick={() => setInvestorLegalOpen(true)} />
                         <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
                         <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
+                        <InvestorLegalModal 
+                            isOpen={investorLegalOpen} 
+                            onClose={() => setInvestorLegalOpen(false)} 
+                            onCertify={() => setLoginOpen(true)} 
+                        />
                     </div>
                 </>
             );
